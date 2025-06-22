@@ -7,8 +7,13 @@
 	    <AnalysisMode>all</AnalysisMode>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<!--<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>-->
+        
+        <Version>0.0.0.1</Version>
+        <Authors>MrAnyx</Authors>
+        <Company>Codeon</Company>
+        
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
 </Project>

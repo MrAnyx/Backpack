@@ -1,4 +1,10 @@
-﻿using System.Windows;
+﻿using Backpack.Presentation.Features.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using System.Windows;
 
 namespace Backpack.Presentation;
 
@@ -7,4 +13,60 @@ namespace Backpack.Presentation;
 /// </summary>
 public partial class App : Application
 {
+    private readonly IHostBuilder _hostBuilder;
+    private IHost? _host;
+
+    public App()
+    {
+        _hostBuilder = Host.CreateDefaultBuilder()
+            .ConfigureLogging(logging =>
+            {
+                _ = logging.ClearProviders();
+            })
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                var env = context.HostingEnvironment;
+
+                _ = config
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                    .AddJsonFile($"appsettings.output.json", optional: false, reloadOnChange: false);
+            })
+            .UseSerilog((context, configuration) =>
+            {
+                _ = configuration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .Enrich.WithProperty("logPath", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            })
+            .ConfigureServices((context, services) =>
+            {
+                _ = services.AddSingleton<MainVM>();
+            });
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        _host = _hostBuilder.Build();
+
+        var mainVM = _host.Services.GetRequiredService<MainVM>();
+
+        var mainWindow = new Main
+        {
+            DataContext = mainVM
+        };
+
+        mainWindow.Show();
+
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        if (_host != null)
+        {
+            await _host.StopAsync();
+            _host.Dispose();
+        }
+
+        base.OnExit(e);
+    }
 }
