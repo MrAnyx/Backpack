@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Backpack.Presentation.Features.Core;
+namespace Backpack.Presentation.Feature.Core;
 
 /// <summary>
 /// Interaction logic for Main.xaml

@@ -1,6 +1,8 @@
-﻿using Backpack.Presentation.Features.Core;
+﻿using Backpack.Presentation.Feature.Core;
+using Backpack.Presentation.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -40,7 +42,14 @@ public partial class App : Application
             })
             .ConfigureServices((context, services) =>
             {
-                _ = services.AddSingleton<MainVM>();
+                _ = services
+                    .Scan(x => x
+                        .FromDependencyContext(DependencyContext.Default!)
+                        .AddClasses(c => c.AssignableTo<ViewModel>())
+                        .AsSelf()
+                        .As<ViewModel>()
+                        .WithSingletonLifetime()
+                    );
             });
     }
 
