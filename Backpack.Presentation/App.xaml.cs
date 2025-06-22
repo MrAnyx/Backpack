@@ -23,31 +23,32 @@ public partial class App : Application
         _hostBuilder = Host.CreateDefaultBuilder()
             .ConfigureLogging(logging =>
             {
-                _ = logging.ClearProviders();
+                logging.ClearProviders();
             })
             .ConfigureAppConfiguration((context, config) =>
             {
                 var env = context.HostingEnvironment;
 
-                _ = config
+                config
                     .SetBasePath(env.ContentRootPath)
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                     .AddJsonFile($"appsettings.output.json", optional: false, reloadOnChange: false);
             })
             .UseSerilog((context, configuration) =>
             {
-                _ = configuration
+                configuration
                     .ReadFrom.Configuration(context.Configuration)
                     .Enrich.WithProperty("logPath", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
             })
             .ConfigureServices((context, services) =>
             {
-                _ = services
+                services
+                    .AddSingleton<MainVM>()
                     .Scan(x => x
                         .FromDependencyContext(DependencyContext.Default!)
                         .AddClasses(c => c.AssignableTo<ViewModel>())
-                        .AsSelf()
                         .As<ViewModel>()
+                        .AsSelf()
                         .WithSingletonLifetime()
                     );
             });
@@ -65,7 +66,6 @@ public partial class App : Application
         };
 
         mainWindow.Show();
-
     }
 
     protected override async void OnExit(ExitEventArgs e)

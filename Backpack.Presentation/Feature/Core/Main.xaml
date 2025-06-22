@@ -5,20 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Backpack.Presentation.Feature.Core"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance Type=local:MainVM}"
         Style="{StaticResource MaterialDesignWindow}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="CanResizeWithGrip">
-    
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
-    <Grid>
-        <ContentControl Content="{Binding CurrentVM}" 
-                        ContentTemplateSelector="{StaticResource ViewLocator}" />
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock>Header</TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Navigation Menu -->
+            <ListBox Grid.Column="0" ItemsSource="{Binding Pages}" 
+                     SelectedItem="{Binding CurrentVM, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <md:PackIcon Kind="{Binding Icon}" Width="24" Height="24" Margin="5" />
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ContentControl Grid.Column="1" Content="{Binding CurrentVM}" 
+                            ContentTemplateSelector="{StaticResource ViewLocator}" />
+        </Grid>
+
+        <StackPanel Grid.Row="2">
+            <TextBlock>Footer</TextBlock>
+        </StackPanel>
     </Grid>
 </Window>
