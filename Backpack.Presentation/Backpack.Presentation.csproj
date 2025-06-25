@@ -31,6 +31,12 @@
 	<ItemGroup>
 	  <Folder Include="Resource\" />
 	</ItemGroup>
+    
+	<ItemGroup>
+	  <Compile Update="Feature\Settings\Settings.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
 
 	<!-- Replace appsettings.json file per environment on pre build -->
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

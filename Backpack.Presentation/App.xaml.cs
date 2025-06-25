@@ -57,22 +57,18 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         _host = _hostBuilder.Build();
+        _host.Start();
 
         var mainVM = _host.Services.GetRequiredService<MainVM>();
-
-        var mainWindow = new Main
-        {
-            DataContext = mainVM
-        };
-
+        var mainWindow = new Main { DataContext = mainVM };
         mainWindow.Show();
     }
 
-    protected override async void OnExit(ExitEventArgs e)
+    protected override void OnExit(ExitEventArgs e)
     {
         if (_host != null)
         {
-            await _host.StopAsync();
+            _host.StopAsync().GetAwaiter().GetResult();
             _host.Dispose();
         }
 

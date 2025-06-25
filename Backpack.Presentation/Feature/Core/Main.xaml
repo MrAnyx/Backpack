@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance Type=local:MainVM}"
         Style="{StaticResource MaterialDesignWindow}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResizeWithGrip">
+        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResize">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -24,25 +24,36 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
+        <Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="LightGray">
             <TextBlock>Header</TextBlock>
-        </StackPanel>
+        </Border>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!-- Navigation Menu -->
-            <ListBox Grid.Column="0" ItemsSource="{Binding Pages}" 
-                     SelectedItem="{Binding CurrentVM, Mode=TwoWay}">
+            <ListBox Grid.Column="0"
+                     ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentVM, Mode=TwoWay}"
+                     BorderBrush="LightGray" BorderThickness="0 0 1 0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="10">
-                            <md:PackIcon Kind="{Binding Icon}" Width="24" Height="24" Margin="5" />
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-                        </StackPanel>
+                        <Grid Margin="3 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <md:PackIcon Kind="{Binding Icon}" Grid.Column="0" />
+                            <TextBlock Text="{Binding Name}" 
+                                       VerticalAlignment="Center" 
+                                       TextWrapping="NoWrap" 
+                                       TextTrimming="CharacterEllipsis" 
+                                       Grid.Column="2" />
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -51,8 +62,8 @@
                             ContentTemplateSelector="{StaticResource ViewLocator}" />
         </Grid>
 
-        <StackPanel Grid.Row="2">
-            <TextBlock>Footer</TextBlock>
-        </StackPanel>
+        <StatusBar Grid.Row="2" Background="{DynamicResource MaterialDesign.Brush.Primary}" Foreground="White" FontWeight="Medium">
+            <StatusBarItem Content="test"/>
+        </StatusBar>
     </Grid>
 </Window>

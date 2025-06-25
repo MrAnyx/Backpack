@@ -1,4 +1,4 @@
-﻿using Backpack.Presentation.Feature.Settings;
+﻿using Backpack.Presentation.Feature.Home;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -7,18 +7,29 @@ using System.Collections.ObjectModel;
 
 namespace Backpack.Presentation.Feature.Core;
 
-public partial class MainVM(IServiceProvider _services) : ObservableRecipient
+public partial class MainVM : ObservableRecipient
 {
-    [ObservableProperty]
-    private ViewModel currentVM = _services.GetRequiredService<SettingsVM>();
+    private readonly IServiceProvider _provider;
 
-    public ObservableCollection<ViewModel> Pages = [.. _services.GetServices<ViewModel>()];
+    [ObservableProperty]
+    private ViewModel currentVM;
+
+    public ObservableCollection<ViewModel> Pages { get; }
+
+    public MainVM(IServiceProvider provider)
+    {
+        _provider = provider;
+
+        var services = _provider.GetServices<ViewModel>();
+        Pages = [.. services];
+        CurrentVM = services.First(s => s is HomeVM);
+    }
 
     [RelayCommand]
     private async Task Loaded()
     {
         // Execute OnStartup on all ViewModel
-        await Task.WhenAll(_services.GetServices<ViewModel>().Select(vm => vm.OnStartupAsync()));
+        await Task.WhenAll(_provider.GetServices<ViewModel>().Select(vm => vm.OnStartupAsync()));
 
         await CurrentVM.OnLoadedAsync();
     }

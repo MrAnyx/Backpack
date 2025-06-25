@@ -3,7 +3,7 @@ using MaterialDesignThemes.Wpf;
 
 namespace Backpack.Presentation.Model;
 
-public abstract class ViewModel : ObservableRecipient
+public abstract partial class ViewModel : ObservableRecipient
 {
     public abstract string Name { get; }
     public abstract PackIconKind Icon { get; }
