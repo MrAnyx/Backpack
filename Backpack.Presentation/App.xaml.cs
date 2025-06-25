@@ -34,11 +34,11 @@ public partial class App : Application
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                     .AddJsonFile($"appsettings.output.json", optional: false, reloadOnChange: false);
             })
-            .UseSerilog((context, configuration) =>
+            .UseSerilog((context, services, configuration) =>
             {
                 configuration
                     .ReadFrom.Configuration(context.Configuration)
-                    .Enrich.WithProperty("logPath", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+                    .ReadFrom.Services(services);
             })
             .ConfigureServices((context, services) =>
             {
@@ -46,10 +46,9 @@ public partial class App : Application
                     .AddSingleton<MainVM>()
                     .Scan(x => x
                         .FromDependencyContext(DependencyContext.Default!)
-                        .AddClasses(c => c.AssignableTo<ViewModel>())
-                        .As<ViewModel>()
-                        .AsSelf()
-                        .WithSingletonLifetime()
+                        .AddClasses(c => c.AssignableTo<FeatureViewModel>())
+                            .As<FeatureViewModel>().As<ViewModel>().AsSelf()
+                            .WithSingletonLifetime()
                     );
             });
     }

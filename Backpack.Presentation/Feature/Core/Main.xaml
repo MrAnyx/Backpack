@@ -24,9 +24,9 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="LightGray">
+        <!--<Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="LightGray">
             <TextBlock>Header</TextBlock>
-        </Border>
+        </Border>-->
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -36,8 +36,13 @@
 
             <!-- Navigation Menu -->
             <ListBox Grid.Column="0"
-                     ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentVM, Mode=TwoWay}"
+                     ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
                      BorderBrush="LightGray" BorderThickness="0 0 1 0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding NavigationChangedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="3 0">
@@ -58,12 +63,29 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <ContentControl Grid.Column="1" Content="{Binding CurrentVM}" 
+            <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" 
                             ContentTemplateSelector="{StaticResource ViewLocator}" />
         </Grid>
 
-        <StatusBar Grid.Row="2" Background="{DynamicResource MaterialDesign.Brush.Primary}" Foreground="White" FontWeight="Medium">
-            <StatusBarItem Content="test"/>
+        <StatusBar Grid.Row="2" Background="{DynamicResource MaterialDesign.Brush.Primary}" Foreground="White" FontWeight="Medium" Padding="5 0">
+            <StatusBarItem HorizontalAlignment="Left">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}/{1}">
+                            <Binding Path="Domain" />
+                            <Binding Path="Username" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StatusBarItem>
+            
+            <StatusBarItem>
+                <Separator Style="{x:Null}" Width="Auto" HorizontalAlignment="Stretch"/>
+            </StatusBarItem>
+
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Text="{Binding Version}" />
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>
