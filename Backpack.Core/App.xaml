@@ -1,8 +1,8 @@
-﻿<Application x:Class="Backpack.Presentation.App"
+﻿<Application x:Class="Backpack.Core.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Backpack.Presentation"
-             xmlns:helper="clr-namespace:Backpack.Presentation.Helper"
+             xmlns:local="clr-namespace:Backpack.Core"
+             xmlns:helper="clr-namespace:Backpack.Presentation.Helper;assembly=Backpack.Presentation"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Application.Resources>
         <ResourceDictionary>

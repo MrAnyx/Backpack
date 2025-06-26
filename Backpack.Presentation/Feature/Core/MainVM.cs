@@ -19,18 +19,12 @@ public partial class MainVM : ObservableRecipient
     private FeatureViewModel selectedPage;
 
     public IEnumerable<FeatureViewModel> Pages { get; }
-    public string Username { get; }
-    public string Domain { get; }
     public string Version { get; }
 
     public MainVM(IServiceProvider provider, ILogger<MainVM> _logger)
     {
-        _logger.LogInformation("Test");
-
         _provider = provider;
 
-        Domain = Environment.UserDomainName;
-        Username = Environment.UserName;
         Version = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
         Pages = _provider.GetServices<FeatureViewModel>().OrderByDescending(p => p.Priority).ThenBy(p => p.Name);

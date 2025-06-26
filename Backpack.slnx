@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="Backpack.Application/Backpack.Application.csproj" />
+  <Project Path="Backpack.Domain/Backpack.Domain.csproj" />
+  <Project Path="Backpack.Infrastructure/Backpack.Infrastructure.csproj" />
+  <Project Path="Backpack.Core/Backpack.Core.csproj" />
+  <Project Path="Backpack.Presentation/Backpack.Presentation.csproj" Id="ab598f9d-e73a-45d1-8841-b7eff7b46adc" />
+</Solution>

@@ -69,16 +69,9 @@
 
         <StatusBar Grid.Row="2" Background="{DynamicResource MaterialDesign.Brush.Primary}" Foreground="White" FontWeight="Medium" Padding="5 0">
             <StatusBarItem HorizontalAlignment="Left">
-                <TextBlock>
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}/{1}">
-                            <Binding Path="Domain" />
-                            <Binding Path="Username" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+               
             </StatusBarItem>
-            
+
             <StatusBarItem>
                 <Separator Style="{x:Null}" Width="Auto" HorizontalAlignment="Stretch"/>
             </StatusBarItem>

@@ -1,19 +1,20 @@
-﻿using Backpack.Presentation.Feature.Core;
-using Backpack.Presentation.Model;
+﻿using Backpack.Application.Extension;
+using Backpack.Infrastructure.Extension;
+using Backpack.Presentation.Extension;
+using Backpack.Presentation.Feature.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Windows;
 
-namespace Backpack.Presentation;
+namespace Backpack.Core;
 
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private readonly IHostBuilder _hostBuilder;
     private IHost? _host;
@@ -43,13 +44,9 @@ public partial class App : Application
             .ConfigureServices((context, services) =>
             {
                 services
-                    .AddSingleton<MainVM>()
-                    .Scan(x => x
-                        .FromDependencyContext(DependencyContext.Default!)
-                        .AddClasses(c => c.AssignableTo<FeatureViewModel>())
-                            .As<FeatureViewModel>().As<ViewModel>().AsSelf()
-                            .WithSingletonLifetime()
-                    );
+                    .AddApplication()
+                    .AddPresentation()
+                    .AddInfrastructure();
             });
     }
 
