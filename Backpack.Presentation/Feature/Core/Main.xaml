@@ -9,76 +9,75 @@
         d:DataContext="{d:DesignInstance Type=local:MainVM}"
         Style="{StaticResource MaterialDesignWindow}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResize">
+        Title="{Binding Title}" Height="600" Width="1200" ResizeMode="CanResize">
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    <md:DialogHost SnackbarMessageQueue="{Binding ElementName=Snackbar, Path=MessageQueue}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <!--<Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="LightGray">
-            <TextBlock>Header</TextBlock>
-        </Border>-->
+                <!-- Navigation Menu -->
+                <ListBox Grid.Column="0"
+                         ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                         BorderBrush="LightGray" BorderThickness="0 0 1 0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding NavigationChangedCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+                                <md:PackIcon Kind="{Binding Icon}" Grid.Column="0" />
+                                <TextBlock Text="{Binding Name}" 
+                                   VerticalAlignment="Center" 
+                                   TextWrapping="NoWrap" 
+                                   TextTrimming="CharacterEllipsis" 
+                                   Grid.Column="2" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-            <!-- Navigation Menu -->
-            <ListBox Grid.Column="0"
-                     ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
-                     BorderBrush="LightGray" BorderThickness="0 0 1 0">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding NavigationChangedCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="3 0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="8" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            
-                            <md:PackIcon Kind="{Binding Icon}" Grid.Column="0" />
-                            <TextBlock Text="{Binding Name}" 
-                                       VerticalAlignment="Center" 
-                                       TextWrapping="NoWrap" 
-                                       TextTrimming="CharacterEllipsis" 
-                                       Grid.Column="2" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" ContentTemplateSelector="{StaticResource ViewLocator}" />
 
-            <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" 
-                            ContentTemplateSelector="{StaticResource ViewLocator}" />
+                <md:Snackbar Grid.Column="1" x:Name="Snackbar" MessageQueue="{Binding Snackbar}" HorizontalAlignment="Right" Margin="5" />
+            </Grid>
+
+            <StatusBar Grid.Row="1" Background="{DynamicResource MaterialDesign.Brush.Primary}" Foreground="White" FontWeight="Medium" Padding="5 0">
+                <StatusBarItem HorizontalAlignment="Left">
+
+                </StatusBarItem>
+
+                <StatusBarItem>
+                    <Separator Style="{x:Null}" Width="Auto" HorizontalAlignment="Stretch"/>
+                </StatusBarItem>
+
+                <StatusBarItem HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Version}" />
+                </StatusBarItem>
+            </StatusBar>
         </Grid>
+    </md:DialogHost>
 
-        <StatusBar Grid.Row="2" Background="{DynamicResource MaterialDesign.Brush.Primary}" Foreground="White" FontWeight="Medium" Padding="5 0">
-            <StatusBarItem HorizontalAlignment="Left">
-               
-            </StatusBarItem>
-
-            <StatusBarItem>
-                <Separator Style="{x:Null}" Width="Auto" HorizontalAlignment="Stretch"/>
-            </StatusBarItem>
-
-            <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding Version}" />
-            </StatusBarItem>
-        </StatusBar>
-    </Grid>
 </Window>

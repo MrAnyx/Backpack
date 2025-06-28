@@ -10,6 +10,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Backpack.Application\Backpack.Application.csproj" />
+      <ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
     </ItemGroup>
 
 </Project>

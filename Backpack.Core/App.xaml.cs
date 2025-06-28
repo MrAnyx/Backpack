@@ -1,7 +1,12 @@
 ﻿using Backpack.Application.Extension;
+using Backpack.Core.Extension;
+using Backpack.Domain.Model.Configuration;
 using Backpack.Infrastructure.Extension;
+using Backpack.Persistence;
+using Backpack.Persistence.Extension;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,10 +48,14 @@ public partial class App : System.Windows.Application
             })
             .ConfigureServices((context, services) =>
             {
+                var settings = services.AddAppSettings<AppSettings>(context.Configuration);
+
                 services
-                    .AddApplication()
-                    .AddPresentation()
-                    .AddInfrastructure();
+                    .AddApplication(settings)
+                    .AddPresentation(settings)
+                    .AddInfrastructure(settings)
+                    .AddPersistence(settings)
+                ;
             });
     }
 
@@ -54,6 +63,10 @@ public partial class App : System.Windows.Application
     {
         _host = _hostBuilder.Build();
         _host.Start();
+
+        MessageBox.Show("The database structure changes. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
+        var dbContext = _host.Services.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.Migrate();
 
         var mainVM = _host.Services.GetRequiredService<MainVM>();
         var mainWindow = new Main { DataContext = mainVM };

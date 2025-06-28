@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<UseWPF>true</UseWPF>
+        <ApplicationIcon>Image\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -28,13 +29,11 @@
 	</ItemGroup>
     
 	<ItemGroup>
-	  <Folder Include="Resource\" />
-	</ItemGroup>
-    
-	<ItemGroup>
 	  <ProjectReference Include="..\Backpack.Application\Backpack.Application.csproj" />
 	  <ProjectReference Include="..\Backpack.Infrastructure\Backpack.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Backpack.Presentation\Backpack.Presentation.csproj" />
+	  <ProjectReference Include="..\Backpack.Persistence\Backpack.Persistence.csproj" />
+	  <ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
 	</ItemGroup>
 
 	<!-- Replace appsettings.json file per environment on pre build -->
@@ -42,5 +41,6 @@
 		<Exec Condition="'$(Configuration)' == 'Debug'" Command="copy /y Configuration\appsettings.debug.json appsettings.output.json" />
 		<Exec Condition="'$(Configuration)' == 'Release'" Command="copy /y Configuration\appsettings.release.json appsettings.output.json" />
 	</Target>
+	<ProjectExtensions><VisualStudio><UserProperties configuration_4appsettings_1debug_1json__JsonSchema="" configuration_4appsettings_1release_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
