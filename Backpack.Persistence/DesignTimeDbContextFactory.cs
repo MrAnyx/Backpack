@@ -7,7 +7,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder();
 
         return new ApplicationDbContext(optionsBuilder.Configure(Domain.Enum.eAppConfiguration.Debug).Options);
     }

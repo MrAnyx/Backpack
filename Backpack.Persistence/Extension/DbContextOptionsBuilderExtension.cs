@@ -20,10 +20,4 @@ public static class DbContextOptionsBuilderExtension
 
         return options;
     }
-
-    public static DbContextOptionsBuilder<T> Configure<T>(this DbContextOptionsBuilder<T> options, eAppConfiguration? configuration = eAppConfiguration.Debug)
-        where T : DbContext
-    {
-        return options.Configure(configuration);
-    }
 }
