@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entity\" />
+    <Folder Include="Persistence\Contract\Repository\" />
   </ItemGroup>
 
 </Project>

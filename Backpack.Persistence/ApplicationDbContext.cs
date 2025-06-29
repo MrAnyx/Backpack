@@ -5,5 +5,5 @@ namespace Backpack.Persistence;
 
 public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<Test> Tests { get; set; }
+    public virtual DbSet<BackupHistory> BackupHistory { get; set; }
 }

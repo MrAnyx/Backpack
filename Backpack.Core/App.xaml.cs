@@ -1,11 +1,11 @@
 ﻿using Backpack.Application.Extension;
-using Backpack.Core.Extension;
 using Backpack.Domain.Model.Configuration;
 using Backpack.Infrastructure.Extension;
 using Backpack.Persistence;
 using Backpack.Persistence.Extension;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Core;
+using Backpack.Shared.Extension;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +38,9 @@ public partial class App : System.Windows.Application
                 config
                     .SetBasePath(env.ContentRootPath)
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                    .AddJsonFile($"appsettings.output.json", optional: false, reloadOnChange: false);
+                    .AddJsonFile($"appsettings.output.json", optional: false, reloadOnChange: false)
+                    .AddEnvironmentVariables()
+                    .AddUserSecrets<App>();
             })
             .UseSerilog((context, services, configuration) =>
             {
@@ -48,9 +50,11 @@ public partial class App : System.Windows.Application
             })
             .ConfigureServices((context, services) =>
             {
-                var settings = services.AddAppSettings<AppSettings>(context.Configuration);
+                var settings = context.Configuration.As<AppSettings>(true, true);
 
                 services
+                    .AddSingleton(settings)
+
                     .AddApplication(settings)
                     .AddPresentation(settings)
                     .AddInfrastructure(settings)
