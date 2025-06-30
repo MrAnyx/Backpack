@@ -5,11 +5,6 @@ namespace Backpack.Shared.Extension;
 
 public static class ConfigurationExtension
 {
-    /// <typeparam name="T">The destination type</typeparam>
-    /// <param name="section">the configuratrion section</param>
-    /// <param name="validate">whether to validate the object</param>
-    /// <param name="safe">return a new instance of T if the convertion is null</param>
-    /// <returns>the converted configuration</returns>
     public static T As<T>(this IConfiguration section, bool validate = true, bool safe = false) where T : class
     {
         ArgumentNullException.ThrowIfNull(section);

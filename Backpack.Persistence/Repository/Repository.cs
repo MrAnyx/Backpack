@@ -10,18 +10,28 @@ public abstract class Repository<TEntity>(ApplicationDbContext Context) where TE
         return Context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void Add(TEntity entity)
+    public TEntity Add(TEntity entity)
     {
-        Context.Set<TEntity>().Add(entity);
+        var entry = Context.Set<TEntity>().Add(entity);
+        return entry.Entity;
     }
 
-    public void Update(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
-        Context.Set<TEntity>().Update(entity);
+        var entry = Context.Set<TEntity>().Update(entity);
+        return entry.Entity;
     }
 
-    public void Remove(TEntity entity)
+    public TEntity Remove(TEntity entity)
     {
-        Context.Set<TEntity>().Remove(entity);
+        var entry = Context.Set<TEntity>().Remove(entity);
+        return entry.Entity;
+    }
+
+    public async Task<TEntity> RemoveByIdAsync(uint id)
+    {
+        var entity = await GetByIdAsync(id) ?? throw new NullReferenceException($"No {typeof(TEntity).Name} found with id {id}");
+        var entry = Context.Set<TEntity>().Remove(entity);
+        return entry.Entity;
     }
 }
