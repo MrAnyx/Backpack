@@ -68,9 +68,14 @@ public partial class App : System.Windows.Application
         _host = _hostBuilder.Build();
         _host.Start();
 
-        MessageBox.Show("The database structure changes. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
         var dbContext = _host.Services.GetRequiredService<ApplicationDbContext>();
-        dbContext.Database.Migrate();
+        var pendingMigrations = dbContext.Database.GetPendingMigrations();
+
+        if (pendingMigrations.Any())
+        {
+            MessageBox.Show("The database structure has changed. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
+            dbContext.Database.Migrate();
+        }
 
         var mainVM = _host.Services.GetRequiredService<MainVM>();
         var mainWindow = new Main { DataContext = mainVM };
