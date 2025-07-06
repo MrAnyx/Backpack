@@ -1,4 +1,6 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Backpack.Presentation.Model;
+using CommunityToolkit.Mvvm.ComponentModel;
+using MaterialDesignThemes.Wpf;
 
 namespace Backpack.Presentation.Model;
 
@@ -8,6 +10,8 @@ public abstract partial class FeatureViewModel : ViewModel
     public abstract PackIconKind Icon { get; }
     public virtual uint Priority { get; } = 0;
 
+    [ObservableProperty]
+    private bool isEnabled = true;
 
     /// <summary>
     /// Is executed once when the application starts

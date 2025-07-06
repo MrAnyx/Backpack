@@ -1,18 +1,22 @@
 ﻿using Backpack.Application.Extension;
-using Backpack.Domain.Model.Configuration;
+using Backpack.Domain.Configuration;
 using Backpack.Infrastructure.Extension;
 using Backpack.Persistence;
 using Backpack.Persistence.Extension;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Core;
 using Backpack.Shared.Extension;
+using Backpack.Shared.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
+using NLog;
+using NLog.Extensions.Hosting;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace Backpack.Core;
 
@@ -21,19 +25,15 @@ namespace Backpack.Core;
 /// </summary>
 public partial class App : System.Windows.Application
 {
-    private readonly IHostBuilder _hostBuilder;
-    private IHost? _host;
+    private IHostBuilder _hostBuilder;
+    private IHost _host;
 
     public App()
     {
         _hostBuilder = Host.CreateDefaultBuilder()
-            .ConfigureLogging(logging =>
-            {
-                logging.ClearProviders();
-            })
             .ConfigureAppConfiguration((context, config) =>
             {
-                var env = context.HostingEnvironment;
+                IHostEnvironment env = context.HostingEnvironment;
 
                 config
                     .SetBasePath(env.ContentRootPath)
@@ -42,15 +42,14 @@ public partial class App : System.Windows.Application
                     .AddEnvironmentVariables()
                     .AddUserSecrets<App>();
             })
-            .UseSerilog((context, services, configuration) =>
-            {
-                configuration
-                    .ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services);
-            })
+            .UseNLog()
             .ConfigureServices((context, services) =>
             {
-                var settings = context.Configuration.As<AppSettings>(true, true);
+                AppSettings settings = context.Configuration.As<AppSettings>(true, true);
+
+                GlobalDiagnosticsContext.Set("logFilePath", PathResolver.GetLogFilePath(settings.Environment));
+                GlobalDiagnosticsContext.Set("logArchivesPath", PathResolver.GetLogArchivesPath(settings.Environment));
+                GlobalDiagnosticsContext.Set("nlogFilePath", PathResolver.GetNLogFilePath(settings.Environment));
 
                 services
                     .AddSingleton(settings)
@@ -61,15 +60,38 @@ public partial class App : System.Windows.Application
                     .AddPersistence(settings)
                 ;
             });
+
+        _host = _hostBuilder.Build();
+
+    }
+
+    private void SetCultureInfo(CultureInfo culture)
+    {
+        // Set the culture for all threads (including default for new threads)
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+        // Optionally set for the current thread too
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
+
+        FrameworkElement.LanguageProperty.OverrideMetadata(
+            typeof(FrameworkElement),
+            new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(culture.IetfLanguageTag))
+        );
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        _host = _hostBuilder.Build();
+        SetCultureInfo(CultureInfo.CurrentCulture);
+
         _host.Start();
 
-        var dbContext = _host.Services.GetRequiredService<ApplicationDbContext>();
-        var pendingMigrations = dbContext.Database.GetPendingMigrations();
+        AppSettings appSettings = _host.Services.GetRequiredService<AppSettings>();
+
+        // Database
+        ApplicationDbContext dbContext = _host.Services.GetRequiredService<ApplicationDbContext>();
+        IEnumerable<string> pendingMigrations = dbContext.Database.GetPendingMigrations();
 
         if (pendingMigrations.Any())
         {
@@ -77,9 +99,12 @@ public partial class App : System.Windows.Application
             dbContext.Database.Migrate();
         }
 
-        var mainVM = _host.Services.GetRequiredService<MainVM>();
-        var mainWindow = new Main { DataContext = mainVM };
-        mainWindow.Show();
+        // Entry point
+        MainVM mainVM = _host.Services.GetRequiredService<MainVM>();
+        Main main = new() { DataContext = mainVM };
+        main.Show();
+
+        base.OnStartup(e);
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -91,5 +116,13 @@ public partial class App : System.Windows.Application
         }
 
         base.OnExit(e);
+    }
+
+    private void OnGlobalException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+    {
+        ILogger<App> logger = _host.Services.GetRequiredService<ILogger<App>>();
+        logger.LogError(message: "An unexpected error occured", exception: e.Exception);
+        MessageBox.Show(e.Exception.Message, "An unexpected error occured", MessageBoxButton.OK, MessageBoxImage.Error);
+        e.Handled = true;
     }
 }

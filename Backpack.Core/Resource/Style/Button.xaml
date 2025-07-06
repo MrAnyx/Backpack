@@ -1,0 +1,99 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <!-- Raised button -->
+    <Style x:Key="DangerRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
+        <Style.Setters>
+            <Setter Property="Background" Value="{DynamicResource Danger}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkDanger}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="WarningRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
+        <Style.Setters>
+            <Setter Property="Background" Value="{DynamicResource Warning}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkWarning}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="SuccessRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
+        <Style.Setters>
+            <Setter Property="Background" Value="{DynamicResource Success}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkSuccess}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="InfoRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
+        <Style.Setters>
+            <Setter Property="Background" Value="{DynamicResource Info}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkInfo}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="GrayRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
+        <Style.Setters>
+            <Setter Property="Background" Value="{DynamicResource Gray}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkGray}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="PrimaryRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}"/>
+
+    <Style x:Key="SecondaryRaisedButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedSecondaryDarkButton}"/>
+
+    <!-- Flat button -->
+    <Style x:Key="DangerFlatButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkDanger}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="WarningFlatButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkWarning}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="SuccessFlatButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="{DynamicResource Success}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkSuccess}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="InfoFlatButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="{DynamicResource Info}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkInfo}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="GrayFlatButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="{DynamicResource Gray}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource DarkGray}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="PrimaryFlatButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatDarkButton}"/>
+
+    <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatSecondaryDarkButton}"/>
+</ResourceDictionary>

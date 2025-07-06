@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-  </PropertyGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-        <PackageReference Include="Scrutor" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\Backpack.Application\Backpack.Application.csproj" />
-      <ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
-    </ItemGroup>
+	<PropertyGroup>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.DirectoryServices.AccountManagement" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Backpack.Application\Backpack.Application.csproj" />
+		<ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

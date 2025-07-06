@@ -4,6 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Cortex.Mediator" Version="1.6.1" />
+    <PackageVersion Include="DeepCloner" Version="0.10.4" />
+    <PackageVersion Include="Humanizer" Version="2.14.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.6" />
@@ -13,13 +16,10 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
+    <PackageVersion Include="NLog.Extensions.Hosting" Version="6.0.1" />
+    <PackageVersion Include="Paramore.Brighter.Extensions.Hosting" Version="9.9.10" />
     <PackageVersion Include="RecursiveDataAnnotationsValidation" Version="2.0.0" />
     <PackageVersion Include="Scrutor" Version="6.1.0" />
-    <PackageVersion Include="Serilog.Enrichers.Process" Version="3.0.0" />
-    <PackageVersion Include="Serilog.Enrichers.Thread" Version="4.0.0" />
-    <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
-    <PackageVersion Include="Serilog.Settings.Configuration" Version="9.0.0" />
-    <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
-    <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageVersion Include="System.DirectoryServices.AccountManagement" Version="9.0.6" />
   </ItemGroup>
 </Project>

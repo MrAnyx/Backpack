@@ -1,24 +1,23 @@
-﻿using Backpack.Domain.Enum;
-using Backpack.Shared;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Backpack.Domain.Enum;
+using Backpack.Shared.Helper;
 
 namespace Backpack.Persistence.Extension;
 
 public static class DbContextOptionsBuilderExtension
 {
-    public static DbContextOptionsBuilder Configure(this DbContextOptionsBuilder options, eAppConfiguration? configuration = eAppConfiguration.Debug)
+    public static DbContextOptionsBuilder Configure(this DbContextOptionsBuilder options, eAppEnvironment environment = eAppEnvironment.Debug)
     {
         // Generate the database path
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        var dbPath = Path.Join(path, Constant.ApplicationName, $"data.{configuration}.db");
+        var dbPath = PathResolver.GetDatabaseFilePath(environment);
 
         // Create the folder if it doesn't exist
         Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
 
         options
             .UseSqlite($"Data Source={dbPath}")
-            .UseLazyLoadingProxies();
+            .UseLazyLoadingProxies()
+        ;
 
         return options;
     }

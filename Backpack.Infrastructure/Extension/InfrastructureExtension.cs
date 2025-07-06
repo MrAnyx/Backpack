@@ -1,4 +1,4 @@
-﻿using Backpack.Domain.Model.Configuration;
+﻿using Backpack.Domain.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Backpack.Infrastructure.Extension;

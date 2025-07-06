@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Backpack.Presentation.Converter">
+    
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    <converters:FormatLinkConverter x:Key="FormatLinkConverter" />
+    <converters:DateTimeToLocalTimeConverter x:Key="DateTimeToLocalTimeConverter" />
+    <converters:HumanizeConverter x:Key="HumanizeConverter" />
+</ResourceDictionary>

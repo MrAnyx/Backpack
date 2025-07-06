@@ -1,10 +1,17 @@
-﻿using Backpack.Domain.Persistence.Contract;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Backpack.Domain.Contract;
+using Backpack.Persistence.Model;
 
 namespace Backpack.Persistence.Repository;
 
 public class UnitOfWork(ApplicationDbContext _context) : IUnitOfWork
 {
+    public async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+        return new DatabaseTransaction(transaction);
+    }
+
     public int SaveChanges()
     {
         UpdateTimestamps();
@@ -21,7 +28,7 @@ public class UnitOfWork(ApplicationDbContext _context) : IUnitOfWork
     {
         var entries = _context.ChangeTracker
             .Entries<IHasTimestamps>()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+            .Where(e => e.State is EntityState.Added or EntityState.Modified);
 
         foreach (var entry in entries)
         {

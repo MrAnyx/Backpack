@@ -1,14 +1,17 @@
-﻿using Backpack.Persistence.Extension;
+﻿using Backpack.Domain.Enum;
+using Backpack.Persistence.Extension;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace Backpack.Persistence;
+
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder();
+        DbContextOptionsBuilder optionsBuilder = new();
 
-        return new ApplicationDbContext(optionsBuilder.Configure(Domain.Enum.eAppConfiguration.Debug).Options);
+        return new ApplicationDbContext(optionsBuilder.Configure(eAppEnvironment.Debug).Options);
     }
 }
+

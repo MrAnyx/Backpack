@@ -1,4 +1,4 @@
-﻿using Backpack.Shared.Helper;
+using Backpack.Shared.Helper;
 using Microsoft.Extensions.Configuration;
 
 namespace Backpack.Shared.Extension;

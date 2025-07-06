@@ -1,10 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\Contract\Repository\" />
-  </ItemGroup>
+	<PropertyGroup>
+	</PropertyGroup>
 
 </Project>

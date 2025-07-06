@@ -2,6 +2,6 @@
 
 namespace Backpack.Presentation.Model;
 
-public abstract class ViewModel : ObservableRecipient
+public abstract partial class ViewModel : ObservableRecipient
 {
 }

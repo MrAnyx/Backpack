@@ -1,6 +1,6 @@
 ﻿namespace Backpack.Domain.Model;
 
-public sealed record Error(string Code, string? Description = null)
+public sealed record Error(Exception? error)
 {
-    public static readonly Error None = new(string.Empty);
+    public static readonly Error None = new(error: null);
 }

@@ -1,10 +1,16 @@
-﻿using Backpack.Domain.Persistence;
+﻿using Backpack.Domain.Contract;
+using Backpack.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backpack.Persistence.Repository;
 
-public abstract class Repository<TEntity>(ApplicationDbContext Context) where TEntity : Entity
+public abstract class Repository<TEntity>(ApplicationDbContext Context) : IRepository<TEntity> where TEntity : Entity
 {
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    {
+        return await Context.Set<TEntity>().ToListAsync();
+    }
+
     public Task<TEntity?> GetByIdAsync(uint id)
     {
         return Context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
@@ -33,5 +39,10 @@ public abstract class Repository<TEntity>(ApplicationDbContext Context) where TE
         var entity = await GetByIdAsync(id) ?? throw new NullReferenceException($"No {typeof(TEntity).Name} found with id {id}");
         var entry = Context.Set<TEntity>().Remove(entity);
         return entry.Entity;
+    }
+
+    public Task<int> CountAllAsync()
+    {
+        return Context.Set<TEntity>().CountAsync();
     }
 }

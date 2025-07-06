@@ -8,7 +8,7 @@
   <Project Path="Backpack.Core/Backpack.Core.csproj" />
   <Project Path="Backpack.Domain/Backpack.Domain.csproj" />
   <Project Path="Backpack.Infrastructure/Backpack.Infrastructure.csproj" />
-  <Project Path="Backpack.Persistence/Backpack.Persistence.csproj" Id="83f82e44-db7d-4b7a-974d-d5fd6acea65c" />
-  <Project Path="Backpack.Presentation/Backpack.Presentation.csproj" Id="ab598f9d-e73a-45d1-8841-b7eff7b46adc" />
-  <Project Path="Backpack.Shared/Backpack.Shared.csproj" Id="868fb7ab-0583-4c7d-9652-42d826591e8d" />
+  <Project Path="Backpack.Persistence/Backpack.Persistence.csproj" />
+  <Project Path="Backpack.Presentation/Backpack.Presentation.csproj" />
+  <Project Path="Backpack.Shared/Backpack.Shared.csproj" />
 </Solution>

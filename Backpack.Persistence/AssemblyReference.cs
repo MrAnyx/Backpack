@@ -1,3 +1,8 @@
-﻿namespace Backpack.Persistence;
+﻿using System.Reflection;
 
-public class AssemblyReference { }
+namespace Backpack.Persistence;
+
+public class AssemblyReference
+{
+    public static Assembly Assembly = typeof(AssemblyReference).Assembly;
+}

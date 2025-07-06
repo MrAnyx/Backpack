@@ -1,8 +1,8 @@
-﻿using Backpack.Domain.Persistence.Contract;
+﻿using Backpack.Domain.Contract;
 
 namespace Backpack.Domain.Entity;
 
-public class Location : Persistence.Entity, IHasTimestamps
+public class Location : Model.Entity, IHasTimestamps
 {
     public required string Path { get; set; }
     public IEnumerable<string> IgnoreWildcards { get; set; } = [];

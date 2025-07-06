@@ -1,0 +1,38 @@
+﻿using Backpack.Domain.Configuration;
+using Backpack.Presentation.Feature.Menu.About.Container;
+using Backpack.Presentation.Model;
+using Backpack.Shared;
+using Backpack.Shared.Helper;
+using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
+
+namespace Backpack.Presentation.Feature.Menu.About;
+
+public partial class AboutDialogVM(AppSettings _settings) : DialogViewModel
+{
+    public IEnumerable<AboutItem> AboutItems { get; } = [
+        new() { Name = "Application Name", Description = Constant.ApplicationName },
+        new() { Name = "Company", Description = Constant.Company },
+        new() { Name = "Current Version", Description = Constant.Version },
+        new() { Name = ".NET Version", Description = Constant.TargetDotnetVersion },
+        new() { Name = "Build Date", Description = Constant.BuildDate },
+        new() { Name = "Environment", Description = _settings.Environment.ToString() },
+        new() { Name = "Repository", Description = Constant.Repository },
+        new() { Name = "Logs Path", Description = new Uri(PathResolver.GetLogsPath(_settings.Environment)) },
+    ];
+
+    [RelayCommand]
+    private void ExecuteClose()
+    {
+        Close();
+    }
+
+    [RelayCommand]
+    private void ExecuteOpenLink(Uri url)
+    {
+        if (!string.IsNullOrWhiteSpace(url.ToString()))
+        {
+            Process.Start(new ProcessStartInfo(url.ToString()) { UseShellExecute = true });
+        }
+    }
+}

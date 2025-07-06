@@ -3,37 +3,32 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<UseWPF>true</UseWPF>
-        <ApplicationIcon>Image\logo.ico</ApplicationIcon>
+		<ApplicationIcon>Image\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" />
+		<PackageReference Include="NLog.Extensions.Hosting" />
 		<PackageReference Include="Scrutor" />
-		<PackageReference Include="Serilog.Enrichers.Process" />
-		<PackageReference Include="Serilog.Enrichers.Thread" />
-		<PackageReference Include="Serilog.Extensions.Hosting" />
-		<PackageReference Include="Serilog.Settings.Configuration" />
-		<PackageReference Include="Serilog.Sinks.Debug" />
-		<PackageReference Include="Serilog.Sinks.File" />
 	</ItemGroup>
 
-    <!-- Include appsettings.json in output build -->
 	<ItemGroup>
-	  <None Update="appsettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="appsettings.output.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<ProjectReference Include="..\Backpack.Application\Backpack.Application.csproj" />
+		<ProjectReference Include="..\Backpack.Infrastructure\Backpack.Infrastructure.csproj" />
+		<ProjectReference Include="..\Backpack.Persistence\Backpack.Persistence.csproj" />
+		<ProjectReference Include="..\Backpack.Presentation\Backpack.Presentation.csproj" />
+		<ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
 	</ItemGroup>
-    
+
+	<!-- Include appsettings.json in output build -->
 	<ItemGroup>
-	  <ProjectReference Include="..\Backpack.Application\Backpack.Application.csproj" />
-	  <ProjectReference Include="..\Backpack.Infrastructure\Backpack.Infrastructure.csproj" />
-	  <ProjectReference Include="..\Backpack.Presentation\Backpack.Presentation.csproj" />
-	  <ProjectReference Include="..\Backpack.Persistence\Backpack.Persistence.csproj" />
-	  <ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="appsettings.output.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<!-- Replace appsettings.json file per environment on pre build -->
@@ -41,6 +36,5 @@
 		<Exec Condition="'$(Configuration)' == 'Debug'" Command="copy /y Configuration\appsettings.debug.json appsettings.output.json" />
 		<Exec Condition="'$(Configuration)' == 'Release'" Command="copy /y Configuration\appsettings.release.json appsettings.output.json" />
 	</Target>
-	<ProjectExtensions><VisualStudio><UserProperties configuration_4appsettings_1debug_1json__JsonSchema="" configuration_4appsettings_1release_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
