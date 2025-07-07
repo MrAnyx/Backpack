@@ -1,10 +1,10 @@
-﻿using Backpack.Presentation;
-using Backpack.Presentation.Model;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Extensions.DependencyInjection;
-using Backpack.Domain.Configuration;
+﻿using Backpack.Domain.Configuration;
+using Backpack.Domain.Contract;
 using Backpack.Presentation.Feature.Core;
 using Backpack.Presentation.Model;
+using Backpack.Presentation.Service;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Backpack.Presentation.Extension;
 
@@ -27,6 +27,8 @@ public static class PresentationExtension
                 .WithTransientLifetime()
             )
             .AddSingleton<ISnackbarMessageQueue, SnackbarMessageQueue>()
+            .AddSingleton<IStatusBarMessageService, StatusBarMessageService>()
+            .AddSingleton<StatusBarMessageStore>()
         ;
     }
 }

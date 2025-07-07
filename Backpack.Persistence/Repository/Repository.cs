@@ -1,4 +1,4 @@
-﻿using Backpack.Domain.Contract;
+﻿using Backpack.Domain.Contract.Repository;
 using Backpack.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,4 @@
-﻿using Backpack.Domain.Contract;
+﻿using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Enum;
 
 namespace Backpack.Domain.Entity;

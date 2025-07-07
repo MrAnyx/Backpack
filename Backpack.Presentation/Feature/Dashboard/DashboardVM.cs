@@ -1,5 +1,5 @@
-﻿using Backpack.Application.Consumer.Backup;
-using Backpack.Domain.Contract;
+﻿using Backpack.Domain.Contract;
+using Backpack.Domain.Contract.Repository;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
@@ -7,8 +7,8 @@ using MaterialDesignThemes.Wpf;
 namespace Backpack.Presentation.Feature.Dashboard;
 
 public partial class DashboardVM(
-    IMediator _mediator,
-    ISnackbarMessageQueue _snackbar
+    IBackupRepository _backupRepository,
+    IStatusBarMessageService _statusBar
 ) : FeatureViewModel
 {
     public override string Name => "Dashboard";
@@ -20,16 +20,12 @@ public partial class DashboardVM(
 
     public override async Task OnStartupAsync()
     {
-        var result = await _mediator.QueryAsync(new CountBackups());
-
-        if (result.IsSuccess)
-        {
-            CountBackups = result.Value;
-        }
+        CountBackups = await _backupRepository.CountAllAsync();
     }
 
     public override Task LoadAsync()
     {
+        _statusBar.Post("Hello World", Domain.Enum.eStatusBarMessageType.Warning);
         return base.LoadAsync();
     }
 

@@ -4,6 +4,7 @@
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+        <NoWarn>$(NoWarn);CS9124</NoWarn>
 
 		<Version>0.0.0.1</Version>
 		<Company>Codeon</Company>

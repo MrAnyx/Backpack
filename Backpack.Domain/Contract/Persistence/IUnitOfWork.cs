@@ -1,4 +1,4 @@
-﻿namespace Backpack.Domain.Contract;
+﻿namespace Backpack.Domain.Contract.Persistence;
 
 public interface IUnitOfWork
 {

@@ -8,16 +8,15 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Backpack.Presentation.Feature.Core;
 
 public partial class MainVM(
     IServiceProvider _provider,
-    ILogger<MainVM> _logger,
+    AppSettings _settings,
     ISnackbarMessageQueue _snackbar,
-    AppSettings _settings
+    StatusBarMessageStore _statusBarStore
 ) : ViewModel
 {
     [ObservableProperty]
@@ -29,6 +28,7 @@ public partial class MainVM(
     public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderByDescending(p => p.Priority).ThenBy(p => p.Name);
     public eAppEnvironment ApplicationEnvironment { get; } = _settings.Environment;
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
+    public StatusBarMessageStore StatusBarStore { get; } = _statusBarStore;
 
     [RelayCommand]
     private async Task ExecuteLoaded()
@@ -55,7 +55,7 @@ public partial class MainVM(
     [RelayCommand]
     private void ExecuteNewWindow()
     {
-        string? appPath = Environment.ProcessPath;
+        var appPath = Environment.ProcessPath;
         if (appPath != null)
         {
             Process.Start(appPath);
@@ -66,7 +66,7 @@ public partial class MainVM(
     [RelayCommand]
     private void ExecuteShowLog()
     {
-        string logFile = PathResolver.GetLogFilePath(_settings.Environment);
+        var logFile = PathResolver.GetLogFilePath(_settings.Environment);
         FileHelper.OpenFile(logFile);
     }
 
@@ -79,7 +79,7 @@ public partial class MainVM(
     [RelayCommand]
     private async Task ExecuteShowAbout()
     {
-        AboutDialogVM aboutDialogVM = _provider.GetRequiredService<AboutDialogVM>();
+        var aboutDialogVM = _provider.GetRequiredService<AboutDialogVM>();
         await aboutDialogVM.ShowAsync(eDialogIdentifier.Core);
     }
     #endregion

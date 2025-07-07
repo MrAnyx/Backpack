@@ -1,10 +1,8 @@
 ﻿using Backpack.Domain.Model;
 
-namespace Backpack.Domain.Contract;
+namespace Backpack.Domain.Contract.Mediator;
 
-public interface IPipelineBehavior<TRequest, TResult>
-    where TRequest : IRequest<TResult>
-    where TResult : Result
+public interface IPipelineBehavior<TRequest, TResult> where TRequest : IRequest<TResult>
 {
     uint Order { get; }
     bool IsEnabled { get; }

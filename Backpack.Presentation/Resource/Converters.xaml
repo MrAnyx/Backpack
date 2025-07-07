@@ -7,4 +7,6 @@
     <converters:FormatLinkConverter x:Key="FormatLinkConverter" />
     <converters:DateTimeToLocalTimeConverter x:Key="DateTimeToLocalTimeConverter" />
     <converters:HumanizeConverter x:Key="HumanizeConverter" />
+    <converters:StatusBarMessageTypeToColorConverter x:Key="StatusBarMessageTypeToColorConverter" />
+    <converters:StatusBarMessageTypeToIconConverter x:Key="StatusBarMessageTypeToIconConverter" />
 </ResourceDictionary>

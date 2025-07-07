@@ -1,11 +1,11 @@
-﻿using Backpack.Domain.Contract;
+﻿using Backpack.Domain.Contract.Mediator;
+using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Model;
 
 namespace Backpack.Application.Behavior;
 
 public class DatabaseTransactionBehavior<TRequest, TResult>(IUnitOfWork _unitOfWork) : IPipelineBehavior<TRequest, TResult>
     where TRequest : IRequest<TResult>
-    where TResult : Result
 {
     public uint Order => 50;
     public bool IsEnabled => false;
@@ -22,13 +22,6 @@ public class DatabaseTransactionBehavior<TRequest, TResult>(IUnitOfWork _unitOfW
         try
         {
             var response = await next();
-
-            if (response.IsFailure)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                return response;
-            }
-
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
             return response;

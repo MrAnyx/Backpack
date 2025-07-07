@@ -145,24 +145,48 @@
                 </Grid>
 
                 <!-- Status Bar -->
-                <Border Grid.Row="3" Background="{DynamicResource MaterialDesign.Brush.Primary}" Padding="10 0">
+                <Border Grid.Row="3" Background="{Binding StatusBarStore.LatestMessage.Type, Converter={StaticResource StatusBarMessageTypeToColorConverter}}" Padding="10 0">
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Foreground="White" FontWeight="Medium">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} ({1})">
-                                        <Binding Source="{x:Static shared:Constant.CurrentUser}" />
-                                        <Binding Source="{x:Static shared:Constant.ComputerName}" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </StackPanel>
-                        <TextBlock Grid.Column="2" Text="{x:Static shared:Constant.Version}" Foreground="White" FontWeight="Medium" />
+
+                        <md:PackIcon Grid.Column="0"
+                                     Kind="{Binding StatusBarStore.LatestMessage.Type, Converter={StaticResource StatusBarMessageTypeToIconConverter}}"
+                                     Foreground="White">
+                            <md:PackIcon.Style>
+                                <Style TargetType="md:PackIcon">
+                                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <RotateTransform x:Name="SpinnerTransform"/>
+                                        </Setter.Value>
+                                    </Setter>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding StatusBarStore.LatestMessage.Type}" Value="{x:Static enum:eStatusBarMessageType.Loading}">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
+                                                                         From="0"
+                                                                         To="360"
+                                                                         Duration="0:0:1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <StopStoryboard BeginStoryboardName="SpinStoryboard"/>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </md:PackIcon.Style>
+                        </md:PackIcon>
+
+                        <TextBlock Grid.Column="2" FontWeight="Medium" Text="{Binding StatusBarStore.LatestMessage.Message}" Foreground="White" />
                     </Grid>
                 </Border>
             </Grid>

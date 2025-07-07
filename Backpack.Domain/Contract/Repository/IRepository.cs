@@ -1,4 +1,4 @@
-﻿namespace Backpack.Domain.Contract;
+﻿namespace Backpack.Domain.Contract.Repository;
 public interface IRepository<TEntity> where TEntity : Model.Entity
 {
     Task<IEnumerable<TEntity>> GetAllAsync();

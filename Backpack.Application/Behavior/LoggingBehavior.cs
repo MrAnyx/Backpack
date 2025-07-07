@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using Backpack.Domain.Contract;
+﻿using Backpack.Domain.Contract.Mediator;
 using Backpack.Domain.Model;
+using Microsoft.Extensions.Logging;
 
 namespace Backpack.Application.Behavior;
 
 public class LoggingBehavior<TRequest, TResult>(ILogger<LoggingBehavior<TRequest, TResult>> _logger) : IPipelineBehavior<TRequest, TResult>
     where TRequest : IRequest<TResult>
-    where TResult : Result
 {
     public uint Order => 1;
     public bool IsEnabled => true;

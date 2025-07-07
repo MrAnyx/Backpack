@@ -11,7 +11,7 @@
              mc:Ignorable="d">
 
     <Border Padding="15">
-        <Grid Width="450">
+        <Grid MaxWidth="600">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="20" />

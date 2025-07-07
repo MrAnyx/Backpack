@@ -1,6 +1,6 @@
 ﻿using Backpack.Application.Service;
 using Backpack.Domain.Configuration;
-using Backpack.Domain.Contract;
+using Backpack.Domain.Contract.Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Backpack.Application.Extension;
@@ -14,32 +14,29 @@ public static class ApplicationExtension
             .Scan(x => x
                 .FromAssemblyOf<AssemblyReference>()
                 .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime()
-            )
-            .Scan(x => x
-                .FromAssemblyOf<AssemblyReference>()
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
                 .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime()
-            )
-            .Scan(x => x
-                .FromAssemblyOf<AssemblyReference>()
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
                 .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime()
-            )
-            .Scan(x => x
-                .FromAssemblyOf<AssemblyReference>()
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
                 .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime()
-            )
-            .Scan(x => x
-                .FromAssemblyOf<AssemblyReference>()
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
                 .AddClasses(c => c.AssignableTo(typeof(IPipelineBehavior<,>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime()
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
+                .AddClasses(c => c.AssignableTo(typeof(IStreamPipelineBehavior<,>)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
+                .AddClasses(c => c.AssignableTo(typeof(IStreamCommandHandler<,>)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
+                .AddClasses(c => c.AssignableTo(typeof(IStreamQueryHandler<,>)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime()
             )
         ;
     }

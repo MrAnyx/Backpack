@@ -1,0 +1,11 @@
+﻿using Backpack.Domain.Model;
+
+namespace Backpack.Domain.Contract.Mediator;
+
+public interface IStreamPipelineBehavior<TRequest, TResponse> where TRequest : IStreamRequest<TResponse>
+{
+    uint Order { get; }
+    bool IsEnabled { get; }
+
+    IAsyncEnumerable<Result<TResponse>> HandleAsync(TRequest request, RequestContext context, Func<CancellationToken, IAsyncEnumerable<Result<TResponse>>> next, CancellationToken cancellationToken);
+}
