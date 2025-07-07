@@ -25,6 +25,7 @@ public partial class DashboardVM(
 
     public override Task LoadAsync()
     {
+        // TODO Fixer ça
         _statusBar.Post("Hello World", Domain.Enum.eStatusBarMessageType.Warning);
         return base.LoadAsync();
     }
