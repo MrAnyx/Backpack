@@ -68,8 +68,8 @@ public partial class MainVM(
 
         CurrentPage = viewModel;
 
-        CurrentPage.IsActive = true;
         await CurrentPage.LoadAsync();
+        CurrentPage.IsActive = true;
     }
 
     #region Menu commands
