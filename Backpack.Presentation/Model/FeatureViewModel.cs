@@ -1,5 +1,4 @@
-﻿using Backpack.Presentation.Model;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 
 namespace Backpack.Presentation.Model;
@@ -16,11 +15,7 @@ public abstract partial class FeatureViewModel : ViewModel
     /// <summary>
     /// Is executed once when the application starts
     /// </summary>
-    public virtual Task OnStartupAsync()
-    {
-        IsActive = true;
-        return Task.CompletedTask;
-    }
+    public virtual Task OnStartupAsync() => Task.CompletedTask;
 
     /// <summary>
     /// Is executed everytime the current view model is loaded on a page switch.

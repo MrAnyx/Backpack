@@ -41,8 +41,15 @@ public abstract class Repository<TEntity>(ApplicationDbContext Context) : IRepos
         return entry.Entity;
     }
 
-    public Task<int> CountAllAsync()
+    public Task<int> CountAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>>? specification = null)
     {
-        return Context.Set<TEntity>().CountAsync();
+        IQueryable<TEntity> query = Context.Set<TEntity>();
+
+        if (specification is not null)
+        {
+            query = specification(query);
+        }
+
+        return query.CountAsync();
     }
 }

@@ -7,10 +7,10 @@
         xmlns:local="clr-namespace:Backpack.Presentation.Feature.Core"
         xmlns:shared="clr-namespace:Backpack.Shared;assembly=Backpack.Shared"
         xmlns:helper="clr-namespace:Backpack.Presentation.Helper"
-        mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:enum="clr-namespace:Backpack.Domain.Enum;assembly=Backpack.Domain"
         xmlns:system="clr-namespace:System.Globalization;assembly=System.Runtime"
+        mc:Ignorable="d" ResizeMode="CanMinimize"
         d:DataContext="{d:DesignInstance Type=local:MainVM}"
         Style="{StaticResource MaterialDesignWindow}"
         Title="{x:Static shared:Constant.ApplicationName}">

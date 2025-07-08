@@ -3,16 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:local="clr-namespace:Backpack.Presentation.Feature.Dashboard"
-             xmlns:enum="clr-namespace:Backpack.Domain.Enum;assembly=Backpack.Domain"
              d:DataContext="{d:DesignInstance Type=local:DashboardVM}"
              mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock Text="{Binding CountBackups}" />
-        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Error}">Error</Button>
-        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Info}">Info</Button>
-        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Loading}">Loading</Button>
-        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Success}">Success</Button>
-        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Warning}">Warning</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <UniformGrid Grid.Row="0" Columns="3">
+            <md:Card Padding="10" Margin="0 0 10 0">
+                <UniformGrid HorizontalAlignment="Center" Rows="2">
+                    <TextBlock Grid.Row="0" Text="Total Backups" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Text="{Binding TotalBackups}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               FontSize="22" FontWeight="Bold"/>
+                </UniformGrid>
+            </md:Card>
+            <md:Card Padding="10" Margin="0 0 10 0">
+                <UniformGrid HorizontalAlignment="Center" Rows="2">
+                    <TextBlock Grid.Row="0" Text="Total Successful Backups" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Text="{Binding TotalSuccessfulBackups}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="22" FontWeight="Bold"/>
+                </UniformGrid>
+            </md:Card>
+            <md:Card Padding="10">
+                <UniformGrid HorizontalAlignment="Center" Rows="2">
+                    <TextBlock Grid.Row="0" Text="Total Failed Backups" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Text="{Binding TotalFailedBackups}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="22" FontWeight="Bold"/>
+                </UniformGrid>
+            </md:Card>
+        </UniformGrid>
+
+        <Button Grid.Row="2" Content="New Backup" Style="{StaticResource InfoRaisedButton}" Command="{Binding ExecuteCreateNewBackupCommand}"/>
+
+        <DataGrid Grid.Row="4" ItemsSource="{Binding Backups}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding CreatedAt}"/>
+                <DataGridTextColumn Header="Files" Binding="{Binding FileCount}"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding Source.Path}"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Destination.Path}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
 </UserControl>

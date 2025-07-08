@@ -1,16 +1,16 @@
-﻿using Backpack.Domain.Contract;
-using Backpack.Domain.Contract.Repository;
-using Backpack.Domain.Enum;
+﻿using Backpack.Domain.Contract.Repository;
+using Backpack.Domain.Entity;
+using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 
 namespace Backpack.Presentation.Feature.Dashboard;
 
 public partial class DashboardVM(
-    IBackupRepository _backupRepository,
-    IStatusBarMessageService _statusBar
+    IBackupRepository _backupRepository
 ) : FeatureViewModel
 {
     public override string Name => "Dashboard";
@@ -18,28 +18,34 @@ public partial class DashboardVM(
     public override uint Priority => uint.MaxValue;
 
     [ObservableProperty]
-    private int countBackups = 0;
+    private int totalBackups = 0;
 
-    public override async Task OnStartupAsync()
-    {
-        CountBackups = await _backupRepository.CountAllAsync();
-    }
+    [ObservableProperty]
+    private int totalSuccessfulBackups = 0;
 
-    public override Task LoadAsync()
-    {
-        // TODO Fixer ça
-        _statusBar.Post("Hello World", eStatusBarMessageType.Warning);
-        return base.LoadAsync();
-    }
+    [ObservableProperty]
+    private int totalFailedBackups = 0;
 
-    public override Task UnloadAsync()
+    public List<Backup> Backups { get; } = [];
+
+    public override async Task LoadAsync()
     {
-        return base.UnloadAsync();
+        WeakReferenceMessenger.Default.Register<NewBackupMessage>(this, (r, m) =>
+        {
+            TotalBackups++;
+        });
+
+        TotalBackups = await _backupRepository.CountAllAsync();
+        TotalSuccessfulBackups = await _backupRepository.CountAllAsync(q => q.Where(b => b.Status == Domain.Enum.eBackupStatus.Success));
+        TotalFailedBackups = await _backupRepository.CountAllAsync(q => q.Where(b => b.Status == Domain.Enum.eBackupStatus.Error));
+
+        var backups = await _backupRepository.GetAllAsync();
+        Backups.AddRange(backups);
     }
 
     [RelayCommand]
-    private void ExecuteStatusBarMessage(eStatusBarMessageType type)
+    private void ExecuteCreateNewBackup()
     {
-        _statusBar.Post("Hello World", type);
+        WeakReferenceMessenger.Default.Send(new NewBackupMessage());
     }
 }

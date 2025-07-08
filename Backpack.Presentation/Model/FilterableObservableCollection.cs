@@ -3,17 +3,19 @@ using System.ComponentModel;
 
 namespace Backpack.Presentation.Model;
 
-public class FilterableObservableCollection<T> : ObservableCollection<T> where T : INotifyPropertyChanged
+public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
 {
-    public readonly List<T> OriginalItems = [];
+    public readonly ObservableCollection<T> Items;
+    public readonly List<T> OriginalItems;
 
-    public FilterableObservableCollection(IEnumerable<T> items) : base(items)
+    public FilterableObservableCollection(IEnumerable<T> items)
     {
         // Store the original list of items
-        OriginalItems.AddRange(items);
+        Items = new(items);
+        OriginalItems = [.. items];
 
         // Subscribe to property changes in each item to track updates
-        foreach (var item in items)
+        foreach (var item in Items)
         {
             item.PropertyChanged += Item_PropertyChanged;
         }
@@ -44,10 +46,10 @@ public class FilterableObservableCollection<T> : ObservableCollection<T> where T
         {
             // Apply the filter and update the collection
             var filteredItems = OriginalItems.Where(filter).ToList();
-            base.Clear();
+            Items.Clear();
             foreach (var item in filteredItems)
             {
-                base.Add(item);
+                Items.Add(item);
             }
         }
     }
@@ -55,25 +57,31 @@ public class FilterableObservableCollection<T> : ObservableCollection<T> where T
     // Reset the filter and restore all items
     public void ResetFilter()
     {
-        base.Clear();
+        Items.Clear();
         foreach (var item in OriginalItems)
         {
-            base.Add(item);
+            Items.Add(item);
         }
     }
 
-    // Override Add method to update the original list when an item is added
-    public new void Add(T item)
+    public void Add(T item)
     {
-        base.Add(item);
+        Items.Add(item);
         OriginalItems.Add(item); // Update the original list
         item.PropertyChanged += Item_PropertyChanged; // Subscribe to property changes of the new item
     }
 
-    // Override Remove method to update the original list when an item is removed
-    public new bool Remove(T item)
+    public void AddRange(IEnumerable<T> items)
     {
-        var result = base.Remove(item);
+        foreach (var item in items)
+        {
+            Add(item);
+        }
+    }
+
+    public bool Remove(T item)
+    {
+        var result = Items.Remove(item);
         if (result)
         {
             OriginalItems.Remove(item); // Update the original list
@@ -83,21 +91,21 @@ public class FilterableObservableCollection<T> : ObservableCollection<T> where T
     }
 
     // Override Clear method to update the original list when the collection is cleared
-    public new void Clear()
+    public void Clear()
     {
-        base.Clear();
+        Items.Clear();
         OriginalItems.Clear(); // Clear the original list as well
     }
 
     // Method to update an item in both the filtered collection and the original list
     public void Update(int index, T updatedItem)
     {
-        if (index >= 0 && index < Count)
+        if (index >= 0 && index < Items.Count)
         {
-            var originalItem = this[index];
+            var originalItem = Items[index];
 
             // Update the item in the filtered collection (ObservableCollection)
-            this[index] = updatedItem;
+            Items[index] = updatedItem;
 
             // Update the item in the original list
             var originalIndex = OriginalItems.IndexOf(originalItem);

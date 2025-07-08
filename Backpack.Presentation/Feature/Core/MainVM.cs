@@ -3,13 +3,16 @@ using Backpack.Domain.Contract;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
 using Backpack.Presentation.Feature.Menu.About;
+using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using Backpack.Shared.Helper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace Backpack.Presentation.Feature.Core;
 
@@ -34,21 +37,38 @@ public partial class MainVM(
     [RelayCommand]
     private async Task ExecuteLoaded()
     {
+        var _timer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(200) // adjust as needed
+        };
+
+        _timer.Tick += (s, e) =>
+        {
+            WeakReferenceMessenger.Default.Send(new NewBackupMessage());
+        };
+        _timer.Start();
+
         CurrentPage = Pages.First(s => s is DashboardVM);
 
         // Execute OnStartup on all ViewModel
         await Task.WhenAll(Pages.Select(vm => vm.OnStartupAsync()));
 
         await CurrentPage.LoadAsync();
+        CurrentPage.IsActive = true;
 
+        IsActive = true;
         IsLoaded = true;
     }
 
     [RelayCommand]
     private async Task ExecuteNavigateTo(FeatureViewModel viewModel)
     {
+        CurrentPage.IsActive = false;
         await CurrentPage.UnloadAsync();
+
         CurrentPage = viewModel;
+
+        CurrentPage.IsActive = true;
         await CurrentPage.LoadAsync();
     }
 
