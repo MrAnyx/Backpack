@@ -1,7 +1,9 @@
 ﻿using Backpack.Domain.Contract;
 using Backpack.Domain.Contract.Repository;
+using Backpack.Domain.Enum;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
 
 namespace Backpack.Presentation.Feature.Dashboard;
@@ -26,12 +28,18 @@ public partial class DashboardVM(
     public override Task LoadAsync()
     {
         // TODO Fixer ça
-        _statusBar.Post("Hello World", Domain.Enum.eStatusBarMessageType.Warning);
+        _statusBar.Post("Hello World", eStatusBarMessageType.Warning);
         return base.LoadAsync();
     }
 
     public override Task UnloadAsync()
     {
         return base.UnloadAsync();
+    }
+
+    [RelayCommand]
+    private void ExecuteStatusBarMessage(eStatusBarMessageType type)
+    {
+        _statusBar.Post("Hello World", type);
     }
 }

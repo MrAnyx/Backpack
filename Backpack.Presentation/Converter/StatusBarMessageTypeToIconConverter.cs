@@ -16,11 +16,11 @@ public class StatusBarMessageTypeToIconConverter : IValueConverter
 
         return type switch
         {
-            eStatusBarMessageType.Info => PackIconKind.InfoCircleOutline,
-            eStatusBarMessageType.Warning => PackIconKind.WarningCircleOutline,
-            eStatusBarMessageType.Loading => PackIconKind.Loading,
-            eStatusBarMessageType.Success => PackIconKind.SuccessCircleOutline,
-            eStatusBarMessageType.Error => PackIconKind.ErrorOutline,
+            eStatusBarMessageType.Success => PackIconKind.SuccessCircle,
+            eStatusBarMessageType.Info => PackIconKind.InfoCircle,
+            eStatusBarMessageType.Loading => PackIconKind.Clock,
+            eStatusBarMessageType.Warning => PackIconKind.AlertBox,
+            eStatusBarMessageType.Error => PackIconKind.AlertBox,
             _ => throw new NotSupportedException($"Status bar message type of type {type} is not supported")
         };
     }

@@ -7,6 +7,12 @@ namespace Backpack.Presentation.Converter;
 
 public class StatusBarMessageTypeToColorConverter : IValueConverter
 {
+    private static SolidColorBrush DangerColor => (System.Windows.Application.Current.Resources["Danger"] as SolidColorBrush)!;
+    private static SolidColorBrush WarningColor => (System.Windows.Application.Current.Resources["Warning"] as SolidColorBrush)!;
+    private static SolidColorBrush SuccessColor => (System.Windows.Application.Current.Resources["Success"] as SolidColorBrush)!;
+    private static SolidColorBrush InfoColor => (System.Windows.Application.Current.Resources["Info"] as SolidColorBrush)!;
+    private static SolidColorBrush GrayColor => (System.Windows.Application.Current.Resources["Gray"] as SolidColorBrush)!;
+
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is not eStatusBarMessageType type)
@@ -16,11 +22,11 @@ public class StatusBarMessageTypeToColorConverter : IValueConverter
 
         return type switch
         {
-            eStatusBarMessageType.Error => Brushes.DarkRed,
-            eStatusBarMessageType.Warning => Brushes.Goldenrod,
-            eStatusBarMessageType.Info => Brushes.CornflowerBlue,
-            eStatusBarMessageType.Loading => Brushes.DimGray,
-            eStatusBarMessageType.Success => Brushes.DarkGreen,
+            eStatusBarMessageType.Error => DangerColor,
+            eStatusBarMessageType.Warning => WarningColor,
+            eStatusBarMessageType.Info => InfoColor,
+            eStatusBarMessageType.Loading => GrayColor,
+            eStatusBarMessageType.Success => SuccessColor,
             _ => throw new NotSupportedException($"Status bar message type of type {type} is not supported")
         };
     }

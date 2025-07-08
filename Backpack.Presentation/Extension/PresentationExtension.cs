@@ -2,7 +2,6 @@
 using Backpack.Domain.Contract;
 using Backpack.Presentation.Feature.Core;
 using Backpack.Presentation.Model;
-using Backpack.Presentation.Service;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +27,6 @@ public static class PresentationExtension
             )
             .AddSingleton<ISnackbarMessageQueue, SnackbarMessageQueue>()
             .AddSingleton<IStatusBarMessageService, StatusBarMessageService>()
-            .AddSingleton<StatusBarMessageStore>()
         ;
     }
 }

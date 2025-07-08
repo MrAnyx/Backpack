@@ -4,9 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Backpack.Presentation.Feature.Dashboard"
+             xmlns:enum="clr-namespace:Backpack.Domain.Enum;assembly=Backpack.Domain"
              d:DataContext="{d:DesignInstance Type=local:DashboardVM}"
              mc:Ignorable="d">
-    <Grid>
+    <StackPanel>
         <TextBlock Text="{Binding CountBackups}" />
-    </Grid>
+        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Error}">Error</Button>
+        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Info}">Info</Button>
+        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Loading}">Loading</Button>
+        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Success}">Success</Button>
+        <Button Command="{Binding ExecuteStatusBarMessageCommand}" CommandParameter="{x:Static enum:eStatusBarMessageType.Warning}">Warning</Button>
+    </StackPanel>
 </UserControl>

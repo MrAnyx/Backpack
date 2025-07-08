@@ -145,7 +145,7 @@
                 </Grid>
 
                 <!-- Status Bar -->
-                <Border Grid.Row="3" Background="{Binding StatusBarStore.LatestMessage.Type, Converter={StaticResource StatusBarMessageTypeToColorConverter}}" Padding="10 0">
+                <Border Grid.Row="3" Background="{Binding StatusBar.Message.Type, Converter={StaticResource StatusBarMessageTypeToColorConverter}}" Padding="10 0">
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -153,40 +153,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <md:PackIcon Grid.Column="0"
-                                     Kind="{Binding StatusBarStore.LatestMessage.Type, Converter={StaticResource StatusBarMessageTypeToIconConverter}}"
-                                     Foreground="White">
-                            <md:PackIcon.Style>
-                                <Style TargetType="md:PackIcon">
-                                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <RotateTransform x:Name="SpinnerTransform"/>
-                                        </Setter.Value>
-                                    </Setter>
+                        <md:PackIcon Grid.Column="0" Kind="{Binding StatusBar.Message.Type, Converter={StaticResource StatusBarMessageTypeToIconConverter}}"
+                                     Foreground="White"/>
 
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding StatusBarStore.LatestMessage.Type}" Value="{x:Static enum:eStatusBarMessageType.Loading}">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard RepeatBehavior="Forever">
-                                                        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
-                                                                         From="0"
-                                                                         To="360"
-                                                                         Duration="0:0:1"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <StopStoryboard BeginStoryboardName="SpinStoryboard"/>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </md:PackIcon.Style>
-                        </md:PackIcon>
 
-                        <TextBlock Grid.Column="2" FontWeight="Medium" Text="{Binding StatusBarStore.LatestMessage.Message}" Foreground="White" />
+                        <TextBlock Grid.Column="2" FontWeight="Medium" Text="{Binding StatusBar.Message.Message}" Foreground="White" />
                     </Grid>
                 </Border>
             </Grid>

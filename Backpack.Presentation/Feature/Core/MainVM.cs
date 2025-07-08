@@ -1,4 +1,5 @@
 ﻿using Backpack.Domain.Configuration;
+using Backpack.Domain.Contract;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
 using Backpack.Presentation.Feature.Menu.About;
@@ -16,7 +17,7 @@ public partial class MainVM(
     IServiceProvider _provider,
     AppSettings _settings,
     ISnackbarMessageQueue _snackbar,
-    StatusBarMessageStore _statusBarStore
+    IStatusBarMessageService _statusBar
 ) : ViewModel
 {
     [ObservableProperty]
@@ -28,7 +29,7 @@ public partial class MainVM(
     public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderByDescending(p => p.Priority).ThenBy(p => p.Name);
     public eAppEnvironment ApplicationEnvironment { get; } = _settings.Environment;
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
-    public StatusBarMessageStore StatusBarStore { get; } = _statusBarStore;
+    public IStatusBarMessageService StatusBar { get; } = _statusBar;
 
     [RelayCommand]
     private async Task ExecuteLoaded()
