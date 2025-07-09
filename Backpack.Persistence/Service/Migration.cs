@@ -1,7 +1,7 @@
 ﻿using Backpack.Domain.Contract.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backpack.Persistence.Repository;
+namespace Backpack.Persistence.Service;
 
 public class Migration(ApplicationDbContext _context) : IMigration
 {

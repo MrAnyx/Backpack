@@ -1,6 +1,5 @@
 ﻿using Backpack.Domain.Contract.Repository;
 using Backpack.Domain.Entity;
-using Backpack.Presentation.Extension;
 using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -31,12 +30,9 @@ public partial class DashboardVM(
 
     public override async Task OnStartupAsync()
     {
-        TotalBackups = await _backupRepository.CountAllAsync();
-        TotalSuccessfulBackups = await _backupRepository.CountAllAsync(q => q.Where(b => b.Status == Domain.Enum.eBackupStatus.Success));
-        TotalFailedBackups = await _backupRepository.CountAllAsync(q => q.Where(b => b.Status == Domain.Enum.eBackupStatus.Error));
-
-        var backups = await _backupRepository.GetAllAsync();
-        Backups.AddRange(backups);
+        TotalBackups = 0;
+        TotalSuccessfulBackups = 0;
+        TotalFailedBackups = 0;
     }
 
     public override Task OnActivatedAsync()

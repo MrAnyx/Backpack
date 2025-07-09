@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backpack.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250706211507_InitialMigration")]
+    [Migration("20250709213909_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -33,25 +33,10 @@ namespace Backpack.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<uint?>("DestinationId")
+                    b.Property<uint>("DestinationId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<ulong>("FileCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong>("Size")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<uint?>("SourceId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Trigger")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Type")
+                    b.Property<uint>("SourceId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -88,22 +73,33 @@ namespace Backpack.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location");
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("Backpack.Domain.Entity.Backup", b =>
                 {
                     b.HasOne("Backpack.Domain.Entity.Location", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId");
+                        .WithMany("DestinationBackups")
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Backpack.Domain.Entity.Location", "Source")
-                        .WithMany()
-                        .HasForeignKey("SourceId");
+                        .WithMany("SourceBackups")
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Destination");
 
                     b.Navigation("Source");
+                });
+
+            modelBuilder.Entity("Backpack.Domain.Entity.Location", b =>
+                {
+                    b.Navigation("DestinationBackups");
+
+                    b.Navigation("SourceBackups");
                 });
 #pragma warning restore 612, 618
         }
