@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 public partial class StatusBarMessageService : ObservableObject, IStatusBarMessageService
 {
-    private readonly StatusBarMessage _defaultMessage = new()
+    private static readonly StatusBarMessage _defaultMessage = new()
     {
         Message = "Ready",
         Type = eStatusBarMessageType.Info,
@@ -13,14 +13,9 @@ public partial class StatusBarMessageService : ObservableObject, IStatusBarMessa
     };
 
     [ObservableProperty]
-    private StatusBarMessage message;
+    private StatusBarMessage message = _defaultMessage;
 
     private CancellationTokenSource? _currentTokenSource;
-
-    public StatusBarMessageService()
-    {
-        Message = _defaultMessage;
-    }
 
     public void Post(string message, eStatusBarMessageType type = eStatusBarMessageType.Info)
     {
