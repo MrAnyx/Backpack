@@ -11,8 +11,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
             <RowDefinition Height="30" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <UniformGrid Grid.Row="0" Columns="3">
@@ -39,12 +37,10 @@
             </md:Card>
         </UniformGrid>
 
-        <Button Grid.Row="2" Content="New Backup" Style="{StaticResource InfoRaisedButton}" Command="{Binding ExecuteCreateNewBackupCommand}"/>
-
-        <DataGrid Grid.Row="4" ItemsSource="{Binding Backups}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectionMode="Single">
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Backups}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding CreatedAt}"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding CreatedAt}" SortDirection="Descending"/>
                 <DataGridTextColumn Header="Files" Binding="{Binding FileCount}"/>
                 <DataGridTextColumn Header="Source" Binding="{Binding Source.Path}"/>
                 <DataGridTextColumn Header="Destination" Binding="{Binding Destination.Path}"/>

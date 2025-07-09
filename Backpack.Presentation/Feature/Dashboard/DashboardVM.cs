@@ -1,11 +1,12 @@
 ﻿using Backpack.Domain.Contract.Repository;
 using Backpack.Domain.Entity;
+using Backpack.Presentation.Extension;
 using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
+using System.Collections.ObjectModel;
 
 namespace Backpack.Presentation.Feature.Dashboard;
 
@@ -26,7 +27,7 @@ public partial class DashboardVM(
     [ObservableProperty]
     private int totalFailedBackups = 0;
 
-    public List<Backup> Backups { get; } = [];
+    public ObservableCollection<Backup> Backups { get; } = [];
 
     public override async Task OnStartupAsync()
     {
@@ -44,20 +45,16 @@ public partial class DashboardVM(
         {
             TotalBackups++;
             TotalSuccessfulBackups++;
+            Backups.Add(m.Value);
         });
 
         WeakReferenceMessenger.Default.Register<NewFailedBackupMessage>(this, (r, m) =>
         {
             TotalBackups++;
             TotalFailedBackups++;
+            Backups.Add(m.Value);
         });
 
         return Task.CompletedTask;
-    }
-
-    [RelayCommand]
-    private void ExecuteCreateNewBackup()
-    {
-        WeakReferenceMessenger.Default.Send(new NewSuccessfulBackupMessage(new() { FileCount = 9, Size = 400, Status = Domain.Enum.eBackupStatus.Success, Trigger = Domain.Enum.eBackupTrigger.Manual, Type = Domain.Enum.eBackupType.Full }));
     }
 }
