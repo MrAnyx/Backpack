@@ -3,7 +3,6 @@ using Backpack.Domain.Entity;
 using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 
@@ -35,17 +34,16 @@ public partial class DashboardVM(
             TotalBackups++;
         });
 
+        if (TotalBackups > 0)
+        {
+            return;
+        }
+
         TotalBackups = await _backupRepository.CountAllAsync();
         TotalSuccessfulBackups = await _backupRepository.CountAllAsync(q => q.Where(b => b.Status == Domain.Enum.eBackupStatus.Success));
         TotalFailedBackups = await _backupRepository.CountAllAsync(q => q.Where(b => b.Status == Domain.Enum.eBackupStatus.Error));
 
         var backups = await _backupRepository.GetAllAsync();
         Backups.AddRange(backups);
-    }
-
-    [RelayCommand]
-    private void ExecuteCreateNewBackup()
-    {
-        WeakReferenceMessenger.Default.Send(new NewBackupMessage());
     }
 }

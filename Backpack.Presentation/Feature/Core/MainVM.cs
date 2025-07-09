@@ -3,16 +3,13 @@ using Backpack.Domain.Contract;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
 using Backpack.Presentation.Feature.Menu.About;
-using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using Backpack.Shared.Helper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
-using System.Windows.Threading;
 
 namespace Backpack.Presentation.Feature.Core;
 
@@ -29,6 +26,51 @@ public partial class MainVM(
     [ObservableProperty]
     private bool isLoaded = false;
 
+    [ObservableProperty]
+    private string loadingMessage;
+
+    private readonly string[] LoadingMessages = [
+        "Still faster than your morning coffee...",
+        "Loading... bribing the hamsters to run faster.",
+        "Hold on, aligning the stars...",
+        "Downloading data from the cloud (hope it's not raining).",
+
+        "Chargement… plus rapide que les embouteillages de Paris !",
+        "On met les baguettes en place…",
+        "Patientez... on cherche encore la connexion Wi-Fi du voisin.",
+        "Presque prêt… le fromage affine encore un peu.",
+
+        "読み込み中… 忍者がデータをこっそり運んでいます。",
+        "少々お待ちください…温泉から戻る途中です。",
+        "データを召喚中…呪文がちょっと長いです。",
+        "あとちょっと…猫が助けに来ています。",
+
+        "加载中… 程序员在喝奶茶，请稍等。",
+        "马上就好… 数据还在排队买早餐。",
+        "加载中… 云端有点堵车。",
+        "别急，程序正在翻墙回来。",
+
+        "로딩 중… 치킨 먹는 중이라 조금만 기다려줘요!",
+        "곧 시작합니다… 데이터가 지하철 타고 오는 중.",
+        "잠시만요… 서버가 커피 타는 중입니다.",
+        "로딩 중… 고양이가 도와주고 있어요.",
+
+        "Cargando… aún más rápido que un lunes por la mañana.",
+        "Un momento… el Wi-Fi está de siesta.",
+        "Preparando todo… sin prisa, pero sin pausa.",
+        "¡Casi listo! Los datos están calentando.",
+
+        "Lade... noch schneller als die Deutsche Bahn!",
+        "Moment mal... wir sortieren noch die Datenwürste.",
+        "Ladevorgang läuft… Kaffee wird erst fertig.",
+        "Fast da! Der Server zieht noch seine Socken an.",
+
+        "Загрузка… медведь ещё не проснулся.",
+        "Подождите… балалайка настраивается.",
+        "Загружаем... почти как ракета, но с чайком.",
+        "Секунду... матрёшки распаковываются."
+    ];
+
     public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderByDescending(p => p.Priority).ThenBy(p => p.Name);
     public eAppEnvironment ApplicationEnvironment { get; } = _settings.Environment;
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
@@ -37,39 +79,34 @@ public partial class MainVM(
     [RelayCommand]
     private async Task ExecuteLoaded()
     {
-        var _timer = new DispatcherTimer
+        var rnd = new Random();
+        LoadingMessage = LoadingMessages[rnd.Next(0, LoadingMessages.Length)];
+
+        await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            Interval = TimeSpan.FromMilliseconds(200) // adjust as needed
-        };
+            CurrentPage = Pages.First(s => s is DashboardVM);
 
-        _timer.Tick += (s, e) =>
-        {
-            WeakReferenceMessenger.Default.Send(new NewBackupMessage());
-        };
-        _timer.Start();
+            await Task.WhenAll(Pages.Select(vm => vm.OnStartupAsync()));
+            await CurrentPage.LoadAsync();
+            CurrentPage.IsActive = true;
 
-        CurrentPage = Pages.First(s => s is DashboardVM);
-
-        // Execute OnStartup on all ViewModel
-        await Task.WhenAll(Pages.Select(vm => vm.OnStartupAsync()));
-
-        await CurrentPage.LoadAsync();
-        CurrentPage.IsActive = true;
-
-        IsActive = true;
-        IsLoaded = true;
+            IsActive = true;
+            IsLoaded = true;
+        });
     }
-
     [RelayCommand]
     private async Task ExecuteNavigateTo(FeatureViewModel viewModel)
     {
-        CurrentPage.IsActive = false;
-        await CurrentPage.UnloadAsync();
+        await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            CurrentPage.IsActive = false;
+            await CurrentPage.UnloadAsync();
 
-        CurrentPage = viewModel;
+            CurrentPage = viewModel;
 
-        await CurrentPage.LoadAsync();
-        CurrentPage.IsActive = true;
+            await CurrentPage.LoadAsync();
+            CurrentPage.IsActive = true;
+        });
     }
 
     #region Menu commands

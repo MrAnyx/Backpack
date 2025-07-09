@@ -32,7 +32,8 @@
 
         <Grid>
             <Grid Visibility="{Binding IsLoaded, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-                <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center" Height="10" Width="200" md:TransitionAssist.DisableTransitions="True"></ProgressBar>
+                <TextBlock Text="{Binding LoadingMessage}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontSize="22"/>
             </Grid>
 
             <Grid Visibility="{Binding IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -155,7 +156,6 @@
 
                         <md:PackIcon Grid.Column="0" Kind="{Binding StatusBar.Message.Type, Converter={StaticResource StatusBarMessageTypeToIconConverter}}"
                                      Foreground="White"/>
-
 
                         <TextBlock Grid.Column="2" FontWeight="Medium" Text="{Binding StatusBar.Message.Message}" Foreground="White" />
                     </Grid>

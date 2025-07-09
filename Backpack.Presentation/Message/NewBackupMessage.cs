@@ -1,3 +1,6 @@
-﻿namespace Backpack.Presentation.Message;
+﻿using Backpack.Domain.Entity;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public class NewBackupMessage { }
+namespace Backpack.Presentation.Message;
+
+public class NewBackupMessage(Backup backup) : ValueChangedMessage<Backup>(backup) { }

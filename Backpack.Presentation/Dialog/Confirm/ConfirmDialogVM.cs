@@ -8,6 +8,6 @@ public partial class ConfirmDialogVM : DialogViewModel
     [RelayCommand]
     private void ExecuteClose(bool result)
     {
-        base.Close(result);
+        Close(result);
     }
 }

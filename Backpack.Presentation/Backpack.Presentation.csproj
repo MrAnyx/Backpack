@@ -19,4 +19,8 @@
 		<ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Resource\Image\" />
+	</ItemGroup>
+
 </Project>
