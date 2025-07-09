@@ -1,13 +1,11 @@
 ﻿using Backpack.Application.Extension;
 using Backpack.Domain.Configuration;
 using Backpack.Infrastructure.Extension;
-using Backpack.Persistence;
 using Backpack.Persistence.Extension;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Core;
 using Backpack.Shared.Extension;
 using Backpack.Shared.Helper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,12 +23,16 @@ namespace Backpack.Core;
 /// </summary>
 public partial class App : System.Windows.Application
 {
-    private IHostBuilder _hostBuilder;
-    private IHost _host;
-    private ILogger<App> _logger;
+    private readonly IHostBuilder _hostBuilder;
+    private readonly IHost _host;
+    private readonly ILogger<App> _logger;
+
+    private readonly MainVM _mainVM;
 
     public App()
     {
+        SetCultureInfo(CultureInfo.CurrentCulture);
+
         _hostBuilder = Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration((context, config) =>
             {
@@ -63,10 +65,13 @@ public partial class App : System.Windows.Application
             });
 
         _host = _hostBuilder.Build();
+
         _logger = _host.Services.GetRequiredService<ILogger<App>>();
+
+        _mainVM = _host.Services.GetRequiredService<MainVM>();
     }
 
-    private void SetCultureInfo(CultureInfo culture)
+    private static void SetCultureInfo(CultureInfo culture)
     {
         // Set the culture for all threads (including default for new threads)
         CultureInfo.DefaultThreadCurrentCulture = culture;
@@ -82,37 +87,25 @@ public partial class App : System.Windows.Application
         );
     }
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
-        SetCultureInfo(CultureInfo.CurrentCulture);
+        await _host.StartAsync();
 
-        _host.Start();
-
-        var appSettings = _host.Services.GetRequiredService<AppSettings>();
-
-        // Database
-        var dbContext = _host.Services.GetRequiredService<ApplicationDbContext>();
-        var pendingMigrations = dbContext.Database.GetPendingMigrations();
-
-        if (pendingMigrations.Any())
-        {
-            MessageBox.Show("The database structure has changed. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
-            dbContext.Database.Migrate();
-        }
-
-        // Entry point
-        var mainVM = _host.Services.GetRequiredService<MainVM>();
-        Main main = new() { DataContext = mainVM };
+        var main = new Main() { DataContext = _mainVM };
         main.Show();
+
+        await _mainVM.LoadAsync();
 
         base.OnStartup(e);
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    protected override async void OnExit(ExitEventArgs e)
     {
+        await _mainVM.UnloadAsync();
+
         if (_host != null)
         {
-            _host.StopAsync().GetAwaiter().GetResult();
+            await _host.StopAsync();
             _host.Dispose();
         }
 

@@ -24,11 +24,6 @@
 
     <md:DialogHost Identifier="{x:Static enum:eDialogIdentifier.Core}" CloseOnClickAway="False" SnackbarMessageQueue="{Binding ElementName=Snackbar, Path=MessageQueue}"
                    DialogContentTemplateSelector="{StaticResource ViewLocator}">
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="Loaded">
-                <i:InvokeCommandAction  Command="{Binding ExecuteLoadedCommand}" />
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
 
         <Grid>
             <Grid Visibility="{Binding IsLoaded, Converter={StaticResource InverseBooleanToVisibilityConverter}}">

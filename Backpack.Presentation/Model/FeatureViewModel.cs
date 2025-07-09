@@ -7,6 +7,7 @@ public abstract partial class FeatureViewModel : ViewModel
 {
     public abstract string Name { get; }
     public abstract PackIconKind Icon { get; }
+
     public virtual uint Priority { get; } = 0;
 
     [ObservableProperty]
@@ -20,10 +21,15 @@ public abstract partial class FeatureViewModel : ViewModel
     /// <summary>
     /// Is executed everytime the current view model is loaded on a page switch.
     /// </summary>
-    public virtual Task LoadAsync() => Task.CompletedTask;
+    public virtual Task OnActivatedAsync() => Task.CompletedTask;
 
     /// <summary>
     /// Is executed everytime the current view model is unloaded on a page switch.
     /// </summary>
-    public virtual Task UnloadAsync() => Task.CompletedTask;
+    public virtual Task OnDeactivatedAsync() => Task.CompletedTask;
+
+    /// <summary>
+    /// Is executed everytime the current view model is unloaded on a page switch.
+    /// </summary>
+    public virtual Task DisposeAsync() => Task.CompletedTask;
 }

@@ -1,5 +1,6 @@
 ﻿using Backpack.Domain.Configuration;
 using Backpack.Domain.Contract;
+using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
 using Backpack.Presentation.Feature.Menu.About;
@@ -10,6 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Windows;
 
 namespace Backpack.Presentation.Feature.Core;
 
@@ -17,7 +19,8 @@ public partial class MainVM(
     IServiceProvider _provider,
     AppSettings _settings,
     ISnackbarMessageQueue _snackbar,
-    IStatusBarMessageService _statusBar
+    IStatusBarMessageService _statusBar,
+    IMigration _migration
 ) : ViewModel
 {
     [ObservableProperty]
@@ -26,10 +29,9 @@ public partial class MainVM(
     [ObservableProperty]
     private bool isLoaded = false;
 
-    [ObservableProperty]
-    private string loadingMessage;
+    public string LoadingMessage { get; } = LoadingMessages[new Random().Next(0, LoadingMessages.Length)];
 
-    private readonly string[] LoadingMessages = [
+    private static readonly string[] LoadingMessages = [
         "Still faster than your morning coffee...",
         "Loading... bribing the hamsters to run faster.",
         "Hold on, aligning the stars...",
@@ -76,37 +78,42 @@ public partial class MainVM(
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
     public IStatusBarMessageService StatusBar { get; } = _statusBar;
 
-    [RelayCommand]
-    private async Task ExecuteLoaded()
+    public async Task LoadAsync()
     {
-        var rnd = new Random();
-        LoadingMessage = LoadingMessages[rnd.Next(0, LoadingMessages.Length)];
-
-        await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
+        // Database
+        var pendingMigrations = await _migration.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
         {
-            CurrentPage = Pages.First(s => s is DashboardVM);
+            MessageBox.Show("The database structure has changed. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
+            await _migration.MigrateAsync();
+        }
 
-            await Task.WhenAll(Pages.Select(vm => vm.OnStartupAsync()));
-            await CurrentPage.LoadAsync();
-            CurrentPage.IsActive = true;
+        CurrentPage = Pages.First(s => s is DashboardVM);
 
-            IsActive = true;
-            IsLoaded = true;
-        });
+        await Task.WhenAll(Pages.Select(vm => vm.OnStartupAsync()));
+        await CurrentPage.OnActivatedAsync();
+        CurrentPage.IsActive = true;
+
+        IsActive = true;
+        IsLoaded = true;
     }
+
+    public async Task UnloadAsync()
+    {
+        await Task.WhenAll(Pages.Select(vm => vm.OnDeactivatedAsync()));
+        await Task.WhenAll(Pages.Select(vm => vm.DisposeAsync()));
+    }
+
     [RelayCommand]
     private async Task ExecuteNavigateTo(FeatureViewModel viewModel)
     {
-        await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
-        {
-            CurrentPage.IsActive = false;
-            await CurrentPage.UnloadAsync();
+        CurrentPage.IsActive = false;
+        await CurrentPage.OnDeactivatedAsync();
 
-            CurrentPage = viewModel;
+        CurrentPage = viewModel;
 
-            await CurrentPage.LoadAsync();
-            CurrentPage.IsActive = true;
-        });
+        await CurrentPage.OnActivatedAsync();
+        CurrentPage.IsActive = true;
     }
 
     #region Menu commands

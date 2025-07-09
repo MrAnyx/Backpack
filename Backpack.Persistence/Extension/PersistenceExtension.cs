@@ -13,6 +13,7 @@ public static class PersistenceExtension
         return service
             .AddDbContext<ApplicationDbContext>(options => options.Configure(settings.Environment), ServiceLifetime.Singleton)
             .AddSingleton<IUnitOfWork, UnitOfWork>()
+            .AddSingleton<IMigration, Migration>()
             .Scan(x => x
                 .FromAssemblyOf<AssemblyReference>()
                 .AddClasses(c => c.AssignableTo(typeof(IRepository<>)))
