@@ -123,8 +123,8 @@ public partial class MainVM(
         var appPath = Environment.ProcessPath;
         if (appPath != null)
         {
+            _snackbar.Enqueue("Opening new window");
             Process.Start(appPath);
-            _snackbar.Enqueue("New window opened");
         }
     }
 
@@ -146,6 +146,21 @@ public partial class MainVM(
     {
         var aboutDialogVM = _provider.GetRequiredService<AboutDialogVM>();
         await aboutDialogVM.ShowAsync(eDialogIdentifier.Core);
+    }
+
+    [RelayCommand]
+    private async Task ExecuteCheckDatabaseIntegrity()
+    {
+        var pendingMigrations = await _migration.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
+        {
+            MessageBox.Show("The database structure has changed. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
+            await _migration.MigrateAsync();
+        }
+        else
+        {
+            MessageBox.Show("Your database is already up to date.", "Database update to date", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
     #endregion
 }
