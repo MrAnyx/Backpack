@@ -1,5 +1,4 @@
-﻿using Backpack.Shared;
-using Backpack.Domain.Enum;
+﻿using Backpack.Domain.Enum;
 
 namespace Backpack.Shared.Helper;
 

@@ -29,7 +29,9 @@ public class Mediator(IServiceProvider _provider) : IMediator
         if (processingType == eNotificationProcessingType.ForeachAwait)
         {
             foreach (var task in tasks)
+            {
                 await task;
+            }
         }
         else if (processingType == eNotificationProcessingType.AwaitWhenAll)
         {

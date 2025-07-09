@@ -18,7 +18,7 @@ public abstract partial class DialogViewModel : ViewModel
 
     public async Task<TResult?> ShowAsync<TResult>(eDialogIdentifier? identifier = null)
     {
-        object? response = await ShowDialogAsync(identifier);
+        var response = await ShowDialogAsync(identifier);
 
         if (response is TResult result)
         {

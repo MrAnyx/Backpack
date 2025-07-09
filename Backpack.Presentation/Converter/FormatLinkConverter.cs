@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Backpack.Presentation.Converter;
 
-class FormatLinkConverter : IValueConverter
+public class FormatLinkConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

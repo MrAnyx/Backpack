@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Backpack.Presentation.Converter;
 
-class DateTimeToLocalTimeConverter : IValueConverter
+public class DateTimeToLocalTimeConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -12,7 +12,7 @@ class DateTimeToLocalTimeConverter : IValueConverter
             return value;
         }
 
-        string output = date.ToLocalTime().ToString("F", culture);
+        var output = date.ToLocalTime().ToString("F", culture);
         return output;
     }
 

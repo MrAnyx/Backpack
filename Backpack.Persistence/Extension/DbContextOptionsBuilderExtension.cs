@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Backpack.Domain.Enum;
+﻿using Backpack.Domain.Enum;
 using Backpack.Shared.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backpack.Persistence.Extension;
 

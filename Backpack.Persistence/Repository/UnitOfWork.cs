@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Backpack.Domain.Contract.Persistence;
 using Backpack.Persistence.Model;
-using Backpack.Domain.Contract.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backpack.Persistence.Repository;
 

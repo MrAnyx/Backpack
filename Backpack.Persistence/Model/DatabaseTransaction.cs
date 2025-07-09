@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using Backpack.Domain.Contract.Persistence;
+﻿using Backpack.Domain.Contract.Persistence;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Backpack.Persistence.Model;
 

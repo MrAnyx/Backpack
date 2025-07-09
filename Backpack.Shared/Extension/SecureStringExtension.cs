@@ -7,7 +7,7 @@ public static class SecureStringExtension
 {
     public static string ToUnsecureString(this SecureString secureString)
     {
-        nint unmanagedString = nint.Zero;
+        var unmanagedString = nint.Zero;
 
         try
         {
