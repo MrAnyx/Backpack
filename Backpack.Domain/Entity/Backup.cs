@@ -7,6 +7,7 @@ namespace Backpack.Domain.Entity;
 /// </summary>
 public class Backup : Model.Entity, IHasTimestamps
 {
+    public bool Overwrite { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
@@ -16,6 +17,7 @@ public class Backup : Model.Entity, IHasTimestamps
 #nullable disable
     public virtual Location Source { get; set; }
     public virtual Location Destination { get; set; }
-    public virtual ICollection<Profile> Profiles { get; set; }
+    public virtual ICollection<Wildcard> Wildcards { get; set; } = [];
+    public virtual ICollection<Profile> Profiles { get; set; } = [];
 #nullable enable
 }

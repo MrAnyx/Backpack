@@ -2,15 +2,19 @@
 
 namespace Backpack.Domain.Entity;
 
-public class Location : Model.Entity, IHasTimestamps
+public abstract class Location : Model.Entity, IHasTimestamps
 {
-    public required string Path { get; set; }
-    public IEnumerable<string> IgnoreWildcards { get; set; } = [];
+    public required string Name { get; set; }
+
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
+    public required uint SourceBackupId { get; set; }
+    public required uint DestinationBackupId { get; set; }
+
 #nullable disable
-    public virtual ICollection<Backup> SourceBackups { get; set; }
-    public virtual ICollection<Backup> DestinationBackups { get; set; }
+    public virtual Backup SourceBackup { get; set; }
+    public virtual Backup DestinationBackup { get; set; }
 #nullable enable
 }
+
