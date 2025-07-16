@@ -5,13 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:local="clr-namespace:Backpack.Presentation.Feature.Location.Dialog"
-             xmlns:vm="clr-namespace:Backpack.Presentation.Feature.Location.Dialog"
-             d:DataContext="{d:DesignInstance Type=vm:AddOrUpdateLocationDialog}"
+             d:DataContext="{d:DesignInstance Type=local:AddOrUpdateLocationDialogVM}"
              mc:Ignorable="d">
     <Border Padding="15">
+
+        <Border.Resources>
+            <DataTemplate DataType="{x:Type local:AddOrUpdateFileLocationDialogVM}">
+                <StackPanel>
+                    <TextBox Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Path" />
+                </StackPanel>
+            </DataTemplate>
+        </Border.Resources>
+
         <StackPanel Orientation="Vertical">
             <StackPanel Width="600" Orientation="Vertical">
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Name" />
+                
+                <ContentControl Content="{Binding}" Margin="0 10 0 0" />
             </StackPanel>
 
             <StackPanel Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right">

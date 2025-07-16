@@ -43,7 +43,7 @@ public partial class LocationVM(
     [RelayCommand]
     private async Task ExecuteCreateNewLocation()
     {
-        var dialogVM = new AddOrUpdateLocationDialogVM();
+        var dialogVM = new AddOrUpdateFileLocationDialogVM();
         await dialogVM.ShowAsync(eDialogIdentifier.Core);
     }
 }

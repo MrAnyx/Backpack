@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Backpack.Presentation.Feature.Location.Dialog;
 
-public partial class AddOrUpdateLocationDialogVM : DialogViewModel
+public abstract partial class AddOrUpdateLocationDialogVM : DialogViewModel
 {
     public AddOrUpdateLocationDialogVM(Domain.Entity.Location? location = null)
     {
