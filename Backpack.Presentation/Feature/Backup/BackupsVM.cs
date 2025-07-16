@@ -5,12 +5,14 @@ using Backpack.Presentation.Feature.Backup.Dialog;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 
 namespace Backpack.Presentation.Feature.Backup;
 
 public partial class BackupsVM(
-    IBackupRepository _backupRepository
+    IBackupRepository _backupRepository,
+    IServiceProvider _provider
 ) : FeatureViewModel
 {
     public override string Name => "Backups";
@@ -44,7 +46,7 @@ public partial class BackupsVM(
     [RelayCommand]
     private async Task CreateNewBackup()
     {
-        var addOrUpdateBackupDialogVM = new AddOrUpdateBackupDialogVM();
+        var addOrUpdateBackupDialogVM = _provider.GetRequiredService<AddOrUpdateBackupDialogVM>();
         await addOrUpdateBackupDialogVM.ShowAsync(eDialogIdentifier.Core);
     }
 }

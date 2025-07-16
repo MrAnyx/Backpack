@@ -10,10 +10,17 @@
     <Border Padding="15">
 
         <Border.Resources>
+            <!-- File location -->
             <DataTemplate DataType="{x:Type local:AddOrUpdateFileLocationDialogVM}">
-                <StackPanel>
-                    <TextBox Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Path" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBox Grid.Column="0" Text="{Binding Path}" md:HintAssist.Hint="Path" IsReadOnly="True" />
+                    <Button Grid.Column="1" Margin="10 0 0 0" Content="Explore" Style="{DynamicResource InfoFlatButton}" Command="{Binding ExecuteOpenFileExplorerCommand}" />
+                </Grid>
             </DataTemplate>
         </Border.Resources>
 
@@ -21,7 +28,7 @@
             <StackPanel Width="600" Orientation="Vertical">
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Name" />
                 
-                <ContentControl Content="{Binding}" Margin="0 10 0 0" />
+                <ContentControl Content="{Binding}" Margin="0 20 0 0" />
             </StackPanel>
 
             <StackPanel Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right">

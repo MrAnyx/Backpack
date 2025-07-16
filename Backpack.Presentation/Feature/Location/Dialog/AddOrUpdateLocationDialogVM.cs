@@ -19,8 +19,8 @@ public abstract partial class AddOrUpdateLocationDialogVM : DialogViewModel
     public string ActionLabel { get; }
 
     [RelayCommand]
-    private void ExecuteClose() => Close(false);
+    private async Task ExecuteClose() => await CloseAsync(false);
 
     [RelayCommand]
-    private void ExecuteSave() => Close(true);
+    private async Task ExecuteSave() => await CloseAsync(true);
 }

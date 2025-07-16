@@ -1,5 +1,7 @@
 ﻿using Backpack.Presentation.Attribute;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 
 namespace Backpack.Presentation.Feature.Location.Dialog;
 
@@ -13,4 +15,14 @@ public partial class AddOrUpdateFileLocationDialogVM : AddOrUpdateLocationDialog
 
     [ObservableProperty]
     private string path;
+
+    [RelayCommand]
+    private void ExecuteOpenFileExplorer()
+    {
+        var openFileDialog = new OpenFolderDialog();
+        if (openFileDialog.ShowDialog() == true)
+        {
+            Path = openFileDialog.FolderName;
+        }
+    }
 }

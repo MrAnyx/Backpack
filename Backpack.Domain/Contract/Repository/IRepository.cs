@@ -1,7 +1,7 @@
 ﻿namespace Backpack.Domain.Contract.Repository;
 public interface IRepository<TEntity> where TEntity : Model.Entity
 {
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<IEnumerable<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>>? specification = null);
     Task<TEntity?> GetByIdAsync(uint id);
     TEntity Add(TEntity entity);
     TEntity Update(TEntity entity);

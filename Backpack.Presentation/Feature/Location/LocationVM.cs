@@ -44,6 +44,10 @@ public partial class LocationVM(
     private async Task ExecuteCreateNewLocation()
     {
         var dialogVM = new AddOrUpdateFileLocationDialogVM();
-        await dialogVM.ShowAsync(eDialogIdentifier.Core);
+        var confirmation = await dialogVM.ShowAsync<bool>(eDialogIdentifier.Core);
+
+        if (confirmation)
+        {
+        }
     }
 }

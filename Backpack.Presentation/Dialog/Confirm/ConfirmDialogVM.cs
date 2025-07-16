@@ -6,8 +6,8 @@ namespace Backpack.Presentation.Dialog.Confirm;
 public partial class ConfirmDialogVM : DialogViewModel
 {
     [RelayCommand]
-    private void ExecuteClose(bool result)
+    private async Task ExecuteClose(bool result)
     {
-        Close(result);
+        await CloseAsync(result);
     }
 }

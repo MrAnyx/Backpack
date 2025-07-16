@@ -6,9 +6,16 @@ namespace Backpack.Persistence.Repository;
 
 public abstract class Repository<TEntity>(ApplicationDbContext Context) : IRepository<TEntity> where TEntity : Entity
 {
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    public async Task<IEnumerable<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>>? specification = null)
     {
-        return await Context.Set<TEntity>().ToListAsync();
+        IQueryable<TEntity> query = Context.Set<TEntity>();
+
+        if (specification is not null)
+        {
+            query = specification(query);
+        }
+
+        return await query.ToListAsync();
     }
 
     public Task<TEntity?> GetByIdAsync(uint id)

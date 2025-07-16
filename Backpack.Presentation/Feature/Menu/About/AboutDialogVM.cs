@@ -22,10 +22,7 @@ public partial class AboutDialogVM(AppSettings _settings) : DialogViewModel
     ];
 
     [RelayCommand]
-    private void ExecuteClose()
-    {
-        Close();
-    }
+    private async Task ExecuteClose() => await CloseAsync();
 
     [RelayCommand]
     private void ExecuteOpenLink(Uri url)
