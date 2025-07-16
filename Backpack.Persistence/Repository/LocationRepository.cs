@@ -3,6 +3,6 @@ using Backpack.Domain.Entity;
 
 namespace Backpack.Persistence.Repository;
 
-public class LocationRepository(ApplicationDbContext Context) : Repository<Location>(Context), ILocationRepository
+public class LocationRepository(ApplicationDbContext _context) : Repository<Location>(_context), ILocationRepository
 {
 }

@@ -1,6 +1,4 @@
-﻿using Backpack.Domain.Contract.Repository;
-using Backpack.Domain.Entity;
-using Backpack.Presentation.Message;
+﻿using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
@@ -10,7 +8,6 @@ using System.Collections.ObjectModel;
 namespace Backpack.Presentation.Feature.Dashboard;
 
 public partial class DashboardVM(
-    IBackupRepository _backupRepository
 ) : FeatureViewModel
 {
     public override string Name => "Dashboard";
@@ -26,7 +23,7 @@ public partial class DashboardVM(
     [ObservableProperty]
     private int totalFailedBackups = 0;
 
-    public ObservableCollection<Backup> Backups { get; } = [];
+    public ObservableCollection<Domain.Entity.Backup> Backups { get; } = [];
 
     public override async Task OnStartupAsync()
     {

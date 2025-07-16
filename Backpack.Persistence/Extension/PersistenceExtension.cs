@@ -1,7 +1,6 @@
 ﻿using Backpack.Domain.Configuration;
 using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Contract.Repository;
-using Backpack.Persistence.Repository;
 using Backpack.Persistence.Service;
 using Microsoft.Extensions.DependencyInjection;
 

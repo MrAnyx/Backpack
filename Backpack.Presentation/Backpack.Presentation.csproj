@@ -23,4 +23,10 @@
 	  <Folder Include="Resource\Image\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Feature\Location\Dialog\AddOrUpdateLocationDialog.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
 </Project>

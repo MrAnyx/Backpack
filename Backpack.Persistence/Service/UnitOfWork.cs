@@ -2,7 +2,7 @@
 using Backpack.Persistence.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backpack.Persistence.Repository;
+namespace Backpack.Persistence.Service;
 
 public class UnitOfWork(ApplicationDbContext _context) : IUnitOfWork
 {

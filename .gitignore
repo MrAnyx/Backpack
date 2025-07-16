@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+# Include everything for the project
+!Backpack*/*
+
 # User-specific files
 *.rsuser
 *.suo

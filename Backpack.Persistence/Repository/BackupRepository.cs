@@ -3,6 +3,6 @@ using Backpack.Domain.Entity;
 
 namespace Backpack.Persistence.Repository;
 
-public class BackupRepository(ApplicationDbContext Context) : Repository<Backup>(Context), IBackupRepository
+public class BackupRepository(ApplicationDbContext _context) : Repository<Backup>(_context), IBackupRepository
 {
 }

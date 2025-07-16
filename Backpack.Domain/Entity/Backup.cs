@@ -7,7 +7,8 @@ namespace Backpack.Domain.Entity;
 /// </summary>
 public class Backup : Model.Entity, IHasTimestamps
 {
-    public bool Overwrite { get; set; }
+    public required string Name { get; set; }
+    public required bool Overwrite { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
