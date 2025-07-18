@@ -91,17 +91,19 @@ public partial class App : System.Windows.Application
     {
         await _host.StartAsync();
 
+        await _mainVM.OnStartupAsync();
+
         var main = new Main() { DataContext = _mainVM };
         main.Show();
 
-        await _mainVM.LoadAsync();
+        await _mainVM.OnActivatedAsync();
 
         base.OnStartup(e);
     }
 
     protected override async void OnExit(ExitEventArgs e)
     {
-        await _mainVM.UnloadAsync();
+        await _mainVM.OnDeactivatedAsync();
 
         if (_host != null)
         {
