@@ -21,43 +21,7 @@ public partial class AddOrUpdateBackupDialogVM(IWildcardRepository _wildcardRepo
         {
             var wildcards = await _wildcardRepository.GetAllAsync(q => q.Where(w => w.BackupId == Backup.Id));
             Wildcards.AddRange(wildcards);
-
         }
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
-        Wildcards.Add(new()
-        {
-            BackupId = 0,
-            Pattern = "Test.*"
-        });
     }
 
     [ObservableProperty]
@@ -66,6 +30,10 @@ public partial class AddOrUpdateBackupDialogVM(IWildcardRepository _wildcardRepo
     [ObservableProperty]
     private bool overwrite;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddWildcardCommand))]
+    private string pattern = string.Empty;
+
     public ObservableCollection<Wildcard> Wildcards { get; } = [];
 
     [RelayCommand]
@@ -73,4 +41,24 @@ public partial class AddOrUpdateBackupDialogVM(IWildcardRepository _wildcardRepo
 
     [RelayCommand]
     private async Task ExecuteSave() => await CloseAsync(true);
+
+    [RelayCommand]
+    private void RemoveWildcard(Wildcard wildcard)
+    {
+        Wildcards.Remove(wildcard);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteAddWildcard))]
+    private void AddWildcard()
+    {
+        Wildcards.Add(new Wildcard()
+        {
+            Pattern = Pattern,
+            BackupId = Backup?.Id ?? 0
+        });
+
+        Pattern = string.Empty;
+    }
+
+    private bool CanExecuteAddWildcard() => !string.IsNullOrWhiteSpace(Pattern);
 }

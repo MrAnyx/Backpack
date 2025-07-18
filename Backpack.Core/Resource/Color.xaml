@@ -1,6 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <SolidColorBrush x:Key="DangerLight">#FFCDD2</SolidColorBrush>
+    <SolidColorBrush x:Key="WarningLight">#FFE0B2</SolidColorBrush>
+    <SolidColorBrush x:Key="SuccessLight">#C8E6C9</SolidColorBrush>
+    <SolidColorBrush x:Key="InfoLight">#BBDEFB</SolidColorBrush>
+    <SolidColorBrush x:Key="GrayLight">#E0E0E0</SolidColorBrush>
+
     <SolidColorBrush x:Key="Danger">#F44336</SolidColorBrush>
     <SolidColorBrush x:Key="Warning">#FF9800</SolidColorBrush>
     <SolidColorBrush x:Key="Success">#4CAF50</SolidColorBrush>
