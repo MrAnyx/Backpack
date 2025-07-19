@@ -10,45 +10,52 @@
     <Border Padding="15">
         <StackPanel Orientation="Vertical">
             <StackPanel Width="600" Orientation="Vertical">
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Name" />
-                <CheckBox IsChecked="{Binding Overwrite, UpdateSourceTrigger=PropertyChanged}" Content="Overwrite" Margin="0 10 0 0" />
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Backup name" />
+                <CheckBox IsChecked="{Binding Overwrite, UpdateSourceTrigger=PropertyChanged}" Content="Overwrite destination files?" Margin="0 20 0 0" />
 
-                <Grid Margin="0 10 0 0">
+                <Grid Margin="0 20 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Wildcard pattern"></TextBox>
-                    <Button Grid.Column="2" Content="{md:PackIcon Kind=Plus}"
-                            Command="{Binding AddWildcardCommand}"
-                            Style="{DynamicResource SuccessRaisedButton}"
-                            Margin="5,0,0,0" Padding="0" Width="20" Height="20" FontSize="10" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="0" Text="{Binding Source, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Source path"
+                             IsReadOnly="True" IsHitTestVisible="False"/>
+                    <Button Grid.Column="2"
+                            Command="{Binding SelectSourcePathCommand}"
+                            Style="{DynamicResource InfoFlatButton}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Explore" />
+                            <md:PackIcon Kind="FileExportOutline" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
-                <ItemsControl ItemsSource="{Binding Wildcards}" Height="100" Margin="0 10 0 0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="{DynamicResource GrayLight}" Padding="6 3" Margin="0 0 6 0" CornerRadius="5">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Pattern}" VerticalAlignment="Center" />
-                                    <Button Content="✖"
-                                            Command="{Binding DataContext.RemoveWildcardCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource GrayFlatButton}"
-                                            Margin="5,0,0,0" Padding="0" Width="20" Height="20" FontSize="10" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+
+                <Grid Margin="0 20 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding Destination, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Destination path"
+                             IsReadOnly="True" IsHitTestVisible="False"/>
+                    <Button Grid.Column="2"
+                            Command="{Binding SelectDestinationPathCommand}"
+                            Style="{DynamicResource InfoFlatButton}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Explore" />
+                            <md:PackIcon Kind="FileImportOutline" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
             </StackPanel>
 
-            <StackPanel Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBox Margin="0 20 0 0" Height="200" Text="{Binding Ignores, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     VerticalContentAlignment="Top"
+                     md:HintAssist.Hint="File ignore patterns" md:HintAssist.HelperText="Each pattern must be on a separate line." />
+
+            <StackPanel Margin="0 20 0 0" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Cancel" Command="{Binding ExecuteCloseCommand}" Style="{DynamicResource GrayFlatButton}" Margin="0 0 8 0" />
                 <Button Content="Save" Command="{Binding ExecuteSaveCommand}" Style="{DynamicResource InfoRaisedButton}" />
             </StackPanel>

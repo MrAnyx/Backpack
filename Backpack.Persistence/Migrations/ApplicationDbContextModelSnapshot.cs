@@ -30,8 +30,13 @@ namespace Backpack.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<uint>("DestinationId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("DestinationPath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ignore")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -40,17 +45,14 @@ namespace Backpack.Persistence.Migrations
                     b.Property<bool>("Overwrite")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint>("SourceId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("SourcePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
-
-                    b.HasIndex("SourceId");
 
                     b.ToTable("Backups");
                 });
@@ -95,46 +97,6 @@ namespace Backpack.Persistence.Migrations
                     b.ToTable("Histories");
                 });
 
-            modelBuilder.Entity("Backpack.Domain.Entity.Location", b =>
-                {
-                    b.Property<uint>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<uint>("DestinationBackupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("LocationType")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<uint>("SourceBackupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationBackupId");
-
-                    b.HasIndex("SourceBackupId");
-
-                    b.ToTable("Locations");
-
-                    b.HasDiscriminator<string>("LocationType").HasValue("Location");
-
-                    b.UseTphMappingStrategy();
-                });
-
             modelBuilder.Entity("Backpack.Domain.Entity.Profile", b =>
                 {
                     b.Property<uint>("Id")
@@ -159,32 +121,6 @@ namespace Backpack.Persistence.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("Backpack.Domain.Entity.Wildcard", b =>
-                {
-                    b.Property<uint>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<uint>("BackupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Pattern")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BackupId");
-
-                    b.ToTable("Wildcards");
-                });
-
             modelBuilder.Entity("BackupProfile", b =>
                 {
                     b.Property<uint>("BackupsId")
@@ -200,36 +136,6 @@ namespace Backpack.Persistence.Migrations
                     b.ToTable("BackupProfile", (string)null);
                 });
 
-            modelBuilder.Entity("Backpack.Domain.Entity.FileLocation", b =>
-                {
-                    b.HasBaseType("Backpack.Domain.Entity.Location");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasDiscriminator().HasValue("File");
-                });
-
-            modelBuilder.Entity("Backpack.Domain.Entity.Backup", b =>
-                {
-                    b.HasOne("Backpack.Domain.Entity.Location", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backpack.Domain.Entity.Location", "Source")
-                        .WithMany()
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Destination");
-
-                    b.Navigation("Source");
-                });
-
             modelBuilder.Entity("Backpack.Domain.Entity.History", b =>
                 {
                     b.HasOne("Backpack.Domain.Entity.Profile", "Profile")
@@ -239,36 +145,6 @@ namespace Backpack.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Profile");
-                });
-
-            modelBuilder.Entity("Backpack.Domain.Entity.Location", b =>
-                {
-                    b.HasOne("Backpack.Domain.Entity.Backup", "DestinationBackup")
-                        .WithMany()
-                        .HasForeignKey("DestinationBackupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Backpack.Domain.Entity.Backup", "SourceBackup")
-                        .WithMany()
-                        .HasForeignKey("SourceBackupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("DestinationBackup");
-
-                    b.Navigation("SourceBackup");
-                });
-
-            modelBuilder.Entity("Backpack.Domain.Entity.Wildcard", b =>
-                {
-                    b.HasOne("Backpack.Domain.Entity.Backup", "Backup")
-                        .WithMany("Wildcards")
-                        .HasForeignKey("BackupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Backup");
                 });
 
             modelBuilder.Entity("BackupProfile", b =>
@@ -284,11 +160,6 @@ namespace Backpack.Persistence.Migrations
                         .HasForeignKey("ProfilesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Backpack.Domain.Entity.Backup", b =>
-                {
-                    b.Navigation("Wildcards");
                 });
 
             modelBuilder.Entity("Backpack.Domain.Entity.Profile", b =>

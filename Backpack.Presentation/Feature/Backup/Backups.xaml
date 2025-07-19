@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:local="clr-namespace:Backpack.Presentation.Feature.Backup"
              d:DataContext="{d:DesignInstance Type=local:BackupsVM}"
              mc:Ignorable="d">
@@ -31,31 +32,34 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
 
-                <DataGridTextColumn Header="Source" Binding="{Binding Source.Name}"/>
-                <DataGridTextColumn Header="Destination" Binding="{Binding Destination.Name}"/>
-                <DataGridTextColumn Header="Overwrite" Binding="{Binding Overwrite}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding SourcePath}"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding DestinationPath}"/>
 
-                <!--<DataGridTemplateColumn Header="Status">
+                <DataGridTemplateColumn Header="Overwrite">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Ellipse Width="10" Height="10" Fill="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToColorConverter}}" />
-                                <TextBlock Text="{Binding ConnectionStatus, Converter={StaticResource HumanizeConverter}}" Foreground="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToColorConverter}}" Margin="5 0 0 0" />
+                                <Ellipse Width="10" Height="10" Fill="{Binding Overwrite, Converter={StaticResource BooleanToRedGreenColorConverter}}" />
+                                <TextBlock Text="{Binding Overwrite}" Foreground="{Binding Overwrite, Converter={StaticResource BooleanToRedGreenColorConverter}}" Margin="5 0 0 0" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
 
-                <!--<DataGridTemplateColumn Header="Actions" CanUserSort="False">
+                <DataGridTextColumn Header="Created at" Binding="{Binding CreatedAt, StringFormat=g}"/>
+                <DataGridTextColumn Header="Updated at" Binding="{Binding UpdatedAt, StringFormat=g}"/>
+
+                <DataGridTemplateColumn Header="Actions" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Button Style="{DynamicResource MaterialDesignIconForegroundButton}" Content="{md:PackIcon Kind=Edit, Size=16}" Width="24" Height="24" Foreground="{DynamicResource MaterialDesign.Brush.Primary}" Command="{Binding DataContext.ExecuteEditRowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" ToolTip="Edit" />
-                                <Button Style="{DynamicResource MaterialDesignIconForegroundButton}" Content="{md:PackIcon Kind=Trash, Size=16}" Width="24" Height="24" Foreground="{StaticResource Danger}" Command="{Binding DataContext.ExecuteDeleteRowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" ToolTip="Delete" />
+                                <Button Style="{DynamicResource MaterialDesignIconForegroundButton}" Content="{md:PackIcon Kind=Edit, Size=16}" Width="24" Height="24" Foreground="{DynamicResource Info}" Command="{Binding DataContext.ExecuteEditRowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                <Button Style="{DynamicResource MaterialDesignIconForegroundButton}" Content="{md:PackIcon Kind=Trash, Size=16}" Width="24" Height="24" Foreground="{StaticResource Danger}" Command="{Binding DataContext.ExecuteDeleteRowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
 
             </DataGrid.Columns>
         </DataGrid>

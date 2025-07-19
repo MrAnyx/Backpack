@@ -30,6 +30,7 @@
                 <ResourceDictionary Source="Resource/Style/DataGrid.xaml" />
                 <ResourceDictionary Source="Resource/Style/Separator.xaml" />
                 <ResourceDictionary Source="Resource/Style/Menu.xaml" />
+                <ResourceDictionary Source="Resource/Style/TextBox.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
 

@@ -1,64 +1,65 @@
-﻿using Backpack.Domain.Contract.Repository;
-using Backpack.Domain.Entity;
-using Backpack.Presentation.Extension;
+﻿using Backpack.Presentation.Helper;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 
 namespace Backpack.Presentation.Feature.Backup.Dialog;
 
-public partial class AddOrUpdateBackupDialogVM(IWildcardRepository _wildcardRepository) : DialogViewModel
+public partial class AddOrUpdateBackupDialogVM() : DialogViewModel
 {
-    public required Domain.Entity.Backup? Backup { get; init; }
+    public required Domain.Entity.Backup? Backup { get; set; }
 
-    public override async Task OnActivatedAsync()
+    public override Task OnActivatedAsync()
     {
         Name = Backup?.Name ?? string.Empty;
         Overwrite = Backup?.Overwrite ?? true;
+        Ignores = Backup?.Ignore ?? string.Empty;
+        Source = Backup?.SourcePath ?? string.Empty;
+        Destination = Backup?.DestinationPath ?? string.Empty;
 
-        if (Backup != null)
-        {
-            var wildcards = await _wildcardRepository.GetAllAsync(q => q.Where(w => w.BackupId == Backup.Id));
-            Wildcards.AddRange(wildcards);
-        }
+        return Task.CompletedTask;
     }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ExecuteSaveCommand))]
     private string name = string.Empty;
 
     [ObservableProperty]
     private bool overwrite;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(AddWildcardCommand))]
-    private string pattern = string.Empty;
+    private string ignores = string.Empty;
 
-    public ObservableCollection<Wildcard> Wildcards { get; } = [];
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ExecuteSaveCommand))]
+    private string source = string.Empty;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ExecuteSaveCommand))]
+    private string destination = string.Empty;
 
     [RelayCommand]
     private async Task ExecuteClose() => await CloseAsync(false);
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteSave))]
     private async Task ExecuteSave() => await CloseAsync(true);
+    private bool CanExecuteSave() => !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Source) && !string.IsNullOrWhiteSpace(Destination);
 
     [RelayCommand]
-    private void RemoveWildcard(Wildcard wildcard)
+    private void SelectSourcePath()
     {
-        Wildcards.Remove(wildcard);
-    }
-
-    [RelayCommand(CanExecute = nameof(CanExecuteAddWildcard))]
-    private void AddWildcard()
-    {
-        Wildcards.Add(new Wildcard()
+        if (FileExplorerHelper.TryExploreFile(out var path))
         {
-            Pattern = Pattern,
-            BackupId = Backup?.Id ?? 0
-        });
-
-        Pattern = string.Empty;
+            Source = path;
+        }
     }
 
-    private bool CanExecuteAddWildcard() => !string.IsNullOrWhiteSpace(Pattern);
+    [RelayCommand]
+    private void SelectDestinationPath()
+    {
+        if (FileExplorerHelper.TryExploreFile(out var path))
+        {
+            Destination = path;
+        }
+    }
 }

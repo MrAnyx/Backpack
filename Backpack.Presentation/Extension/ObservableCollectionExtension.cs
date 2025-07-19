@@ -10,4 +10,16 @@ public static class ObservableCollectionExtension
             collection.Add(item);
         }
     }
+
+    public static void ReplaceAll<T>(this ObservableCollection<T> collection, Func<T, bool> predicate, T newItem)
+    {
+        for (var i = 0; i < collection.Count; i++)
+        {
+            if (predicate(collection[i]))
+            {
+                collection.RemoveAt(i);
+                collection.Insert(i, newItem);
+            }
+        }
+    }
 }
