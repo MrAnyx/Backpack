@@ -1,6 +1,7 @@
 ﻿using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Contract.Repository;
 using Backpack.Domain.Enum;
+using Backpack.Presentation.Dialog.Confirm;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Backup.Dialog;
 using Backpack.Presentation.Model;
@@ -104,6 +105,14 @@ public partial class BackupsVM(
     [RelayCommand]
     private async Task ExecuteDeleteRow(Domain.Entity.Backup backup)
     {
+        var viewModel = _provider.GetRequiredService<ConfirmDialogVM>();
+        var confirmation = await viewModel.ShowAsync<bool>(eDialogIdentifier.Core);
+
+        if (!confirmation)
+        {
+            return;
+        }
+
         await _backupRepository.RemoveByIdAsync(backup.Id);
         await _unitOfWork.SaveChangesAsync();
         Backups.Remove(backup);
