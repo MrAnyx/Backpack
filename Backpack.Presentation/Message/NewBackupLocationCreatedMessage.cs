@@ -3,4 +3,4 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace Backpack.Presentation.Message;
 
-public class NewFailedBackupMessage(Backup backup) : ValueChangedMessage<Backup>(backup) { }
+public class NewBackupLocationCreatedMessage(Backup backup) : ValueChangedMessage<Backup>(backup) { }

@@ -16,34 +16,16 @@
         <UniformGrid Grid.Row="0" Columns="3">
             <md:Card Padding="10" Margin="0 0 10 0">
                 <UniformGrid HorizontalAlignment="Center" Rows="2">
-                    <TextBlock Grid.Row="0" Text="Total Backups" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Text="{Binding TotalBackups}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    <TextBlock Grid.Row="0" Text="Backup Locations" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Text="{Binding TotalBackupLocations}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="22" FontWeight="Bold"/>
-                </UniformGrid>
-            </md:Card>
-            <md:Card Padding="10" Margin="0 0 10 0">
-                <UniformGrid HorizontalAlignment="Center" Rows="2">
-                    <TextBlock Grid.Row="0" Text="Total Successful Backups" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Text="{Binding TotalSuccessfulBackups}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="22" FontWeight="Bold"/>
-                </UniformGrid>
-            </md:Card>
-            <md:Card Padding="10">
-                <UniformGrid HorizontalAlignment="Center" Rows="2">
-                    <TextBlock Grid.Row="0" Text="Total Failed Backups" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Text="{Binding TotalFailedBackups}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="22" FontWeight="Bold"/>
                 </UniformGrid>
             </md:Card>
         </UniformGrid>
 
-        <DataGrid Grid.Row="2" ItemsSource="{Binding Backups}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectionMode="Single">
+        <DataGrid Grid.Row="2" ItemsSource="{Binding History}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding CreatedAt}"/>
-                <DataGridTextColumn Header="Files" Binding="{Binding FileCount}"/>
-                <DataGridTextColumn Header="Source" Binding="{Binding Source.Path}"/>
-                <DataGridTextColumn Header="Destination" Binding="{Binding Destination.Path}"/>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
             </DataGrid.Columns>
         </DataGrid>
 

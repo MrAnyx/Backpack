@@ -4,9 +4,11 @@ using Backpack.Domain.Enum;
 using Backpack.Presentation.Dialog.Confirm;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Backup.Dialog;
+using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using Backpack.Shared.Extension;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
@@ -69,6 +71,8 @@ public partial class BackupsVM(
         });
         await _unitOfWork.SaveChangesAsync();
         Backups.Add(newBackup);
+
+        WeakReferenceMessenger.Default.Send(new NewBackupLocationCreatedMessage(newBackup));
 
         _snackbar.Enqueue($"Backup \"{newBackup.Name}\" created");
     }

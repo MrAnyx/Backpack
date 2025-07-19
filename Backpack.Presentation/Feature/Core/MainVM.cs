@@ -57,9 +57,13 @@ public partial class MainVM(
 
         CurrentPage = Pages.First(s => s is DashboardVM);
 
+        foreach (var page in Pages)
+        {
+            page.IsActive = true;
+        }
+
         await Task.WhenAll(Pages.Select(vm => vm.OnStartupAsync()));
         await CurrentPage.OnActivatedAsync();
-        CurrentPage.IsActive = true;
 
         IsActive = true;
         IsLoaded = true;
@@ -69,18 +73,21 @@ public partial class MainVM(
     {
         await Task.WhenAll(Pages.Select(vm => vm.OnDeactivatedAsync()));
         await Task.WhenAll(Pages.Select(vm => vm.DisposeAsync()));
+
+        foreach (var page in Pages)
+        {
+            page.IsActive = false;
+        }
     }
 
     [RelayCommand]
     private async Task ExecuteNavigateTo(FeatureViewModel viewModel)
     {
-        CurrentPage.IsActive = false;
         await CurrentPage.OnDeactivatedAsync();
 
         CurrentPage = viewModel;
 
         await CurrentPage.OnActivatedAsync();
-        CurrentPage.IsActive = true;
     }
 
     #region Menu commands
