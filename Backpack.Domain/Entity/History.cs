@@ -1,5 +1,4 @@
-﻿using Backpack.Domain.Attribute;
-using Backpack.Domain.Contract.Persistence;
+﻿using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Enum;
 
 namespace Backpack.Domain.Entity;
@@ -14,15 +13,11 @@ public class History : Model.Entity, IHasTimestamps
     public required eBackupType Type { get; set; }
     public required uint ProfileId { get; set; }
 
-    [IgnoreMerge]
     public DateTime CreatedAt { get; set; }
-
-    [IgnoreMerge]
     public DateTime UpdatedAt { get; set; }
 
 
 #nullable disable
-    [IgnoreMerge]
     public virtual Profile Profile { get; set; }
 #nullable enable
 }

@@ -2,16 +2,14 @@
 using Backpack.Domain.Contract.Repository;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Dialog.Confirm;
-using Backpack.Presentation.Extension;
+using Backpack.Presentation.Feature.Backup.Container;
 using Backpack.Presentation.Feature.Backup.Dialog;
 using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
-using Backpack.Shared.Extension;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.ObjectModel;
 
 namespace Backpack.Presentation.Feature.Backup;
 
@@ -27,27 +25,12 @@ public partial class BackupsVM(
 
     public override uint Priority => base.Priority;
 
-    public ObservableCollection<Domain.Entity.Backup> Backups { get; } = [];
+    public FilterableObservableCollection<BackupTableItem> Backups { get; } = new([]);
 
     public override async Task OnStartupAsync()
     {
         var backups = await _backupRepository.GetAllAsync();
-        Backups.AddRange(backups);
-    }
-
-    public override Task OnActivatedAsync()
-    {
-        return base.OnActivatedAsync();
-    }
-
-    public override Task OnDeactivatedAsync()
-    {
-        return base.OnDeactivatedAsync();
-    }
-
-    public override Task DisposeAsync()
-    {
-        return base.DisposeAsync();
+        Backups.AddRange(backups.Select(b => new BackupTableItem(b)));
     }
 
     [RelayCommand]
@@ -70,7 +53,7 @@ public partial class BackupsVM(
             DestinationPath = viewModel.Destination,
         });
         await _unitOfWork.SaveChangesAsync();
-        Backups.Add(newBackup);
+        Backups.Add(new BackupTableItem(newBackup));
 
         WeakReferenceMessenger.Default.Send(new NewBackupLocationCreatedMessage(newBackup));
 
@@ -89,21 +72,18 @@ public partial class BackupsVM(
             return;
         }
 
-        backup.MergeWith(new()
-        {
-            Name = viewModel.Name,
-            Overwrite = viewModel.Overwrite,
-            Ignore = viewModel.Ignores,
-            SourcePath = viewModel.Source,
-            DestinationPath = viewModel.Destination,
-        });
+        backup.Name = viewModel.Name;
+        backup.Overwrite = viewModel.Overwrite;
+        backup.Ignore = viewModel.Ignores;
+        backup.SourcePath = viewModel.Source;
+        backup.DestinationPath = viewModel.Destination;
 
-        var newBackup = _backupRepository.Update(backup);
+        var updatedBackup = _backupRepository.Update(backup);
         await _unitOfWork.SaveChangesAsync();
 
-        Backups.ReplaceAll(b => b.Id == backup.Id, newBackup);
+        Backups.UpdateItem(b => b.Item.Id == backup.Id, b => b.Item = updatedBackup);
 
-        _snackbar.Enqueue($"Backup \"{newBackup.Name}\" updated");
+        _snackbar.Enqueue($"Backup \"{updatedBackup.Name}\" updated");
     }
 
     [RelayCommand]

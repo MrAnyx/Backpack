@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Backpack.Presentation.Extension;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Backpack.Presentation.Model;
@@ -6,30 +7,37 @@ namespace Backpack.Presentation.Model;
 public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
 {
     public readonly ObservableCollection<T> Items;
-    public readonly List<T> OriginalItems;
+    public readonly ObservableCollection<T> OriginalItems;
 
     public FilterableObservableCollection(IEnumerable<T> items)
     {
         // Store the original list of items
-        Items = new(items);
+        Items = [.. items];
         OriginalItems = [.. items];
 
         // Subscribe to property changes in each item to track updates
-        foreach (var item in Items)
+        foreach (var item in OriginalItems)
         {
-            item.PropertyChanged += Item_PropertyChanged;
+            item.PropertyChanged += OriginalItem_PropertyChanged;
         }
+
+        OriginalItems.CollectionChanged += OriginalItems_CollectionChanged
     }
 
-    private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void OriginalItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OriginalItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         // When an item property changes, ensure the original list reflects that change.
         if (sender is T updatedItem)
         {
-            var index = OriginalItems.IndexOf(updatedItem);
+            var index = Items.IndexOf(updatedItem);
             if (index >= 0)
             {
-                OriginalItems[index] = updatedItem; // Update the original list with the modified item
+                Items[index] = updatedItem; // Update the original list with the modified item
             }
         }
     }
@@ -47,10 +55,7 @@ public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
             // Apply the filter and update the collection
             var filteredItems = OriginalItems.Where(filter).ToList();
             Items.Clear();
-            foreach (var item in filteredItems)
-            {
-                Items.Add(item);
-            }
+            Items.AddRange(filteredItems);
         }
     }
 
@@ -58,17 +63,14 @@ public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
     public void ResetFilter()
     {
         Items.Clear();
-        foreach (var item in OriginalItems)
-        {
-            Items.Add(item);
-        }
+        Items.AddRange(OriginalItems);
     }
 
     public void Add(T item)
     {
         Items.Add(item);
         OriginalItems.Add(item); // Update the original list
-        item.PropertyChanged += Item_PropertyChanged; // Subscribe to property changes of the new item
+        item.PropertyChanged += OriginalItem_PropertyChanged; // Subscribe to property changes of the new item
     }
 
     public void AddRange(IEnumerable<T> items)
@@ -85,7 +87,7 @@ public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
         if (result)
         {
             OriginalItems.Remove(item); // Update the original list
-            item.PropertyChanged -= Item_PropertyChanged; // Unsubscribe from property changes
+            item.PropertyChanged -= OriginalItem_PropertyChanged; // Unsubscribe from property changes
         }
         return result;
     }
@@ -97,27 +99,59 @@ public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
         OriginalItems.Clear(); // Clear the original list as well
     }
 
-    // Method to update an item in both the filtered collection and the original list
-    public void Update(int index, T updatedItem)
+    public void ReplaceAll(Func<T, bool> predicate, T newItem)
     {
-        if (index >= 0 && index < Items.Count)
+        var subscribed = false;
+
+        for (var i = 0; i < OriginalItems.Count; i++)
         {
-            var originalItem = Items[index];
-
-            // Update the item in the filtered collection (ObservableCollection)
-            Items[index] = updatedItem;
-
-            // Update the item in the original list
-            var originalIndex = OriginalItems.IndexOf(originalItem);
-
-            if (originalIndex >= 0)
+            var item = OriginalItems[i];
+            if (predicate(item) && !ReferenceEquals(item, newItem))
             {
-                OriginalItems[originalIndex] = updatedItem;
+                item.PropertyChanged -= OriginalItem_PropertyChanged;
+                OriginalItems[i] = newItem;
+
+                if (!subscribed)
+                {
+                    newItem.PropertyChanged += OriginalItem_PropertyChanged;
+                    subscribed = true;
+                }
             }
         }
-        else
+
+        for (var i = 0; i < Items.Count; i++)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+            var item = Items[i];
+            if (predicate(item) && !ReferenceEquals(item, newItem))
+            {
+                item.PropertyChanged -= OriginalItem_PropertyChanged;
+                Items[i] = newItem;
+
+                if (!subscribed)
+                {
+                    newItem.PropertyChanged += OriginalItem_PropertyChanged;
+                    subscribed = true;
+                }
+            }
+        }
+    }
+
+    public void UpdateItem(Func<T, bool> predicate, Action<T> updateAction)
+    {
+        foreach (var item in Items)
+        {
+            if (predicate(item))
+            {
+                updateAction(item);
+            }
+        }
+
+        foreach (var item in OriginalItems)
+        {
+            if (predicate(item))
+            {
+                updateAction(item);
+            }
         }
     }
 }
