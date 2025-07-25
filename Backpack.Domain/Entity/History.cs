@@ -1,5 +1,6 @@
 ﻿using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Enum;
+using System;
 
 namespace Backpack.Domain.Entity;
 public class History : Model.Entity, IHasTimestamps

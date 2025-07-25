@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Backpack.Presentation.Feature.Dashboard;
 

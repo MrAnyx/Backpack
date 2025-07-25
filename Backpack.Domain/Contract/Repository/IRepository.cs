@@ -1,4 +1,9 @@
-﻿namespace Backpack.Domain.Contract.Repository;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Backpack.Domain.Contract.Repository;
 public interface IRepository<TEntity> where TEntity : Model.Entity
 {
     Task<IEnumerable<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>>? specification = null);

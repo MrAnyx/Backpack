@@ -1,4 +1,6 @@
-﻿namespace Backpack.Domain.Contract.Persistence;
+﻿using System;
+
+namespace Backpack.Domain.Contract.Persistence;
 
 public interface IHasTimestamps
 {

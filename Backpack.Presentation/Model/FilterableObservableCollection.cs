@@ -1,6 +1,9 @@
 ﻿using Backpack.Presentation.Extension;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Backpack.Presentation.Model;
 
@@ -21,7 +24,7 @@ public class FilterableObservableCollection<T> where T : INotifyPropertyChanged
             item.PropertyChanged += OriginalItem_PropertyChanged;
         }
 
-        OriginalItems.CollectionChanged += OriginalItems_CollectionChanged
+        OriginalItems.CollectionChanged += OriginalItems_CollectionChanged;
     }
 
     private void OriginalItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

@@ -1,4 +1,8 @@
-﻿namespace Backpack.Domain.Contract.Persistence;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Backpack.Domain.Contract.Persistence;
 
 public interface ITransaction : IAsyncDisposable
 {

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Hosting;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 

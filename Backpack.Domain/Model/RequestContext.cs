@@ -1,4 +1,6 @@
-﻿namespace Backpack.Domain.Model;
+﻿using System;
+
+namespace Backpack.Domain.Model;
 public class RequestContext
 {
     public Guid CorrelationId { get; } = Guid.NewGuid();

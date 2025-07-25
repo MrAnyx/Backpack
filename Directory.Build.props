@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<ImplicitUsings>disable</ImplicitUsings>
         <NoWarn>$(NoWarn);CS9124</NoWarn>
 
 		<Version>0.0.0.1</Version>

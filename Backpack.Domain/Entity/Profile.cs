@@ -1,4 +1,6 @@
 ﻿using Backpack.Domain.Contract.Persistence;
+using System;
+using System.Collections.Generic;
 
 namespace Backpack.Domain.Entity;
 

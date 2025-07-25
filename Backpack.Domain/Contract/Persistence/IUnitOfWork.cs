@@ -1,4 +1,7 @@
-﻿namespace Backpack.Domain.Contract.Persistence;
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace Backpack.Domain.Contract.Persistence;
 
 public interface IUnitOfWork
 {
