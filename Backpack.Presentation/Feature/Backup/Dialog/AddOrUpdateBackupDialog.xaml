@@ -11,7 +11,8 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Width="600" Orientation="Vertical">
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Backup name" />
-                <CheckBox IsChecked="{Binding Overwrite, UpdateSourceTrigger=PropertyChanged}" Content="Overwrite destination files?" Margin="0 20 0 0" />
+                <CheckBox IsChecked="{Binding Overwrite, UpdateSourceTrigger=PropertyChanged}" Content="Overwrite destination files?" Margin="0 20 0 0"
+                          HorizontalAlignment="Left"/>
 
                 <Grid Margin="0 20 0 0">
                     <Grid.ColumnDefinitions>

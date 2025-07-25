@@ -28,7 +28,7 @@ public partial class BackupsVM(
 
     public override uint Priority => base.Priority;
 
-    public FilterableObservableCollection<BackupTableItem> Backups { get; } = new([]);
+    public FilterableObservableCollection<BackupTableItem> Backups { get; } = [];
 
     public override async Task OnStartupAsync()
     {
@@ -39,6 +39,8 @@ public partial class BackupsVM(
     [RelayCommand]
     private async Task CreateNewBackup()
     {
+        //Backups.SetFilter((b) => b.Item.Name == "Toto");
+
         var viewModel = _provider.GetRequiredService<AddOrUpdateBackupDialogVM>();
         var confirmation = await viewModel.ShowAsync<bool>(eDialogIdentifier.Core);
 
@@ -64,10 +66,10 @@ public partial class BackupsVM(
     }
 
     [RelayCommand]
-    private async Task ExecuteEditRow(Domain.Entity.Backup backup)
+    private async Task ExecuteEditRow(BackupTableItem backup)
     {
         var viewModel = _provider.GetRequiredService<AddOrUpdateBackupDialogVM>();
-        viewModel.Backup = backup;
+        viewModel.Backup = backup.Item;
         var confirmation = await viewModel.ShowAsync<bool>(eDialogIdentifier.Core);
 
         if (!confirmation)
@@ -75,22 +77,22 @@ public partial class BackupsVM(
             return;
         }
 
-        backup.Name = viewModel.Name;
-        backup.Overwrite = viewModel.Overwrite;
-        backup.Ignore = viewModel.Ignores;
-        backup.SourcePath = viewModel.Source;
-        backup.DestinationPath = viewModel.Destination;
+        backup.Item.Name = viewModel.Name;
+        backup.Item.Overwrite = viewModel.Overwrite;
+        backup.Item.Ignore = viewModel.Ignores;
+        backup.Item.SourcePath = viewModel.Source;
+        backup.Item.DestinationPath = viewModel.Destination;
 
-        var updatedBackup = _backupRepository.Update(backup);
+        var updatedBackup = _backupRepository.Update(backup.Item);
         await _unitOfWork.SaveChangesAsync();
 
-        Backups.UpdateItem(b => b.Item.Id == backup.Id, b => b.Item = updatedBackup);
+        Backups.UpdateBy(b => b.Item.Id == backup.Item.Id, b => b.Item = updatedBackup);
 
         _snackbar.Enqueue($"Backup \"{updatedBackup.Name}\" updated");
     }
 
     [RelayCommand]
-    private async Task ExecuteDeleteRow(Domain.Entity.Backup backup)
+    private async Task ExecuteDeleteRow(BackupTableItem backup)
     {
         var viewModel = _provider.GetRequiredService<ConfirmDialogVM>();
         var confirmation = await viewModel.ShowAsync<bool>(eDialogIdentifier.Core);
@@ -100,10 +102,10 @@ public partial class BackupsVM(
             return;
         }
 
-        await _backupRepository.RemoveByIdAsync(backup.Id);
+        await _backupRepository.RemoveByIdAsync(backup.Item.Id);
         await _unitOfWork.SaveChangesAsync();
         Backups.Remove(backup);
 
-        _snackbar.Enqueue($"Backup \"{backup.Name}\" deleted");
+        _snackbar.Enqueue($"Backup \"{backup.Item.Name}\" deleted");
     }
 }

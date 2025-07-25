@@ -32,23 +32,23 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
 
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Source" Binding="{Binding SourcePath}"/>
-                <DataGridTextColumn Header="Destination" Binding="{Binding DestinationPath}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Item.Name}"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding Item.SourcePath}"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Item.DestinationPath}"/>
 
                 <DataGridTemplateColumn Header="Overwrite">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Ellipse Width="10" Height="10" Fill="{Binding Overwrite, Converter={StaticResource BooleanToRedGreenColorConverter}}" />
-                                <TextBlock Text="{Binding Overwrite}" Foreground="{Binding Overwrite, Converter={StaticResource BooleanToRedGreenColorConverter}}" Margin="5 0 0 0" />
+                                <Ellipse Width="10" Height="10" Fill="{Binding Item.Overwrite, Converter={StaticResource BooleanToRedGreenColorConverter}}" />
+                                <TextBlock Text="{Binding Item.Overwrite}" Foreground="{Binding Item.Overwrite, Converter={StaticResource BooleanToRedGreenColorConverter}}" Margin="5 0 0 0" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Created at" Binding="{Binding CreatedAt, StringFormat=g}"/>
-                <DataGridTextColumn Header="Updated at" Binding="{Binding UpdatedAt, StringFormat=g}"/>
+                <DataGridTextColumn Header="Created at" Binding="{Binding Item.CreatedAt, StringFormat=g}"/>
+                <DataGridTextColumn Header="Updated at" Binding="{Binding Item.UpdatedAt, StringFormat=g}"/>
 
                 <DataGridTemplateColumn Header="Actions" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
