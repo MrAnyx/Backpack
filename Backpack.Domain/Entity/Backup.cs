@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 namespace Backpack.Domain.Entity;
 
-/// <summary>
-/// An atomic backup couple with a source location and a destination
-/// </summary>
 public class Backup : Model.Entity, IHasTimestamps
 {
     public required string Name { get; set; }

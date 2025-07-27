@@ -1,8 +1,6 @@
 ﻿using Backpack.Domain.Contract.Repository;
-using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -22,13 +20,8 @@ public partial class DashboardVM(
 
     public ObservableCollection<Domain.Entity.History> History { get; } = [];
 
-    public override async Task OnStartupAsync()
+    public override async Task OnActivatedAsync()
     {
-        WeakReferenceMessenger.Default.Register<NewBackupLocationCreatedMessage>(this, (r, m) =>
-        {
-            TotalBackupLocations++;
-        });
-
         TotalBackupLocations = await _backupRepository.CountAllAsync();
     }
 }

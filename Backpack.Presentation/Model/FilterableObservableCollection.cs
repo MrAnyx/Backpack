@@ -6,14 +6,18 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
+namespace Backpack.Presentation.Model;
+
 public class FilterableObservableCollection<T> : IEnumerable<T>, INotifyCollectionChanged, INotifyPropertyChanged
 {
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public ObservableCollection<T> Source { get; } = [];
 
     private Predicate<T>? _filter;
 
-    public event NotifyCollectionChangedEventHandler? CollectionChanged;
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public int Count => _filter == null ? Source.Count : Source.Count(i => _filter(i));
 
     public FilterableObservableCollection()
     {
@@ -80,6 +84,4 @@ public class FilterableObservableCollection<T> : IEnumerable<T>, INotifyCollecti
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
     }
-
-    public int Count => _filter == null ? Source.Count : Source.Count(i => _filter(i));
 }

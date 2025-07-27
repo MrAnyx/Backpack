@@ -4,10 +4,8 @@ using Backpack.Domain.Enum;
 using Backpack.Presentation.Dialog.Confirm;
 using Backpack.Presentation.Feature.Backup.Container;
 using Backpack.Presentation.Feature.Backup.Dialog;
-using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -39,8 +37,6 @@ public partial class BackupsVM(
     [RelayCommand]
     private async Task CreateNewBackup()
     {
-        //Backups.SetFilter((b) => b.Item.Name == "Toto");
-
         var viewModel = _provider.GetRequiredService<AddOrUpdateBackupDialogVM>();
         var confirmation = await viewModel.ShowAsync<bool>(eDialogIdentifier.Core);
 
@@ -49,18 +45,9 @@ public partial class BackupsVM(
             return;
         }
 
-        var newBackup = _backupRepository.Add(new()
-        {
-            Name = viewModel.Name,
-            Overwrite = viewModel.Overwrite,
-            Ignore = viewModel.Ignores,
-            SourcePath = viewModel.Source,
-            DestinationPath = viewModel.Destination,
-        });
+        var newBackup = _backupRepository.Add(viewModel.ObservableBackup.ToEntity());
         await _unitOfWork.SaveChangesAsync();
         Backups.Add(new BackupTableItem(newBackup));
-
-        WeakReferenceMessenger.Default.Send(new NewBackupLocationCreatedMessage(newBackup));
 
         _snackbar.Enqueue($"Backup \"{newBackup.Name}\" created");
     }
@@ -77,11 +64,7 @@ public partial class BackupsVM(
             return;
         }
 
-        backup.Item.Name = viewModel.Name;
-        backup.Item.Overwrite = viewModel.Overwrite;
-        backup.Item.Ignore = viewModel.Ignores;
-        backup.Item.SourcePath = viewModel.Source;
-        backup.Item.DestinationPath = viewModel.Destination;
+        backup.Item = viewModel.ObservableBackup.ToEntity();
 
         var updatedBackup = _backupRepository.Update(backup.Item);
         await _unitOfWork.SaveChangesAsync();

@@ -1,14 +1,13 @@
 ﻿using Backpack.Domain.Contract.Mediator;
 using Backpack.Domain.Model;
 using Backpack.Shared.Helper;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Backpack.Application.Behavior;
 
-public class ValidationBehavior<TRequest, TResult>(ILogger<ValidationBehavior<TRequest, TResult>> _logger) : IPipelineBehavior<TRequest, TResult>
+public class ValidationBehavior<TRequest, TResult>() : IPipelineBehavior<TRequest, TResult>
     where TRequest : IRequest<TResult>
 {
     public uint Order => 0;
