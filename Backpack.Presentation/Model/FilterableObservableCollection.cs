@@ -71,6 +71,16 @@ public class FilterableObservableCollection<T> : IEnumerable<T>, INotifyCollecti
         RaiseReset();
     }
 
+    public void RemoveBy(Predicate<T> match)
+    {
+        foreach (var item in Source.Where(i => match(i)).ToList())
+        {
+            Remove(item);
+        }
+
+        RaiseReset();
+    }
+
     public IEnumerator<T> GetEnumerator()
     {
         return (_filter == null ? Source : Source.Where(i => _filter(i))).GetEnumerator();

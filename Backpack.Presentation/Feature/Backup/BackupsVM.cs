@@ -1,12 +1,14 @@
-﻿using Backpack.Domain.Contract.Persistence;
-using Backpack.Domain.Contract.Repository;
+﻿using Backpack.Application.UseCase.Backup;
+using Backpack.Domain.Contract.Mediator;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Dialog.Confirm;
 using Backpack.Presentation.Feature.Backup.Container;
 using Backpack.Presentation.Feature.Backup.Dialog;
 using Backpack.Presentation.Helper;
+using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,10 +19,9 @@ using System.Threading.Tasks;
 namespace Backpack.Presentation.Feature.Backup;
 
 public partial class BackupsVM(
-    IBackupRepository _backupRepository,
-    IUnitOfWork _unitOfWork,
     IServiceProvider _provider,
-    ISnackbarMessageQueue _snackbar
+    ISnackbarMessageQueue _snackbar,
+    IMediator _mediator
 ) : FeatureViewModel
 {
     public override string Name => "Backups";
@@ -30,8 +31,24 @@ public partial class BackupsVM(
 
     public override async Task OnStartupAsync()
     {
-        var backups = await _backupRepository.GetAllAsync();
-        Backups.AddRange(backups.Select(b => new BackupTableItem(b)));
+        var backups = await _mediator.QueryAsync(new GetAllBackupsQuery());
+        Backups.AddRange(backups.Value.Select(b => new BackupTableItem(b)));
+    }
+
+    public override Task OnActivatedAsync()
+    {
+        WeakReferenceMessenger.Default.Register<NewBackupMessage>(this, (r, m) => Backups.Add(new BackupTableItem(m.Value)));
+        WeakReferenceMessenger.Default.Register<UpdateBackupMessage>(this, (r, m) => Backups.UpdateBy(b => b.Item.Id == m.Value.Id, b => b.Item = m.Value));
+        WeakReferenceMessenger.Default.Register<DeleteBackupMessage>(this, (r, m) => Backups.RemoveBy((b) => b.Item.Id == m.Value.Id));
+
+        return Task.CompletedTask;
+    }
+
+    public override Task OnDeactivatedAsync()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -45,11 +62,11 @@ public partial class BackupsVM(
             return;
         }
 
-        var newBackup = _backupRepository.Add(viewModel.Backup);
-        await _unitOfWork.SaveChangesAsync();
-        Backups.Add(new BackupTableItem(newBackup));
+        var newBackup = await _mediator.SendAsync(new NewBackupCommand() { Backup = viewModel.Backup });
 
-        _snackbar.Enqueue($"Backup \"{newBackup.Name}\" created");
+        WeakReferenceMessenger.Default.Send(new NewBackupMessage(newBackup.Value));
+
+        _snackbar.Enqueue($"Backup \"{newBackup.Value.Name}\" created");
     }
 
     [RelayCommand]
@@ -63,12 +80,10 @@ public partial class BackupsVM(
             return;
         }
 
-        var updatedBackup = _backupRepository.Update(viewModel.Backup);
-        await _unitOfWork.SaveChangesAsync();
+        var updatedBackup = await _mediator.SendAsync(new UpdateBackupCommand() { Backup = viewModel.Backup });
+        WeakReferenceMessenger.Default.Send(new UpdateBackupMessage(viewModel.Backup));
 
-        Backups.UpdateBy(b => b.Item.Id == updatedBackup.Id, b => b.Item = updatedBackup);
-
-        _snackbar.Enqueue($"Backup \"{updatedBackup.Name}\" updated");
+        _snackbar.Enqueue($"Backup \"{updatedBackup.Value.Name}\" updated");
     }
 
     [RelayCommand]
@@ -82,9 +97,8 @@ public partial class BackupsVM(
             return;
         }
 
-        await _backupRepository.RemoveByIdAsync(backup.Item.Id);
-        await _unitOfWork.SaveChangesAsync();
-        Backups.Remove(backup);
+        await _mediator.SendAsync(new DeleteBackupCommand() { Backup = backup.Item });
+        WeakReferenceMessenger.Default.Send(new DeleteBackupMessage(backup.Item));
 
         _snackbar.Enqueue($"Backup \"{backup.Item.Name}\" deleted");
     }
