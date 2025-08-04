@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:local="clr-namespace:Backpack.Presentation.Feature.Backup"
              d:DataContext="{d:DesignInstance Type=local:BackupsVM}"
@@ -33,8 +34,46 @@
                 </DataGridTemplateColumn>-->
 
                 <DataGridTextColumn Header="Name" Binding="{Binding Item.Name}"/>
-                <DataGridTextColumn Header="Source" Binding="{Binding Item.SourcePath}"/>
-                <DataGridTextColumn Header="Destination" Binding="{Binding Item.DestinationPath}"/>
+
+                <DataGridTemplateColumn Header="Source">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink NavigateUri="{Binding Item.SourcePath}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.ExecuteOpenPathLocationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                   CommandParameter="{Binding Item.SourcePath}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <TextBlock Text="{Binding Item.SourcePath, Converter={StaticResource FormatLinkConverter}}"
+                                               ToolTip="{Binding Item.SourcePath, Converter={StaticResource FormatLinkConverter}}"
+                                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Destination">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink NavigateUri="{Binding Item.DestinationPath}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.ExecuteOpenPathLocationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                   CommandParameter="{Binding Item.DestinationPath}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <TextBlock Text="{Binding Item.DestinationPath, Converter={StaticResource FormatLinkConverter}}"
+                                               ToolTip="{Binding Item.DestinationPath, Converter={StaticResource FormatLinkConverter}}"
+                                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Header="Overwrite">
                     <DataGridTemplateColumn.CellTemplate>

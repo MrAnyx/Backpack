@@ -10,8 +10,8 @@
     <Border Padding="15">
         <StackPanel Orientation="Vertical">
             <StackPanel Width="600" Orientation="Vertical">
-                <TextBox Text="{Binding ObservableBackup.Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Backup name" />
-                <CheckBox IsChecked="{Binding ObservableBackup.Overwrite, UpdateSourceTrigger=PropertyChanged}" Content="Overwrite destination files?" Margin="0 20 0 0"
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Backup name" />
+                <CheckBox IsChecked="{Binding Overwrite, UpdateSourceTrigger=PropertyChanged}" Content="Overwrite destination files?" Margin="0 20 0 0"
                           HorizontalAlignment="Left"/>
 
                 <Grid Margin="0 20 0 0">
@@ -20,7 +20,7 @@
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Text="{Binding ObservableBackup.SourcePath, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Source path"
+                    <TextBox Grid.Column="0" Text="{Binding SourcePath, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Source path"
                              IsReadOnly="True" IsHitTestVisible="False"/>
                     <Button Grid.Column="2"
                             Command="{Binding SelectSourcePathCommand}"
@@ -38,7 +38,7 @@
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Text="{Binding ObservableBackup.DestinationPath, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Destination path"
+                    <TextBox Grid.Column="0" Text="{Binding DestinationPath, UpdateSourceTrigger=PropertyChanged}" md:HintAssist.Hint="Destination path"
                              IsReadOnly="True" IsHitTestVisible="False"/>
                     <Button Grid.Column="2"
                             Command="{Binding SelectDestinationPathCommand}"
@@ -51,7 +51,7 @@
                 </Grid>
             </StackPanel>
 
-            <TextBox Margin="0 20 0 0" Height="200" Text="{Binding ObservableBackup.Ignores, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Margin="0 20 0 0" Height="200" Text="{Binding Ignore, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="True"
                      VerticalContentAlignment="Top"
                      md:HintAssist.Hint="File ignore patterns" md:HintAssist.HelperText="Each pattern must be on a separate line." />
