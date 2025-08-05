@@ -21,14 +21,6 @@
 		<ProjectReference Include="..\Backpack.Shared\Backpack.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="Properties\Settings.Designer.cs">
-	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Settings.settings</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
 	<!-- Include appsettings.json in output build -->
 	<ItemGroup>
 		<None Update="appsettings.json">
@@ -36,10 +28,6 @@
 		</None>
 		<None Update="appsettings.output.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Properties\Settings.settings">
-		  <Generator>SettingsSingleFileGenerator</Generator>
-		  <LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
 
