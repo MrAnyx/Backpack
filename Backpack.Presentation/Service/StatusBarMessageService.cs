@@ -1,6 +1,7 @@
 ﻿using Backpack.Domain.Contract;
 using Backpack.Domain.Enum;
 using Backpack.Domain.Model;
+using Backpack.Presentation.Service;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Threading;
@@ -10,7 +11,7 @@ public partial class StatusBarMessageService : ObservableObject, IStatusBarMessa
 {
     private static readonly StatusBarMessage _defaultMessage = new()
     {
-        Message = "Ready",
+        Message = TranslationManager.Translate("StatusBar_Ready"),
         Type = eStatusBarMessageType.Info,
         AutoDismissAfter = null
     };

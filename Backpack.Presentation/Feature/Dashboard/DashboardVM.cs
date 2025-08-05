@@ -1,5 +1,6 @@
 ﻿using Backpack.Domain.Contract.Repository;
 using Backpack.Presentation.Model;
+using Backpack.Presentation.Service;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
@@ -11,9 +12,9 @@ public partial class DashboardVM(
     IBackupRepository _backupRepository
 ) : FeatureViewModel
 {
-    public override string Name => "Dashboard";
+    public override string Name => TranslationManager.Translate("Navigation_Dashboard");
     public override PackIconKind Icon => PackIconKind.ViewDashboard;
-    public override uint Priority => uint.MaxValue;
+    public override uint Order => 0;
 
     [ObservableProperty]
     private int totalBackupLocations = 0;

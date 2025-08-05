@@ -32,43 +32,42 @@
             <Grid Visibility="{Binding IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <!--<RowDefinition Height="40"/>-->
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
 
                 <!-- Menu -->
                 <Menu Grid.Row="0" Padding="3 3" BorderBrush="{DynamicResource MaterialDesignDarkSeparatorBackground}" BorderThickness="0 0 0 1">
-                    <MenuItem Header="_File">
-                        <MenuItem Header="_New">
-                            <MenuItem Header="_New window" InputGestureText="Ctrl+Shift+N" Command="{Binding ExecuteNewWindowCommand}">
+                    <MenuItem Header="{helper:Translation Menu_File}">
+                        <MenuItem Header="{helper:Translation Menu_File_New}">
+                            <MenuItem Header="{helper:Translation Menu_File_New_NewWindow}" InputGestureText="Ctrl+Shift+N" Command="{Binding ExecuteNewWindowCommand}">
                                 <MenuItem.Icon>
                                     <md:PackIcon Kind="DockWindow" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="E_xit" InputGestureText="Alt+F4" Command="{Binding ExecuteCloseWindowCommand}">
+                        <MenuItem Header="{helper:Translation Menu_File_Exit}" InputGestureText="Alt+F4" Command="{Binding ExecuteCloseWindowCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="ExitToApp" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="_Tools">
-                        <MenuItem Header="_Check Database Integrity" Command="{Binding ExecuteCheckDatabaseIntegrityCommand}">
+                    <MenuItem Header="{helper:Translation Menu_Tool}">
+                        <MenuItem Header="{helper:Translation Menu_Tool_CheckDatabaseIntegrity}" Command="{Binding ExecuteCheckDatabaseIntegrityCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="DatabaseCheckOutline" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="_Help">
-                        <MenuItem Header="_Show Logs" InputGestureText="Ctrl+Shift+L" Command="{Binding ExecuteShowLogCommand}">
+                    <MenuItem Header="{helper:Translation Menu_Help}">
+                        <MenuItem Header="{helper:Translation Menu_Help_ShowLogs}" InputGestureText="Ctrl+Shift+L" Command="{Binding ExecuteShowLogCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="FileDocumentOutline" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="_About" InputGestureText="Ctrl+F1" Command="{Binding ExecuteShowAboutCommand}">
+                        <MenuItem Header="{helper:Translation Menu_Help_About}" InputGestureText="Ctrl+F1" Command="{Binding ExecuteShowAboutCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="AboutCircleOutline" />
                             </MenuItem.Icon>
@@ -85,8 +84,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Sidebar -->
-                    <ListBox Grid.Column="0" SelectionMode="Single" x:Name="listBoxContainer"
-                             ItemsSource="{Binding Pages}" SelectedIndex="0">
+                    <ListBox Grid.Column="0" SelectionMode="Single" x:Name="listBoxContainer" ItemsSource="{Binding Pages}" SelectedIndex="0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <i:InvokeCommandAction  Command="{Binding ExecuteNavigateToCommand}" CommandParameter="{Binding ElementName=listBoxContainer, Path=SelectedItem}" />

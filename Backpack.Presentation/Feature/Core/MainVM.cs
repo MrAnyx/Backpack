@@ -7,6 +7,7 @@ using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
 using Backpack.Presentation.Feature.Menu.About;
 using Backpack.Presentation.Model;
+using Backpack.Presentation.Service;
 using Backpack.Shared.Helper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -38,8 +39,7 @@ public partial class MainVM(
 
     public string LoadingMessage { get; private set; } = string.Empty;
 
-    public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderByDescending(p => p.Priority).ThenBy(p => p.Name);
-    public eAppEnvironment ApplicationEnvironment { get; } = _settings.Environment;
+    public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderBy(p => p.Order).ThenBy(p => p.Name);
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
     public IStatusBarMessageService StatusBar { get; } = _statusBar;
 
@@ -55,7 +55,12 @@ public partial class MainVM(
         var pendingMigrations = await _migration.GetPendingMigrationsAsync();
         if (pendingMigrations.Any())
         {
-            MessageBox.Show("The database structure has changed. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                TranslationManager.Translate("Migration_NewMigration_Body"),
+                TranslationManager.Translate("Migration_NewMigration_Title"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
             await _migration.MigrateAsync();
         }
 
@@ -101,7 +106,6 @@ public partial class MainVM(
         var appPath = Environment.ProcessPath;
         if (appPath != null)
         {
-            _snackbar.Enqueue("Opening new window");
             Process.Start(appPath);
         }
     }
@@ -132,12 +136,22 @@ public partial class MainVM(
         var pendingMigrations = await _migration.GetPendingMigrationsAsync();
         if (pendingMigrations.Any())
         {
-            MessageBox.Show("The database structure has changed. Applying the latest version.", "Applying migrations", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                TranslationManager.Translate("Migration_NewMigration_Body"),
+                TranslationManager.Translate("Migration_NewMigration_Title"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
             await _migration.MigrateAsync();
         }
         else
         {
-            MessageBox.Show("Your database is already up to date.", "Database update to date", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                TranslationManager.Translate("Migration_UpToDate_Body"),
+                TranslationManager.Translate("Migration_UpToDate_Title"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
         }
     }
     #endregion

@@ -7,6 +7,7 @@ using Backpack.Presentation.Feature.Backup.Dialog;
 using Backpack.Presentation.Helper;
 using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
+using Backpack.Presentation.Service;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
@@ -24,8 +25,9 @@ public partial class BackupsVM(
     IMediator _mediator
 ) : FeatureViewModel
 {
-    public override string Name => "Backups";
+    public override string Name => TranslationManager.Translate("Navigation_Backups");
     public override PackIconKind Icon => PackIconKind.Backup;
+    public override uint Order => 1;
 
     public FilterableObservableCollection<BackupTableItem> Backups { get; } = [];
 
@@ -63,10 +65,9 @@ public partial class BackupsVM(
         }
 
         var newBackup = await _mediator.SendAsync(new NewBackupCommand() { Backup = viewModel.Backup });
-
         WeakReferenceMessenger.Default.Send(new NewBackupMessage(newBackup.Value));
 
-        _snackbar.Enqueue($"Backup \"{newBackup.Value.Name}\" created");
+        _snackbar.Enqueue(TranslationManager.Translate("Backup_Snackbar_NewBackupCreated", newBackup.Value.Name));
     }
 
     [RelayCommand]

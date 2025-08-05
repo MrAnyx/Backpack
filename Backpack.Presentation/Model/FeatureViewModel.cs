@@ -9,7 +9,7 @@ public abstract partial class FeatureViewModel : ViewModel
     public abstract string Name { get; }
     public abstract PackIconKind Icon { get; }
 
-    public virtual uint Priority { get; } = 0;
+    public virtual uint Order { get; } = uint.MaxValue;
 
     [ObservableProperty]
     private bool isEnabled = true;

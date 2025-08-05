@@ -17,7 +17,7 @@
         <UniformGrid Grid.Row="0" Columns="3">
             <md:Card Padding="10" Margin="0 0 10 0">
                 <UniformGrid HorizontalAlignment="Center" Rows="2">
-                    <TextBlock Grid.Row="0" Text="{helper:Translation Core_Hello}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Text="Backup locations" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Row="1" Text="{Binding TotalBackupLocations}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="22" FontWeight="Bold"/>
                 </UniformGrid>
