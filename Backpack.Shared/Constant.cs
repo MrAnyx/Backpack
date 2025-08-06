@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -10,10 +11,17 @@ public static class Constant
 {
     public const string ApplicationName = "Backpack";
 
+    public static IEnumerable<CultureInfo> AvailableCultures = [
+        new CultureInfo("en"),
+        new CultureInfo("fr"),
+    ];
+    public static CultureInfo DefaultCulture = new(AvailableCultures.Any(c => c.TwoLetterISOLanguageName == CultureInfo.CurrentCulture.TwoLetterISOLanguageName) ? CultureInfo.CurrentCulture.TwoLetterISOLanguageName : "en");
+
     public const string LogFileName = "app.log";
     public const string DatabaseFileName = "context.db";
     public const string RememberMeFileName = ".credentials";
     public const string NLogInternalLogFileName = "nlog.log";
+    public const string UserPreferencesFileName = "preferences.json";
 
     public static string Company = Assembly.GetExecutingAssembly()!
             .GetCustomAttribute<AssemblyCompanyAttribute>()!

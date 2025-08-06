@@ -1,4 +1,5 @@
 ﻿using Backpack.Application.UseCase.Backup;
+using Backpack.Domain.Contract;
 using Backpack.Domain.Contract.Mediator;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Dialog.Confirm;
@@ -22,7 +23,8 @@ namespace Backpack.Presentation.Feature.Backup;
 public partial class BackupsVM(
     IServiceProvider _provider,
     ISnackbarMessageQueue _snackbar,
-    IMediator _mediator
+    IMediator _mediator,
+    IStatusBarMessageService _statusBar
 ) : FeatureViewModel
 {
     public override string Name => TranslationManager.Translate("Navigation_Backups");
@@ -67,7 +69,7 @@ public partial class BackupsVM(
         var newBackup = await _mediator.SendAsync(new NewBackupCommand() { Backup = viewModel.Backup });
         WeakReferenceMessenger.Default.Send(new NewBackupMessage(newBackup.Value));
 
-        _snackbar.Enqueue(TranslationManager.Translate("Backup_Snackbar_NewBackupCreated", newBackup.Value.Name));
+        _snackbar.Enqueue(TranslationManager.Translate("Backup_Snackbar_NewBackupCreated"));
     }
 
     [RelayCommand]

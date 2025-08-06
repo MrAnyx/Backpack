@@ -1,7 +1,5 @@
-﻿using Backpack.Application.UseCase.Core.GetLoadingMessage;
-using Backpack.Domain.Configuration;
+﻿using Backpack.Domain.Configuration;
 using Backpack.Domain.Contract;
-using Backpack.Domain.Contract.Mediator;
 using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
@@ -27,8 +25,7 @@ public partial class MainVM(
     AppSettings _settings,
     ISnackbarMessageQueue _snackbar,
     IStatusBarMessageService _statusBar,
-    IMigration _migration,
-    IMediator _mediator
+    IMigration _migration
 ) : ViewModel
 {
     [ObservableProperty]
@@ -37,16 +34,22 @@ public partial class MainVM(
     [ObservableProperty]
     private bool isLoaded = false;
 
+    private IEnumerable<string> LoadingMessages => [
+            TranslationManager.Translate("Core_Loading_1"),
+            TranslationManager.Translate("Core_Loading_2"),
+            TranslationManager.Translate("Core_Loading_3"),
+            TranslationManager.Translate("Core_Loading_4"),
+    ];
     public string LoadingMessage { get; private set; } = string.Empty;
 
     public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderBy(p => p.Order).ThenBy(p => p.Name);
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
     public IStatusBarMessageService StatusBar { get; } = _statusBar;
 
-    public async Task OnStartupAsync()
+    public Task OnStartupAsync()
     {
-        var loadingMessageResult = await _mediator.QueryAsync(new GetLoadingMessageQuery());
-        LoadingMessage = loadingMessageResult.Value;
+        LoadingMessage = LoadingMessages.ElementAt(new Random().Next(0, LoadingMessages.Count()));
+        return Task.CompletedTask;
     }
 
     public async Task OnActivatedAsync()

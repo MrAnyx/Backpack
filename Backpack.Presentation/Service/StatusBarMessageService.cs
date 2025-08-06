@@ -9,15 +9,19 @@ using System.Threading.Tasks;
 
 public partial class StatusBarMessageService : ObservableObject, IStatusBarMessageService
 {
-    private static readonly StatusBarMessage _defaultMessage = new()
+    private StatusBarMessage _defaultMessage => new()
     {
         Message = TranslationManager.Translate("StatusBar_Ready"),
         Type = eStatusBarMessageType.Info,
         AutoDismissAfter = null
     };
 
-    [ObservableProperty]
-    private StatusBarMessage message = _defaultMessage;
+    private StatusBarMessage? message;
+    public StatusBarMessage Message
+    {
+        get => message ?? _defaultMessage;
+        set => SetProperty(ref message, value);
+    }
 
     private CancellationTokenSource? _currentTokenSource;
 

@@ -1,5 +1,6 @@
 ﻿using Backpack.Application.Extension;
 using Backpack.Domain.Configuration;
+using Backpack.Domain.Contract;
 using Backpack.Infrastructure.Extension;
 using Backpack.Persistence.Extension;
 using Backpack.Presentation.Extension;
@@ -27,13 +28,12 @@ public partial class App : System.Windows.Application
     private readonly IHostBuilder _hostBuilder;
     private readonly IHost _host;
     private readonly ILogger<App> _logger;
+    private readonly IUserPreference _preferences;
 
     private readonly MainVM _mainVM;
 
     public App()
     {
-        SetCultureInfo(CultureInfo.CurrentCulture);
-
         _hostBuilder = Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration((context, config) =>
             {
@@ -67,6 +67,8 @@ public partial class App : System.Windows.Application
 
         _host = _hostBuilder.Build();
 
+        _preferences = _host.Services.GetRequiredService<IUserPreference>();
+
         _logger = _host.Services.GetRequiredService<ILogger<App>>();
 
         _mainVM = _host.Services.GetRequiredService<MainVM>();
@@ -92,6 +94,9 @@ public partial class App : System.Windows.Application
     {
         await _host.StartAsync();
 
+        await _preferences.LoadAsync();
+        SetCultureInfo(_preferences.Default.Culture);
+
         await _mainVM.OnStartupAsync();
 
         var main = new Main() { DataContext = _mainVM };
@@ -105,6 +110,8 @@ public partial class App : System.Windows.Application
     protected override async void OnExit(ExitEventArgs e)
     {
         await _mainVM.OnDeactivatedAsync();
+
+        await _preferences.SaveAsync();
 
         if (_host != null)
         {

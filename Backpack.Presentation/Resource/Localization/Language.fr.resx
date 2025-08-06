@@ -142,7 +142,19 @@
     <value>Dépôt Github</value>
   </data>
   <data name="Backup_Snackbar_NewBackupCreated" xml:space="preserve">
-    <value>Backup "{0}" créée</value>
+    <value>Nouvelle sauvegarde créée</value>
+  </data>
+  <data name="Core_Loading_1" xml:space="preserve">
+    <value>Chargement… plus rapide que les embouteillages de Paris !</value>
+  </data>
+  <data name="Core_Loading_2" xml:space="preserve">
+    <value>On met les baguettes en place…</value>
+  </data>
+  <data name="Core_Loading_3" xml:space="preserve">
+    <value>Patientez... on cherche encore la connexion Wi-Fi du voisin.</value>
+  </data>
+  <data name="Core_Loading_4" xml:space="preserve">
+    <value>Presque prêt… le fromage affine encore un peu.</value>
   </data>
   <data name="Menu_File" xml:space="preserve">
     <value>Fichier</value>

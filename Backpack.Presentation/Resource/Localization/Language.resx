@@ -142,7 +142,19 @@
     <value>Github repository</value>
   </data>
   <data name="Backup_Snackbar_NewBackupCreated" xml:space="preserve">
-    <value>Backup "{0}" created</value>
+    <value>New backup created</value>
+  </data>
+  <data name="Core_Loading_1" xml:space="preserve">
+    <value>Still faster than your morning coffee...</value>
+  </data>
+  <data name="Core_Loading_2" xml:space="preserve">
+    <value>Loading... bribing the hamsters to run faster.</value>
+  </data>
+  <data name="Core_Loading_3" xml:space="preserve">
+    <value>Hold on, aligning the stars...</value>
+  </data>
+  <data name="Core_Loading_4" xml:space="preserve">
+    <value>Downloading data from the cloud (hope it's not raining).</value>
   </data>
   <data name="Menu_File" xml:space="preserve">
     <value>File</value>

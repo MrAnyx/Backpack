@@ -74,4 +74,12 @@ public static class PathResolver
             Constant.RememberMeFileName
         );
     }
+
+    public static string GetUserPreferencesFilePath(eAppEnvironment environment)
+    {
+        return Path.Join(
+            GetRoamingApplicationDataPath(environment),
+            Constant.UserPreferencesFileName
+        );
+    }
 }
