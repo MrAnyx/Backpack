@@ -5,6 +5,7 @@ using Backpack.Infrastructure.Extension;
 using Backpack.Persistence.Extension;
 using Backpack.Presentation.Extension;
 using Backpack.Presentation.Feature.Core;
+using Backpack.Shared;
 using Backpack.Shared.Extension;
 using Backpack.Shared.Helper;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,6 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Hosting;
 using System.Globalization;
-using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 
@@ -29,6 +29,7 @@ public partial class App : System.Windows.Application
     private readonly IHost _host;
     private readonly ILogger<App> _logger;
     private readonly IUserPreference _preferences;
+    private readonly ITranslationManager _translation;
 
     private readonly MainVM _mainVM;
 
@@ -66,23 +67,19 @@ public partial class App : System.Windows.Application
             });
 
         _host = _hostBuilder.Build();
+        Context.Services = _host.Services;
 
         _preferences = _host.Services.GetRequiredService<IUserPreference>();
+        _translation = _host.Services.GetRequiredService<ITranslationManager>();
 
         _logger = _host.Services.GetRequiredService<ILogger<App>>();
 
         _mainVM = _host.Services.GetRequiredService<MainVM>();
     }
 
-    private static void SetCultureInfo(CultureInfo culture)
+    private void SetCultureInfo(CultureInfo culture)
     {
-        // Set the culture for all threads (including default for new threads)
-        CultureInfo.DefaultThreadCurrentCulture = culture;
-        CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-        // Optionally set for the current thread too
-        Thread.CurrentThread.CurrentCulture = culture;
-        Thread.CurrentThread.CurrentUICulture = culture;
+        _translation.ApplyCulture(culture);
 
         FrameworkElement.LanguageProperty.OverrideMetadata(
             typeof(FrameworkElement),

@@ -1,6 +1,6 @@
-﻿using Backpack.Domain.Contract.Repository;
+﻿using Backpack.Domain.Contract;
+using Backpack.Domain.Contract.Repository;
 using Backpack.Presentation.Model;
-using Backpack.Presentation.Service;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 namespace Backpack.Presentation.Feature.Dashboard;
 
 public partial class DashboardVM(
-    IBackupRepository _backupRepository
+    IBackupRepository _backupRepository,
+    ITranslationManager _translation
 ) : FeatureViewModel
 {
-    public override string Name => TranslationManager.Translate("Navigation_Dashboard");
+    public override string Name => _translation.Translate("Navigation_Dashboard");
     public override PackIconKind Icon => PackIconKind.ViewDashboard;
     public override uint Order => 0;
 

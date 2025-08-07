@@ -1,4 +1,6 @@
-﻿using Backpack.Presentation.Service;
+﻿using Backpack.Domain.Contract;
+using Backpack.Shared;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Markup;
 
@@ -12,6 +14,7 @@ public class TranslationExtension(string key) : MarkupExtension
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        return TranslationManager.Translate(Key, Parameters ?? []);
+        var _translation = Context.Services.GetRequiredService<ITranslationManager>();
+        return _translation.Translate(Key, Parameters ?? []);
     }
 }

@@ -4,16 +4,16 @@ using System.Windows.Data;
 
 namespace Backpack.Presentation.Converter;
 
-internal class TextInfoTitleCaseConverter : IValueConverter
+internal class NativeNameCultureInfoTitleCaseConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is not string text)
+        if (value is not CultureInfo ci)
         {
-            throw new ArgumentException($"Parameter {nameof(value)} is not a valid {nameof(String)}.");
+            throw new ArgumentException($"Expected {nameof(CultureInfo)}, but got {value?.GetType().Name ?? "null"}.");
         }
 
-        return culture.TextInfo.ToTitleCase(text);
+        return ci.TextInfo.ToTitleCase(ci.NativeName);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

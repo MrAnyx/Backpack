@@ -1,6 +1,5 @@
 ﻿using Backpack.Domain.Contract;
 using Backpack.Presentation.Model;
-using Backpack.Presentation.Service;
 using Backpack.Shared;
 using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
@@ -10,10 +9,11 @@ using System.Windows;
 namespace Backpack.Presentation.Feature.Settings;
 
 public partial class SettingsVM(
-    IUserPreference _preferences
+    IUserPreference _preferences,
+    ITranslationManager _translation
 ) : FeatureViewModel
 {
-    public override string Name => TranslationManager.Translate("Navigation_Settings");
+    public override string Name => _translation.Translate("Navigation_Settings");
     public override PackIconKind Icon => PackIconKind.Cog;
 
     public IEnumerable<CultureInfo> Languages { get; } = Constant.AvailableCultures;
@@ -25,7 +25,14 @@ public partial class SettingsVM(
         {
             if (SetProperty(_preferences.Default.Culture, value, _preferences.Default, (x, y) => x.Culture = y))
             {
-                MessageBox.Show("You need to restart the application to fully apply the new settings.", "Settings changed", MessageBoxButton.OK, MessageBoxImage.Information);
+                _translation.ApplyCulture(value);
+
+                MessageBox.Show(
+                    _translation.Translate("Settings_RestartToSave_Body"),
+                    _translation.Translate("Settings_RestartToSave_Title"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
             }
         }
     }

@@ -5,7 +5,6 @@ using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
 using Backpack.Presentation.Feature.Menu.About;
 using Backpack.Presentation.Model;
-using Backpack.Presentation.Service;
 using Backpack.Shared.Helper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -25,7 +24,8 @@ public partial class MainVM(
     AppSettings _settings,
     ISnackbarMessageQueue _snackbar,
     IStatusBarMessageService _statusBar,
-    IMigration _migration
+    IMigration _migration,
+    ITranslationManager _translation
 ) : ViewModel
 {
     [ObservableProperty]
@@ -35,10 +35,10 @@ public partial class MainVM(
     private bool isLoaded = false;
 
     private IEnumerable<string> LoadingMessages => [
-            TranslationManager.Translate("Core_Loading_1"),
-            TranslationManager.Translate("Core_Loading_2"),
-            TranslationManager.Translate("Core_Loading_3"),
-            TranslationManager.Translate("Core_Loading_4"),
+            _translation.Translate("Core_Loading_1"),
+            _translation.Translate("Core_Loading_2"),
+            _translation.Translate("Core_Loading_3"),
+            _translation.Translate("Core_Loading_4"),
     ];
     public string LoadingMessage { get; private set; } = string.Empty;
 
@@ -59,8 +59,8 @@ public partial class MainVM(
         if (pendingMigrations.Any())
         {
             MessageBox.Show(
-                TranslationManager.Translate("Migration_NewMigration_Body"),
-                TranslationManager.Translate("Migration_NewMigration_Title"),
+                _translation.Translate("Migration_NewMigration_Body"),
+                _translation.Translate("Migration_NewMigration_Title"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
@@ -140,8 +140,8 @@ public partial class MainVM(
         if (pendingMigrations.Any())
         {
             MessageBox.Show(
-                TranslationManager.Translate("Migration_NewMigration_Body"),
-                TranslationManager.Translate("Migration_NewMigration_Title"),
+                _translation.Translate("Migration_NewMigration_Body"),
+                _translation.Translate("Migration_NewMigration_Title"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
@@ -150,8 +150,8 @@ public partial class MainVM(
         else
         {
             MessageBox.Show(
-                TranslationManager.Translate("Migration_UpToDate_Body"),
-                TranslationManager.Translate("Migration_UpToDate_Title"),
+                _translation.Translate("Migration_UpToDate_Body"),
+                _translation.Translate("Migration_UpToDate_Title"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );

@@ -118,93 +118,99 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About_ApplicationName" xml:space="preserve">
-    <value>Nom de l'application</value>
+    <value>Application name</value>
   </data>
   <data name="About_BuildDate" xml:space="preserve">
-    <value>Date de compilation</value>
+    <value>Build date</value>
   </data>
   <data name="About_Company" xml:space="preserve">
-    <value>Entreprise</value>
+    <value>Company</value>
   </data>
   <data name="About_CurrentVersion" xml:space="preserve">
-    <value>Version actuelle</value>
+    <value>Current version</value>
   </data>
   <data name="About_DotnetVersion" xml:space="preserve">
-    <value>Version .NET</value>
+    <value>.NET Version</value>
   </data>
   <data name="About_Environment" xml:space="preserve">
-    <value>Environmement</value>
+    <value>Environment</value>
   </data>
   <data name="About_LogsPath" xml:space="preserve">
-    <value>Chemin des logs</value>
+    <value>Logs Path</value>
   </data>
   <data name="About_Repository" xml:space="preserve">
-    <value>Dépôt Github</value>
+    <value>Github repository</value>
   </data>
   <data name="Backup_Snackbar_NewBackupCreated" xml:space="preserve">
-    <value>Nouvelle sauvegarde créée</value>
+    <value>New backup created</value>
   </data>
   <data name="Core_Loading_1" xml:space="preserve">
-    <value>Chargement… plus rapide que les embouteillages de Paris !</value>
+    <value>Still faster than your morning coffee...</value>
   </data>
   <data name="Core_Loading_2" xml:space="preserve">
-    <value>On met les baguettes en place…</value>
+    <value>Loading... bribing the hamsters to run faster.</value>
   </data>
   <data name="Core_Loading_3" xml:space="preserve">
-    <value>Patientez... on cherche encore la connexion Wi-Fi du voisin.</value>
+    <value>Hold on, aligning the stars...</value>
   </data>
   <data name="Core_Loading_4" xml:space="preserve">
-    <value>Presque prêt… le fromage affine encore un peu.</value>
+    <value>Downloading data from the cloud (hope it's not raining).</value>
   </data>
   <data name="Menu_File" xml:space="preserve">
-    <value>Fichier</value>
+    <value>File</value>
   </data>
   <data name="Menu_File_Exit" xml:space="preserve">
-    <value>Quitter</value>
+    <value>Exit</value>
   </data>
   <data name="Menu_File_New" xml:space="preserve">
-    <value>Nouveau</value>
+    <value>New</value>
   </data>
   <data name="Menu_File_New_NewWindow" xml:space="preserve">
-    <value>Nouvelle fenêtre</value>
+    <value>New window</value>
   </data>
   <data name="Menu_Help" xml:space="preserve">
-    <value>Aide</value>
+    <value>Help</value>
   </data>
   <data name="Menu_Help_About" xml:space="preserve">
-    <value>À propos</value>
+    <value>About</value>
   </data>
   <data name="Menu_Help_ShowLogs" xml:space="preserve">
-    <value>Voir les logs</value>
+    <value>Show logs</value>
   </data>
   <data name="Menu_Tool" xml:space="preserve">
-    <value>Outil</value>
+    <value>Tool</value>
   </data>
   <data name="Menu_Tool_CheckDatabaseIntegrity" xml:space="preserve">
-    <value>Vérifier l'intégrité de la base de données</value>
+    <value>Check database integrity</value>
   </data>
   <data name="Migration_NewMigration_Body" xml:space="preserve">
-    <value>La structure de la base de données a changé. Application de la dernière version.</value>
+    <value>The database structure has changed. Applying the latest version.</value>
   </data>
   <data name="Migration_NewMigration_Title" xml:space="preserve">
-    <value>Application des migrations</value>
+    <value>Applying migrations</value>
   </data>
   <data name="Migration_UpToDate_Body" xml:space="preserve">
-    <value>La base de données est déjà à jour.</value>
+    <value>Your database is already up to date.</value>
   </data>
   <data name="Migration_UpToDate_Title" xml:space="preserve">
-    <value>Base de données à jour</value>
+    <value>Database up to date</value>
   </data>
   <data name="Navigation_Backups" xml:space="preserve">
-    <value>Sauvegardes</value>
+    <value>Backups</value>
   </data>
   <data name="Navigation_Dashboard" xml:space="preserve">
-    <value>Tableau de bord</value>
+    <value>Dashboard</value>
   </data>
   <data name="Navigation_Settings" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>Settings</value>
+  </data>
+  <data name="Settings_RestartToSave_Body" xml:space="preserve">
+    <value>You need to restart the application to fully apply the new settings.</value>
+  </data>
+  <data name="Settings_RestartToSave_Title" xml:space="preserve">
+    <value>New settings</value>
   </data>
   <data name="StatusBar_Ready" xml:space="preserve">
-    <value>Prêt</value>
+    <value>Ready</value>
   </data>
 </root>

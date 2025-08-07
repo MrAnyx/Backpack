@@ -11,11 +11,9 @@ public static class Constant
 {
     public const string ApplicationName = "Backpack";
 
-    public static IEnumerable<CultureInfo> AvailableCultures = [
-        new CultureInfo("en"),
-        new CultureInfo("fr"),
-    ];
-    public static CultureInfo DefaultCulture = new(AvailableCultures.Any(c => c.TwoLetterISOLanguageName == CultureInfo.CurrentCulture.TwoLetterISOLanguageName) ? CultureInfo.CurrentCulture.TwoLetterISOLanguageName : "en");
+    public static IEnumerable<string> AvailableLanguages = ["en", "fr"];
+    public static IEnumerable<CultureInfo> AvailableCultures = CultureInfo.GetCultures(CultureTypes.AllCultures).Where(c => AvailableLanguages.Contains(c.TwoLetterISOLanguageName));
+    public static CultureInfo DefaultCulture = AvailableCultures.Any(c => c.Name == CultureInfo.CurrentCulture.Name) ? CultureInfo.CurrentCulture : new("en-US");
 
     public const string LogFileName = "app.log";
     public const string DatabaseFileName = "context.db";

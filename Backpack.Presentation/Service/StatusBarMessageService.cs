@@ -1,17 +1,16 @@
 ﻿using Backpack.Domain.Contract;
 using Backpack.Domain.Enum;
 using Backpack.Domain.Model;
-using Backpack.Presentation.Service;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-public partial class StatusBarMessageService : ObservableObject, IStatusBarMessageService
+public partial class StatusBarMessageService(ITranslationManager _translation) : ObservableObject, IStatusBarMessageService
 {
-    private StatusBarMessage _defaultMessage => new()
+    public StatusBarMessage DefaultMessage => new()
     {
-        Message = TranslationManager.Translate("StatusBar_Ready"),
+        Message = _translation.Translate("StatusBar_Ready"),
         Type = eStatusBarMessageType.Info,
         AutoDismissAfter = null
     };
@@ -19,7 +18,7 @@ public partial class StatusBarMessageService : ObservableObject, IStatusBarMessa
     private StatusBarMessage? message;
     public StatusBarMessage Message
     {
-        get => message ?? _defaultMessage;
+        get => message ?? DefaultMessage;
         set => SetProperty(ref message, value);
     }
 
@@ -55,7 +54,7 @@ public partial class StatusBarMessageService : ObservableObject, IStatusBarMessa
     public void Clear()
     {
         _currentTokenSource?.Cancel();
-        Message = _defaultMessage;
+        Message = DefaultMessage;
     }
 
     private async Task AutoDismissAsync(TimeSpan delay, CancellationToken cancellationToken)
@@ -63,7 +62,7 @@ public partial class StatusBarMessageService : ObservableObject, IStatusBarMessa
         try
         {
             await Task.Delay(delay, cancellationToken);
-            Message = _defaultMessage;
+            Message = DefaultMessage;
         }
         catch (TaskCanceledException)
         {

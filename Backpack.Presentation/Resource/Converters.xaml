@@ -10,5 +10,5 @@
     <converters:StatusBarMessageTypeToColorConverter x:Key="StatusBarMessageTypeToColorConverter" />
     <converters:StatusBarMessageTypeToIconConverter x:Key="StatusBarMessageTypeToIconConverter" />
     <converters:BooleanToRedGreenColorConverter x:Key="BooleanToRedGreenColorConverter" />
-    <converters:TextInfoTitleCaseConverter x:Key="TextInfoTitleCaseConverter" />
+    <converters:NativeNameCultureInfoTitleCaseConverter x:Key="NativeNameCultureInfoTitleCaseConverter" />
 </ResourceDictionary>

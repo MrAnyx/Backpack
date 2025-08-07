@@ -8,7 +8,6 @@ using Backpack.Presentation.Feature.Backup.Dialog;
 using Backpack.Presentation.Helper;
 using Backpack.Presentation.Message;
 using Backpack.Presentation.Model;
-using Backpack.Presentation.Service;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MaterialDesignThemes.Wpf;
@@ -24,10 +23,10 @@ public partial class BackupsVM(
     IServiceProvider _provider,
     ISnackbarMessageQueue _snackbar,
     IMediator _mediator,
-    IStatusBarMessageService _statusBar
+    ITranslationManager _translation
 ) : FeatureViewModel
 {
-    public override string Name => TranslationManager.Translate("Navigation_Backups");
+    public override string Name => _translation.Translate("Navigation_Backups");
     public override PackIconKind Icon => PackIconKind.Backup;
     public override uint Order => 1;
 
@@ -69,7 +68,7 @@ public partial class BackupsVM(
         var newBackup = await _mediator.SendAsync(new NewBackupCommand() { Backup = viewModel.Backup });
         WeakReferenceMessenger.Default.Send(new NewBackupMessage(newBackup.Value));
 
-        _snackbar.Enqueue(TranslationManager.Translate("Backup_Snackbar_NewBackupCreated"));
+        _snackbar.Enqueue(_translation.Translate("Backup_Snackbar_NewBackupCreated"));
     }
 
     [RelayCommand]
