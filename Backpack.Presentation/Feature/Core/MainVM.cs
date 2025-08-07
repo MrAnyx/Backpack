@@ -1,5 +1,7 @@
-﻿using Backpack.Domain.Configuration;
+﻿using Backpack.Application.UseCase.Core;
+using Backpack.Domain.Configuration;
 using Backpack.Domain.Contract;
+using Backpack.Domain.Contract.Mediator;
 using Backpack.Domain.Contract.Persistence;
 using Backpack.Domain.Enum;
 using Backpack.Presentation.Feature.Dashboard;
@@ -20,11 +22,12 @@ using System.Windows;
 namespace Backpack.Presentation.Feature.Core;
 
 public partial class MainVM(
-    IServiceProvider _provider,
     AppSettings _settings,
+    IServiceProvider _provider,
     ISnackbarMessageQueue _snackbar,
     IStatusBarMessageService _statusBar,
-    IMigration _migration
+    IMigration _migration,
+    IMediator _mediator
 ) : ViewModel
 {
     [ObservableProperty]
@@ -33,22 +36,16 @@ public partial class MainVM(
     [ObservableProperty]
     private bool isLoaded = false;
 
-    private IEnumerable<string> LoadingMessages => [
-            "Still faster than your morning coffee...",
-            "Loading... bribing the hamsters to run faster.",
-            "Hold on, aligning the stars...",
-            "Downloading data from the cloud (hope it's not raining).",
-    ];
     public string LoadingMessage { get; private set; } = string.Empty;
 
     public IEnumerable<FeatureViewModel> Pages { get; } = _provider.GetServices<FeatureViewModel>().OrderBy(p => p.Order).ThenBy(p => p.Name);
     public ISnackbarMessageQueue Snackbar { get; } = _snackbar;
     public IStatusBarMessageService StatusBar { get; } = _statusBar;
 
-    public Task OnStartupAsync()
+    public async Task OnStartupAsync()
     {
-        LoadingMessage = LoadingMessages.ElementAt(new Random().Next(0, LoadingMessages.Count()));
-        return Task.CompletedTask;
+        var loadingMessageQuery = await _mediator.QueryAsync(new GetLoadingMessageQuery());
+        LoadingMessage = loadingMessageQuery.Value;
     }
 
     public async Task OnActivatedAsync()

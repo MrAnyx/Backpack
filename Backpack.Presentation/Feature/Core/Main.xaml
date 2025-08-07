@@ -52,7 +52,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Menu_Tool">
+                    <MenuItem Header="Tool">
                         <MenuItem Header="Check database integrity" Command="{Binding ExecuteCheckDatabaseIntegrityCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="DatabaseCheckOutline" />
@@ -60,13 +60,13 @@
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Help">
-                        <MenuItem Header="Help_ShowLogs" InputGestureText="Ctrl+Shift+L" Command="{Binding ExecuteShowLogCommand}">
+                        <MenuItem Header="Show logs" InputGestureText="Ctrl+Shift+L" Command="{Binding ExecuteShowLogCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="FileDocumentOutline" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="Help_About" InputGestureText="Ctrl+F1" Command="{Binding ExecuteShowAboutCommand}">
+                        <MenuItem Header="About" InputGestureText="Ctrl+F1" Command="{Binding ExecuteShowAboutCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="AboutCircleOutline" />
                             </MenuItem.Icon>
