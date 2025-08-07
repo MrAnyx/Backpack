@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.Collections.Generic;
 
 namespace Backpack.Presentation.Message;
 
-public class DeleteBackupMessage(Domain.Entity.Backup backup) : ValueChangedMessage<Domain.Entity.Backup>(backup)
+public class DeleteBackupMessage(IEnumerable<Domain.Entity.Backup> backups) : ValueChangedMessage<IEnumerable<Domain.Entity.Backup>>(backups)
 {
 }

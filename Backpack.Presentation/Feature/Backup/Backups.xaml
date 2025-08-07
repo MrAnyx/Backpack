@@ -15,14 +15,42 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="New backup" Style="{DynamicResource InfoRaisedButton}" Command="{Binding CreateNewBackupCommand}" />
-        </StackPanel>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}">
+                <md:HintAssist.Hint>
+                    <StackPanel Orientation="Horizontal">
+                        <md:PackIcon Kind="Magnify" Margin="0 0 5 0"/>
+                        <TextBlock Text="Search" />
+                    </StackPanel>
+                </md:HintAssist.Hint>
+            </TextBox>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{DynamicResource DangerRaisedButton}" Margin=" 0 0 8 0" Command="{Binding DeleteSelectedBackupsCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <md:PackIcon Kind="Trash" Margin="0 0 5 0"/>
+                        <TextBlock Text="Delete" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{DynamicResource InfoRaisedButton}" Command="{Binding CreateNewBackupCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <md:PackIcon Kind="Plus" Margin="0 0 5 0"/>
+                        <TextBlock Text="New" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
 
         <DataGrid Grid.Row="2" ItemsSource="{Binding Backups}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
 
-                <!--<DataGridTemplateColumn CanUserResize="False" IsReadOnly="False">
+                <DataGridTemplateColumn CanUserResize="False" IsReadOnly="False">
                     <DataGridTemplateColumn.Header>
                         <CheckBox IsChecked="{Binding DataContext.SelectAll, RelativeSource={RelativeSource AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged}" Command="{Binding DataContext.ExecuteTriggerSelectAllCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                     </DataGridTemplateColumn.Header>
@@ -31,7 +59,7 @@
                             <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" Command="{Binding DataContext.ExecuteUpdateSelectedRangeHeaderCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="Name" Binding="{Binding Item.Name}"/>
 
