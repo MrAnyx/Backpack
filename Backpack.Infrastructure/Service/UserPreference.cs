@@ -1,8 +1,6 @@
 ﻿using Backpack.Domain.Configuration;
 using Backpack.Domain.Contract;
 using Backpack.Domain.Model;
-using Backpack.Infrastructure.Json;
-using Backpack.Shared;
 using Backpack.Shared.Helper;
 using System.IO;
 using System.Text.Json;
@@ -12,15 +10,11 @@ namespace Backpack.Infrastructure.Service;
 
 public class UserPreference(AppSettings _settings) : IUserPreference
 {
-    public UserPreferenceInstance Default { get; set; } = new()
-    {
-        Culture = Constant.DefaultCulture
-    };
+    public UserPreferenceInstance Default { get; set; } = new();
 
     private readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
-        Converters = { new CultureInfoJsonConverter() }
     };
 
     public async Task LoadAsync()

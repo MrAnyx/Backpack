@@ -10,7 +10,6 @@ public static class InfrastructureExtension
     public static IServiceCollection AddInfrastructure(this IServiceCollection service, AppSettings settings)
     {
         return service
-            .AddSingleton<IUserPreference, UserPreference>()
-            .AddSingleton<ITranslationManager, TranslationManager>();
+            .AddSingleton<IUserPreference, UserPreference>();
     }
 }

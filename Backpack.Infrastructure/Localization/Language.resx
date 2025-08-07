@@ -117,82 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About_ApplicationName" xml:space="preserve">
+  <data name="Application name" xml:space="preserve">
     <value>Application name</value>
   </data>
-  <data name="About_BuildDate" xml:space="preserve">
+  <data name="Build date" xml:space="preserve">
     <value>Build date</value>
   </data>
-  <data name="About_Company" xml:space="preserve">
+  <data name="Company" xml:space="preserve">
     <value>Company</value>
   </data>
-  <data name="About_CurrentVersion" xml:space="preserve">
+  <data name="Current version" xml:space="preserve">
     <value>Current version</value>
   </data>
-  <data name="About_DotnetVersion" xml:space="preserve">
+  <data name=".NET Version" xml:space="preserve">
     <value>.NET Version</value>
   </data>
-  <data name="About_Environment" xml:space="preserve">
+  <data name="Environment" xml:space="preserve">
     <value>Environment</value>
   </data>
-  <data name="About_LogsPath" xml:space="preserve">
+  <data name="Logs Path" xml:space="preserve">
     <value>Logs Path</value>
   </data>
-  <data name="About_Repository" xml:space="preserve">
+  <data name="Github repository" xml:space="preserve">
     <value>Github repository</value>
   </data>
-  <data name="Backup_Snackbar_NewBackupCreated" xml:space="preserve">
+  <data name="New backup created" xml:space="preserve">
     <value>New backup created</value>
   </data>
-  <data name="Core_Loading_1" xml:space="preserve">
+  <data name="Still faster than your morning coffee..." xml:space="preserve">
     <value>Still faster than your morning coffee...</value>
   </data>
-  <data name="Core_Loading_2" xml:space="preserve">
+  <data name="Loading... bribing the hamsters to run faster." xml:space="preserve">
     <value>Loading... bribing the hamsters to run faster.</value>
   </data>
-  <data name="Core_Loading_3" xml:space="preserve">
+  <data name="Hold on, aligning the stars..." xml:space="preserve">
     <value>Hold on, aligning the stars...</value>
   </data>
-  <data name="Core_Loading_4" xml:space="preserve">
+  <data name="Downloading data from the cloud (hope it's not raining)." xml:space="preserve">
     <value>Downloading data from the cloud (hope it's not raining).</value>
   </data>
-  <data name="Menu_File" xml:space="preserve">
+  <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
-  <data name="Menu_File_Exit" xml:space="preserve">
+  <data name="Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="Menu_File_New" xml:space="preserve">
+  <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="Menu_File_New_NewWindow" xml:space="preserve">
+  <data name="New window" xml:space="preserve">
     <value>New window</value>
   </data>
-  <data name="Menu_Help" xml:space="preserve">
+  <data name="Help" xml:space="preserve">
     <value>Help</value>
   </data>
-  <data name="Menu_Help_About" xml:space="preserve">
+  <data name="Help_About" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="Menu_Help_ShowLogs" xml:space="preserve">
+  <data name="Help_ShowLogs" xml:space="preserve">
     <value>Show logs</value>
   </data>
   <data name="Menu_Tool" xml:space="preserve">
     <value>Tool</value>
   </data>
-  <data name="Menu_Tool_CheckDatabaseIntegrity" xml:space="preserve">
+  <data name="Check database integrity" xml:space="preserve">
     <value>Check database integrity</value>
   </data>
-  <data name="Migration_NewMigration_Body" xml:space="preserve">
+  <data name="The database structure has changed. Applying the latest version." xml:space="preserve">
     <value>The database structure has changed. Applying the latest version.</value>
   </data>
-  <data name="Migration_NewMigration_Title" xml:space="preserve">
+  <data name="Applying migrations" xml:space="preserve">
     <value>Applying migrations</value>
   </data>
-  <data name="Migration_UpToDate_Body" xml:space="preserve">
+  <data name="Your database is already up to date." xml:space="preserve">
     <value>Your database is already up to date.</value>
   </data>
-  <data name="Migration_UpToDate_Title" xml:space="preserve">
+  <data name="Database up to date" xml:space="preserve">
     <value>Database up to date</value>
   </data>
   <data name="Navigation_Backups" xml:space="preserve">
@@ -203,14 +203,5 @@
   </data>
   <data name="Navigation_Settings" xml:space="preserve">
     <value>Settings</value>
-  </data>
-  <data name="Settings_RestartToSave_Body" xml:space="preserve">
-    <value>You need to restart the application to fully apply the new settings.</value>
-  </data>
-  <data name="Settings_RestartToSave_Title" xml:space="preserve">
-    <value>New settings</value>
-  </data>
-  <data name="StatusBar_Ready" xml:space="preserve">
-    <value>Ready</value>
   </data>
 </root>

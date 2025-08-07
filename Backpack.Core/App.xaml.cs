@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Hosting;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 
@@ -29,7 +30,6 @@ public partial class App : System.Windows.Application
     private readonly IHost _host;
     private readonly ILogger<App> _logger;
     private readonly IUserPreference _preferences;
-    private readonly ITranslationManager _translation;
 
     private readonly MainVM _mainVM;
 
@@ -70,16 +70,21 @@ public partial class App : System.Windows.Application
         Context.Services = _host.Services;
 
         _preferences = _host.Services.GetRequiredService<IUserPreference>();
-        _translation = _host.Services.GetRequiredService<ITranslationManager>();
 
         _logger = _host.Services.GetRequiredService<ILogger<App>>();
 
         _mainVM = _host.Services.GetRequiredService<MainVM>();
     }
 
-    private void SetCultureInfo(CultureInfo culture)
+    private static void SetCultureInfo(CultureInfo culture)
     {
-        _translation.ApplyCulture(culture);
+        // Set the culture for all threads (including default for new threads)
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+        // Optionally set for the current thread too
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
 
         FrameworkElement.LanguageProperty.OverrideMetadata(
             typeof(FrameworkElement),
@@ -92,7 +97,7 @@ public partial class App : System.Windows.Application
         await _host.StartAsync();
 
         await _preferences.LoadAsync();
-        SetCultureInfo(_preferences.Default.Culture);
+        SetCultureInfo(CultureInfo.CurrentCulture);
 
         await _mainVM.OnStartupAsync();
 

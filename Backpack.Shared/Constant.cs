@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -10,10 +9,6 @@ namespace Backpack.Shared;
 public static class Constant
 {
     public const string ApplicationName = "Backpack";
-
-    public static IEnumerable<string> AvailableLanguages = ["en", "fr"];
-    public static IEnumerable<CultureInfo> AvailableCultures = CultureInfo.GetCultures(CultureTypes.AllCultures).Where(c => AvailableLanguages.Contains(c.TwoLetterISOLanguageName));
-    public static CultureInfo DefaultCulture = AvailableCultures.Any(c => c.Name == CultureInfo.CurrentCulture.Name) ? CultureInfo.CurrentCulture : new("en-US");
 
     public const string LogFileName = "app.log";
     public const string DatabaseFileName = "context.db";

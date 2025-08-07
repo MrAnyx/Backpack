@@ -6,21 +6,17 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-public partial class StatusBarMessageService(ITranslationManager _translation) : ObservableObject, IStatusBarMessageService
+public partial class StatusBarMessageService : ObservableObject, IStatusBarMessageService
 {
-    public StatusBarMessage DefaultMessage => new()
+    public static readonly StatusBarMessage DefaultMessage = new()
     {
-        Message = _translation.Translate("StatusBar_Ready"),
+        Message = "Ready",
         Type = eStatusBarMessageType.Info,
         AutoDismissAfter = null
     };
 
-    private StatusBarMessage? message;
-    public StatusBarMessage Message
-    {
-        get => message ?? DefaultMessage;
-        set => SetProperty(ref message, value);
-    }
+    [ObservableProperty]
+    private StatusBarMessage message = DefaultMessage;
 
     private CancellationTokenSource? _currentTokenSource;
 

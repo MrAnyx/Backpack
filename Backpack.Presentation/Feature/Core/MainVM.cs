@@ -24,8 +24,7 @@ public partial class MainVM(
     AppSettings _settings,
     ISnackbarMessageQueue _snackbar,
     IStatusBarMessageService _statusBar,
-    IMigration _migration,
-    ITranslationManager _translation
+    IMigration _migration
 ) : ViewModel
 {
     [ObservableProperty]
@@ -35,10 +34,10 @@ public partial class MainVM(
     private bool isLoaded = false;
 
     private IEnumerable<string> LoadingMessages => [
-            _translation.Translate("Core_Loading_1"),
-            _translation.Translate("Core_Loading_2"),
-            _translation.Translate("Core_Loading_3"),
-            _translation.Translate("Core_Loading_4"),
+            "Still faster than your morning coffee...",
+            "Loading... bribing the hamsters to run faster.",
+            "Hold on, aligning the stars...",
+            "Downloading data from the cloud (hope it's not raining).",
     ];
     public string LoadingMessage { get; private set; } = string.Empty;
 
@@ -59,8 +58,8 @@ public partial class MainVM(
         if (pendingMigrations.Any())
         {
             MessageBox.Show(
-                _translation.Translate("Migration_NewMigration_Body"),
-                _translation.Translate("Migration_NewMigration_Title"),
+                "The database structure has changed. Applying the latest version.",
+                "Applying migrations",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
@@ -140,8 +139,8 @@ public partial class MainVM(
         if (pendingMigrations.Any())
         {
             MessageBox.Show(
-                _translation.Translate("Migration_NewMigration_Body"),
-                _translation.Translate("Migration_NewMigration_Title"),
+                "The database structure has changed. Applying the latest version.",
+                "Applying migrations",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
@@ -150,8 +149,8 @@ public partial class MainVM(
         else
         {
             MessageBox.Show(
-                _translation.Translate("Migration_UpToDate_Body"),
-                _translation.Translate("Migration_UpToDate_Title"),
+                "Your database is already up to date.",
+                "Database up to date",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );

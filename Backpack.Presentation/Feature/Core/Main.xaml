@@ -6,7 +6,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Backpack.Presentation.Feature.Core"
         xmlns:shared="clr-namespace:Backpack.Shared;assembly=Backpack.Shared"
-        xmlns:helper="clr-namespace:Backpack.Presentation.Helper"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:enum="clr-namespace:Backpack.Domain.Enum;assembly=Backpack.Domain"
         xmlns:system="clr-namespace:System.Globalization;assembly=System.Runtime"
@@ -38,36 +37,36 @@
 
                 <!-- Menu -->
                 <Menu Grid.Row="0" Padding="3 3" BorderBrush="{DynamicResource MaterialDesignDarkSeparatorBackground}" BorderThickness="0 0 0 1">
-                    <MenuItem Header="{helper:Translation Menu_File}">
-                        <MenuItem Header="{helper:Translation Menu_File_New}">
-                            <MenuItem Header="{helper:Translation Menu_File_New_NewWindow}" InputGestureText="Ctrl+Shift+N" Command="{Binding ExecuteNewWindowCommand}">
+                    <MenuItem Header="File">
+                        <MenuItem Header="New">
+                            <MenuItem Header="New window" InputGestureText="Ctrl+Shift+N" Command="{Binding ExecuteNewWindowCommand}">
                                 <MenuItem.Icon>
                                     <md:PackIcon Kind="DockWindow" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="{helper:Translation Menu_File_Exit}" InputGestureText="Alt+F4" Command="{Binding ExecuteCloseWindowCommand}">
+                        <MenuItem Header="Exit" InputGestureText="Alt+F4" Command="{Binding ExecuteCloseWindowCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="ExitToApp" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{helper:Translation Menu_Tool}">
-                        <MenuItem Header="{helper:Translation Menu_Tool_CheckDatabaseIntegrity}" Command="{Binding ExecuteCheckDatabaseIntegrityCommand}">
+                    <MenuItem Header="Menu_Tool">
+                        <MenuItem Header="Check database integrity" Command="{Binding ExecuteCheckDatabaseIntegrityCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="DatabaseCheckOutline" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{helper:Translation Menu_Help}">
-                        <MenuItem Header="{helper:Translation Menu_Help_ShowLogs}" InputGestureText="Ctrl+Shift+L" Command="{Binding ExecuteShowLogCommand}">
+                    <MenuItem Header="Help">
+                        <MenuItem Header="Help_ShowLogs" InputGestureText="Ctrl+Shift+L" Command="{Binding ExecuteShowLogCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="FileDocumentOutline" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="{helper:Translation Menu_Help_About}" InputGestureText="Ctrl+F1" Command="{Binding ExecuteShowAboutCommand}">
+                        <MenuItem Header="Help_About" InputGestureText="Ctrl+F1" Command="{Binding ExecuteShowAboutCommand}">
                             <MenuItem.Icon>
                                 <md:PackIcon Kind="AboutCircleOutline" />
                             </MenuItem.Icon>
