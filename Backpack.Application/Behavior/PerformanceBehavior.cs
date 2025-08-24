@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Backpack.Application.Behavior;
 
-public class PerformanceBehavior<TRequest, TResult>(ILogger<ExceptionHandlingBehavior<TRequest, TResult>> _logger) : IPipelineBehavior<TRequest, TResult>
+public class PerformanceBehavior<TRequest, TResult>(ILogger<ExceptionHandlingBehavior<TRequest, TResult>> _logger) : IPipelineMiddleware<TRequest, TResult>
     where TRequest : IRequest<TResult>
 {
     public uint Order => 2;
     public bool IsEnabled => true;
 
-    public async Task<TResult> HandleAsync(TRequest request, RequestContext context, Func<Task<TResult>> next, CancellationToken cancellationToken)
+    public async Task<TResult> HandleAsync(TRequest request, PipelineContext context, Func<Task<TResult>> next, CancellationToken cancellationToken)
     {
         var stopwatch = Stopwatch.StartNew();
         var result = await next();

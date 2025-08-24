@@ -10,5 +10,5 @@ public interface IStreamPipelineBehavior<TRequest, TResponse> where TRequest : I
     uint Order { get; }
     bool IsEnabled { get; }
 
-    IAsyncEnumerable<Result<TResponse>> HandleAsync(TRequest request, RequestContext context, Func<CancellationToken, IAsyncEnumerable<Result<TResponse>>> next, CancellationToken cancellationToken);
+    IAsyncEnumerable<Result<TResponse>> HandleAsync(TRequest request, PipelineContext context, Func<CancellationToken, IAsyncEnumerable<Result<TResponse>>> next, CancellationToken cancellationToken);
 }

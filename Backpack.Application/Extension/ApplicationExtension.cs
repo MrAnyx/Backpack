@@ -25,7 +25,7 @@ public static class ApplicationExtension
                 .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime()
-                .AddClasses(c => c.AssignableTo(typeof(IPipelineBehavior<,>)))
+                .AddClasses(c => c.AssignableTo(typeof(IPipelineMiddleware<,>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime()
                 .AddClasses(c => c.AssignableTo(typeof(IStreamPipelineBehavior<,>)))

@@ -18,11 +18,11 @@ public class DeleteBackupHandler(
     IUnitOfWork _unitOfWork
 ) : ICommandHandler<DeleteBackupCommand>
 {
-    public async Task<Result> HandleAsync(DeleteBackupCommand command, RequestContext context, CancellationToken cancellationToken)
+    public async Task<Result> HandleAsync(DeleteBackupCommand command, PipelineContext context, CancellationToken cancellationToken)
     {
         foreach (var backup in command.Backups)
         {
-            await _backupRepository.RemoveByIdAsync(backup.Id);
+            await _backupRepository.RemoveByIdAsync(backup.Id, cancellationToken);
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

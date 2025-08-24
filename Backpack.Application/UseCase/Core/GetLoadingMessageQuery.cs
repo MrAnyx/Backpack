@@ -21,7 +21,7 @@ public class GetLoadingMessageHandler : IQueryHandler<GetLoadingMessageQuery, st
             "Downloading data from the cloud (hope it's not raining).",
     ];
 
-    public Task<Result<string>> HandleAsync(GetLoadingMessageQuery query, RequestContext context, CancellationToken cancellationToken)
+    public Task<Result<string>> HandleAsync(GetLoadingMessageQuery query, PipelineContext context, CancellationToken cancellationToken)
     {
         var message = _loadingMessages.ElementAt(new Random().Next(0, _loadingMessages.Count()));
         return Task.FromResult(new Result<string>(message));

@@ -14,7 +14,7 @@ public class Mediator(IServiceProvider _provider) : IMediator
 {
     public Task<Result> SendAsync(ICommand command, CancellationToken cancellationToken = default)
     {
-        var context = new RequestContext();
+        var context = new PipelineContext();
         var commandType = command.GetType();
         var handlerType = typeof(ICommandHandler<>).MakeGenericType(commandType);
 
@@ -26,7 +26,7 @@ public class Mediator(IServiceProvider _provider) : IMediator
 
     public Task<Result<TResult>> SendAsync<TResult>(ICommand<TResult> command, CancellationToken cancellationToken = default)
     {
-        var context = new RequestContext();
+        var context = new PipelineContext();
 
         var queryType = command.GetType();
         var resultType = typeof(TResult);
@@ -40,7 +40,7 @@ public class Mediator(IServiceProvider _provider) : IMediator
 
     public Task<Result<TResult>> QueryAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken = default)
     {
-        var context = new RequestContext();
+        var context = new PipelineContext();
 
         var queryType = query.GetType();
         var resultType = typeof(TResult);
@@ -54,10 +54,9 @@ public class Mediator(IServiceProvider _provider) : IMediator
 
     public async Task PublishAsync<TNotification>(INotification notification, eNotificationProcessingType processingType = eNotificationProcessingType.AwaitWhenAll, CancellationToken cancellationToken = default)
     {
-        var context = new RequestContext();
         var notificationType = notification.GetType();
         var handlerType = typeof(INotificationHandler<>).MakeGenericType(notificationType);
-        var handleAsyncMethod = handlerType.GetMethod("HandleAsync");
+        var handleAsyncMethod = handlerType.GetMethod(nameof(INotificationHandler<INotification>.HandleAsync));
 
         var handlers = _provider.GetServices(handlerType);
 
@@ -65,19 +64,30 @@ public class Mediator(IServiceProvider _provider) : IMediator
         {
             foreach (var handler in handlers)
             {
+                var context = new PipelineContext()
+                {
+                    HandlerId = Guid.NewGuid()
+                };
+
                 await (Task)handleAsyncMethod!.Invoke(handler, [notification, context, cancellationToken])!;
             }
         }
         else if (processingType == eNotificationProcessingType.AwaitWhenAll)
         {
             var tasks = handlers.Select(handler =>
-                (Task)handleAsyncMethod!.Invoke(handler, [notification, context, cancellationToken])!);
+            {
+                var context = new PipelineContext()
+                {
+                    HandlerId = Guid.NewGuid()
+                };
+                return (Task)handleAsyncMethod!.Invoke(handler, [notification, context, cancellationToken])!;
+            });
 
             await Task.WhenAll(tasks);
         }
     }
 
-    private Task<TResult> InvokePipelineAsync<TRequest, TResult>(TRequest request, Type handlerType, MethodInfo handlerMethod, RequestContext context, CancellationToken cancellationToken)
+    private Task<TResult> InvokePipelineAsync<TRequest, TResult>(TRequest request, Type handlerType, MethodInfo handlerMethod, PipelineContext context, CancellationToken cancellationToken)
         where TRequest : IRequest<TResult>
         where TResult : Result
     {
@@ -93,12 +103,12 @@ public class Mediator(IServiceProvider _provider) : IMediator
         return pipeline();
     }
 
-    private Func<Task<TResult>> BuildPipeline<TRequest, TResult>(TRequest request, RequestContext context, Func<Task<TResult>> handlerInvocation, CancellationToken cancellationToken)
+    private Func<Task<TResult>> BuildPipeline<TRequest, TResult>(TRequest request, PipelineContext context, Func<Task<TResult>> handlerInvocation, CancellationToken cancellationToken)
         where TRequest : IRequest<TResult>
         where TResult : Result
     {
         var behaviors = _provider
-            .GetServices<IPipelineBehavior<TRequest, TResult>>()
+            .GetServices<IPipelineMiddleware<TRequest, TResult>>()
             .Where(b => b.IsEnabled)
             .OrderBy(b => b.Order)
             .ToList();

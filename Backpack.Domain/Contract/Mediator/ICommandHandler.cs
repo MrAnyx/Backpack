@@ -6,10 +6,10 @@ namespace Backpack.Domain.Contract.Mediator;
 
 public interface ICommandHandler<TCommand> where TCommand : ICommand
 {
-    Task<Result> HandleAsync(TCommand command, RequestContext context, CancellationToken cancellationToken = default);
+    Task<Result> HandleAsync(TCommand command, PipelineContext context, CancellationToken cancellationToken = default);
 }
 
 public interface ICommandHandler<TCommand, TResult> where TCommand : ICommand<TResult>
 {
-    Task<Result<TResult>> HandleAsync(TCommand command, RequestContext context, CancellationToken cancellationToken);
+    Task<Result<TResult>> HandleAsync(TCommand command, PipelineContext context, CancellationToken cancellationToken);
 }

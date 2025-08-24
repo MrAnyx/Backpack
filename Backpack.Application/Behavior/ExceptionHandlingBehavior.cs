@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Backpack.Application.Behavior;
 
-public class ExceptionHandlingBehavior<TRequest, TResult>(ILogger<ExceptionHandlingBehavior<TRequest, TResult>> _logger) : IPipelineBehavior<TRequest, TResult>
+public class ExceptionHandlingBehavior<TRequest, TResult>(ILogger<ExceptionHandlingBehavior<TRequest, TResult>> _logger) : IPipelineMiddleware<TRequest, TResult>
     where TRequest : IRequest<TResult>
 {
     public uint Order => uint.MaxValue;
     public bool IsEnabled => true;
 
-    public async Task<TResult> HandleAsync(TRequest request, RequestContext context, Func<Task<TResult>> next, CancellationToken cancellationToken)
+    public async Task<TResult> HandleAsync(TRequest request, PipelineContext context, Func<Task<TResult>> next, CancellationToken cancellationToken)
     {
         try
         {

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Backpack.Application.Behavior;
 
-public class DatabaseTransactionBehavior<TRequest, TResult>(IUnitOfWork _unitOfWork) : IPipelineBehavior<TRequest, TResult>
+public class DatabaseTransactionBehavior<TRequest, TResult>(IUnitOfWork _unitOfWork) : IPipelineMiddleware<TRequest, TResult>
     where TRequest : IRequest<TResult>
 {
     public uint Order => 50;
     public bool IsEnabled => false;
 
-    public async Task<TResult> HandleAsync(TRequest request, RequestContext context, Func<Task<TResult>> next, CancellationToken cancellationToken)
+    public async Task<TResult> HandleAsync(TRequest request, PipelineContext context, Func<Task<TResult>> next, CancellationToken cancellationToken)
     {
         if (request is not ICommand and not ICommand<TResult>)
         {

@@ -6,5 +6,5 @@ namespace Backpack.Domain.Contract.Mediator;
 
 public interface INotificationHandler<TNotification> where TNotification : INotification
 {
-    Task HandleAsync(TNotification notification, RequestContext context, CancellationToken cancellationToken = default);
+    Task HandleAsync(TNotification notification, PipelineContext context, CancellationToken cancellationToken = default);
 }

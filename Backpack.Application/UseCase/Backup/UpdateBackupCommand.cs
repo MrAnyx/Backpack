@@ -17,7 +17,7 @@ public class UpdateBackupHandler(
     IUnitOfWork _unitOfWork
 ) : ICommandHandler<UpdateBackupCommand, Domain.Entity.Backup>
 {
-    public async Task<Result<Domain.Entity.Backup>> HandleAsync(UpdateBackupCommand command, RequestContext context, CancellationToken cancellationToken)
+    public async Task<Result<Domain.Entity.Backup>> HandleAsync(UpdateBackupCommand command, PipelineContext context, CancellationToken cancellationToken)
     {
         var newBackup = _backupRepository.Update(command.Backup);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
